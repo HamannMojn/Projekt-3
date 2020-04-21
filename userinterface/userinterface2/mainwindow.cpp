@@ -7,9 +7,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    timer = new QTimer(this);
-    timer->isSingleShot();
-    connect(timer, SIGNAL(timeout()), this, SLOT(enableStyring()));
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +16,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::enableStyring()
 {
-    ui->groupBox->setEnabled(false);
+    ui->groupBox->setEnabled(true);
+    ui->lblstatus->setText("");
 }
 
 void MainWindow::on_btnFrem_pressed()
@@ -65,15 +63,15 @@ void MainWindow::on_btnTilbage_released()
 void MainWindow::on_btnLoeft_clicked()
 {
     ui->lblstatus->setText("Løfter objekt");
-    timer->start();
-    ui->groupBox->setEnabled(true);
+    ui->groupBox->setEnabled(false);
+    QTimer::singleShot(3000,this, SLOT(enableStyring()));
 
 }
 
 void MainWindow::on_btnSaenk_clicked()
 {
     ui->lblstatus->setText("Sænker objekt");
-    timer->start();
-    ui->groupBox->setEnabled(true);
+    ui->groupBox->setEnabled(false);
+    QTimer::singleShot(3000,this, SLOT(enableStyring()));
 
 }
