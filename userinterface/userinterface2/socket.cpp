@@ -16,7 +16,12 @@ Socket::Socket()
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(portno);
-    serv_addr.sin_addr.s_addr = inet_addr("192.168.0.1");
+    serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+    n = 0;
+
+    if(connect(sock,(struct sockaddr *) &serv_addr, sizeof(serv_addr))<0)
+        cout<<"fejl med forbindelse"<<endl;
 }
 
 Socket::~Socket()
@@ -24,12 +29,16 @@ Socket::~Socket()
     close(sock);
 }
 
-void Socket::write(char buffer)
+void Socket::socketwrite(char buffer)
 {
-    bzero(buffer_, sizeof(buffer_));
-    for(unsigned int i =0; i<sizeof(buffer)-1; i++)
-    {
+   cout<<"sender"<<endl;
+   n = write(sock, &buffer, sizeof(buffer));
+   if(n<0)
+       cout<<"kæft noget lårt"<<endl;
+   else
+       cout<<"it naue alliwel do"<<endl;
 
-    }
+   cout<<"sender"<<buffer<<endl;
 }
+
 
