@@ -49,7 +49,7 @@ int main()
     
     // Bind socket til IP og port
     sockaddr_in adr;
-    string ipAdr = "192.168.0.1";
+    string ipAdr = "127.0.0.1";
     int portno = 51717;
 
     adr.sin_family = AF_INET;
