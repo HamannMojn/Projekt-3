@@ -54,7 +54,8 @@ int main()
 
     adr.sin_family = AF_INET;
     adr.sin_port = htons(portno);
-    inet_pton(AF_INET, ipAdr.c_str(), &adr.sin_addr);
+    adr.sin_addr.s_addr = INADDR_ANY;
+    //inet_pton(AF_INET, ipAdr.c_str(), &adr.sin_addr);
     
     if (bind(listening, (sockaddr*)&adr, sizeof(adr)) == -1)
     {

@@ -11,6 +11,7 @@
 #include <string>
 #include <netinet/in.h>
 #include <stdio.h>
+#include <errno.h>
 
 
 class Socket
@@ -18,16 +19,13 @@ class Socket
 public:
     Socket();
     ~Socket();
-    void read();
     void socketwrite(char);
 
 private:
     int sock;
-    int portno;
+    unsigned short portno;
     int n;
-    char buffer_;
     struct sockaddr_in serv_addr;
-    struct hostent *server;
 };
 
 #endif // SOCKET_H

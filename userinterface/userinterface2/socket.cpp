@@ -3,7 +3,7 @@
 using namespace std;
 
 Socket::Socket()
-    : sock{0}, portno{51717}, n{0}
+    :portno{51717}, n{0}
 {
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if(sock==-1)
@@ -16,12 +16,18 @@ Socket::Socket()
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(portno);
-    serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    struct hostent *server;
+    server = gethostbyname("10.9.8.2");
+    if(server == NULL){
+      std::cout << "No such host as " <<std::endl;
+    }
+    bcopy((char *)server->h_addr,(char*)&serv_addr.sin_addr.s_addr,server->h_length);
+    //serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     n = 0;
 
     if(connect(sock,(struct sockaddr *) &serv_addr, sizeof(serv_addr))<0)
-        cout<<"fejl med forbindelse"<<endl;
+        cout<<"fejl med forbindelse"<<errno<<endl;
 }
 
 Socket::~Socket()
@@ -32,7 +38,7 @@ Socket::~Socket()
 void Socket::socketwrite(char buffer)
 {
    cout<<"sender"<<endl;
-   n = write(sock, &buffer, sizeof(buffer));
+   n = write(sock, &buffer, 1);
    if(n<0)
        cout<<"kæft noget lårt"<<endl;
    else
