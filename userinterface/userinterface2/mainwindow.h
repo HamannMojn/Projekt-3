@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <unistd.h>
+#include "socket.h"
 namespace Ui {
 class MainWindow;
 }
@@ -40,6 +41,7 @@ private slots:
     void on_btnSaenk_clicked();
 
 private:
+    Socket socket;
     Ui::MainWindow *ui;
 };
 
