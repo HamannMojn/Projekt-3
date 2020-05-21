@@ -1,0 +1,9 @@
+[Unit]
+Description=serverm
+After=multi-user.target
+[Service]
+Type=forking
+ExecStart=/bin/sh -c 'source etc/profile ; /home/root/serverm &'
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
