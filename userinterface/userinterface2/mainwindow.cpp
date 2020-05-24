@@ -23,10 +23,8 @@ void MainWindow::enableStyring()
 
 void MainWindow::on_btnFrem_pressed()
 {
-    std::cout<<"nåede så langt"<<std::endl;
     ui->lblstatus->setText("Kører fremad");
     socket.socketwrite('1');
-    std::cout<<"nåede til efter write-metode"<<std::endl;
 }
 
 void MainWindow::on_btnFrem_released()
