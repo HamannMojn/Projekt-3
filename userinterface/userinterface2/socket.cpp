@@ -22,7 +22,7 @@ Socket::Socket()
       std::cout << "No such host as " <<std::endl;
     }
     bcopy((char *)server->h_addr,(char*)&serv_addr.sin_addr.s_addr,server->h_length);
-    //serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    
 
     n = 0;
 
