@@ -1,0 +1,1604 @@
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"ServoArm.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.LOFT,"ax",%progbits
+  20              		.align	2
+  21              		.global	LOFT
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	LOFT, %function
+  25              	LOFT:
+  26              	.LFB63:
+  27              		.file 1 "ServoArm.c"
+   1:ServoArm.c    **** /* ========================================
+   2:ServoArm.c    ****  *
+   3:ServoArm.c    ****  * Copyright YOUR COMPANY, THE YEAR
+   4:ServoArm.c    ****  * All Rights Reserved
+   5:ServoArm.c    ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:ServoArm.c    ****  *
+   7:ServoArm.c    ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:ServoArm.c    ****  * WHICH IS THE PROPERTY OF your company.
+   9:ServoArm.c    ****  *
+  10:ServoArm.c    ****  * ========================================
+  11:ServoArm.c    **** */
+  12:ServoArm.c    **** 
+  13:ServoArm.c    **** #include"ServoArm.h"
+  14:ServoArm.c    **** #include <project.h>
+  15:ServoArm.c    **** #include "Sensor.h"
+  16:ServoArm.c    **** 
+  17:ServoArm.c    **** 
+  18:ServoArm.c    **** 
+  19:ServoArm.c    **** void LOFT()
+  20:ServoArm.c    **** {
+  28              		.loc 1 20 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  21:ServoArm.c    **** 
+  22:ServoArm.c    ****     UART_1_PutString("LOEFT AF OBJEKT\r\n\n");
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 2
+
+
+  36              		.loc 1 22 0
+  37 0002 2748     		ldr	r0, .L13
+  38 0004 FFF7FEFF 		bl	UART_1_PutString
+  39              	.LVL0:
+  40              	.LBB2:
+  23:ServoArm.c    ****     
+  24:ServoArm.c    ****     // Justere gribe arm mod objekt
+  25:ServoArm.c    ****         for (int control4=30; control4 <= 105; control4= control4 + 1 ) 
+  41              		.loc 1 25 0
+  42 0008 1E24     		movs	r4, #30
+  43 000a 06E0     		b	.L2
+  44              	.LVL1:
+  45              	.L3:
+  26:ServoArm.c    ****             {
+  27:ServoArm.c    ****             PWM_4_WriteCompare(control4);
+  46              		.loc 1 27 0 discriminator 3
+  47 000c A0B2     		uxth	r0, r4
+  48 000e FFF7FEFF 		bl	PWM_4_WriteCompare
+  49              	.LVL2:
+  28:ServoArm.c    ****             CyDelay(50);    
+  50              		.loc 1 28 0 discriminator 3
+  51 0012 3220     		movs	r0, #50
+  52 0014 FFF7FEFF 		bl	CyDelay
+  53              	.LVL3:
+  25:ServoArm.c    ****             {
+  54              		.loc 1 25 0 discriminator 3
+  55 0018 0134     		adds	r4, r4, #1
+  56              	.LVL4:
+  57              	.L2:
+  25:ServoArm.c    ****             {
+  58              		.loc 1 25 0 is_stmt 0 discriminator 1
+  59 001a 692C     		cmp	r4, #105
+  60 001c F6DD     		ble	.L3
+  61 001e 4B24     		movs	r4, #75
+  62              	.LVL5:
+  63 0020 06E0     		b	.L4
+  64              	.LVL6:
+  65              	.L5:
+  66              	.LBE2:
+  67              	.LBB3:
+  29:ServoArm.c    ****             }
+  30:ServoArm.c    ****  
+  31:ServoArm.c    ****          for (int control2=75; control2 >= 50; control2= control2 - 1 ) 
+  32:ServoArm.c    ****             {
+  33:ServoArm.c    ****             PWM_2_WriteCompare(control2);
+  68              		.loc 1 33 0 is_stmt 1 discriminator 3
+  69 0022 A0B2     		uxth	r0, r4
+  70 0024 FFF7FEFF 		bl	PWM_2_WriteCompare
+  71              	.LVL7:
+  34:ServoArm.c    ****             CyDelay(50);
+  72              		.loc 1 34 0 discriminator 3
+  73 0028 3220     		movs	r0, #50
+  74 002a FFF7FEFF 		bl	CyDelay
+  75              	.LVL8:
+  31:ServoArm.c    ****             {
+  76              		.loc 1 31 0 discriminator 3
+  77 002e 013C     		subs	r4, r4, #1
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 3
+
+
+  78              	.LVL9:
+  79              	.L4:
+  31:ServoArm.c    ****             {
+  80              		.loc 1 31 0 is_stmt 0 discriminator 1
+  81 0030 312C     		cmp	r4, #49
+  82 0032 F6DC     		bgt	.L5
+  83              	.LBE3:
+  35:ServoArm.c    ****             
+  36:ServoArm.c    ****             }
+  37:ServoArm.c    ****         PWM_3_WriteCompare(20); 
+  84              		.loc 1 37 0 is_stmt 1
+  85 0034 1420     		movs	r0, #20
+  86 0036 FFF7FEFF 		bl	PWM_3_WriteCompare
+  87              	.LVL10:
+  38:ServoArm.c    ****         CyDelay(1000);
+  88              		.loc 1 38 0
+  89 003a 4FF47A70 		mov	r0, #1000
+  90 003e FFF7FEFF 		bl	CyDelay
+  91              	.LVL11:
+  39:ServoArm.c    ****               
+  40:ServoArm.c    ****         PWM_6_WriteCompare(80); //Grib om objekt
+  92              		.loc 1 40 0
+  93 0042 5020     		movs	r0, #80
+  94 0044 FFF7FEFF 		bl	PWM_6_WriteCompare
+  95              	.LVL12:
+  41:ServoArm.c    ****         CyDelay(500);
+  96              		.loc 1 41 0
+  97 0048 4FF4FA70 		mov	r0, #500
+  98 004c FFF7FEFF 		bl	CyDelay
+  99              	.LVL13:
+ 100              	.LBB4:
+  42:ServoArm.c    ****    
+  43:ServoArm.c    ****     // Justere gribe arm mod objekt
+  44:ServoArm.c    ****        
+  45:ServoArm.c    ****     // Løft af objekt til ønkset højde
+  46:ServoArm.c    ****           for (int control2=50; control2 <= 65; control2= control2 + 1 ) 
+ 101              		.loc 1 46 0
+ 102 0050 3224     		movs	r4, #50
+ 103              	.LVL14:
+ 104 0052 06E0     		b	.L6
+ 105              	.LVL15:
+ 106              	.L7:
+  47:ServoArm.c    ****             {
+  48:ServoArm.c    ****             PWM_2_WriteCompare(control2);
+ 107              		.loc 1 48 0 discriminator 3
+ 108 0054 A0B2     		uxth	r0, r4
+ 109 0056 FFF7FEFF 		bl	PWM_2_WriteCompare
+ 110              	.LVL16:
+  49:ServoArm.c    ****             CyDelay(50);
+ 111              		.loc 1 49 0 discriminator 3
+ 112 005a 3220     		movs	r0, #50
+ 113 005c FFF7FEFF 		bl	CyDelay
+ 114              	.LVL17:
+  46:ServoArm.c    ****             {
+ 115              		.loc 1 46 0 discriminator 3
+ 116 0060 0134     		adds	r4, r4, #1
+ 117              	.LVL18:
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 4
+
+
+ 118              	.L6:
+  46:ServoArm.c    ****             {
+ 119              		.loc 1 46 0 is_stmt 0 discriminator 1
+ 120 0062 412C     		cmp	r4, #65
+ 121 0064 F6DD     		ble	.L7
+ 122 0066 2024     		movs	r4, #32
+ 123              	.LVL19:
+ 124 0068 06E0     		b	.L8
+ 125              	.LVL20:
+ 126              	.L9:
+ 127              	.LBE4:
+ 128              	.LBB5:
+  50:ServoArm.c    ****             }
+  51:ServoArm.c    ****             
+  52:ServoArm.c    ****            for (int control3 = 32; control3 <= 45; control3 = control3 + 1 ) 
+  53:ServoArm.c    ****             {
+  54:ServoArm.c    ****             PWM_3_WriteCompare(control3);
+ 129              		.loc 1 54 0 is_stmt 1 discriminator 3
+ 130 006a A0B2     		uxth	r0, r4
+ 131 006c FFF7FEFF 		bl	PWM_3_WriteCompare
+ 132              	.LVL21:
+  55:ServoArm.c    ****             CyDelay(50);
+ 133              		.loc 1 55 0 discriminator 3
+ 134 0070 3220     		movs	r0, #50
+ 135 0072 FFF7FEFF 		bl	CyDelay
+ 136              	.LVL22:
+  52:ServoArm.c    ****             {
+ 137              		.loc 1 52 0 discriminator 3
+ 138 0076 0134     		adds	r4, r4, #1
+ 139              	.LVL23:
+ 140              	.L8:
+  52:ServoArm.c    ****             {
+ 141              		.loc 1 52 0 is_stmt 0 discriminator 1
+ 142 0078 2D2C     		cmp	r4, #45
+ 143 007a F6DD     		ble	.L9
+ 144 007c 6924     		movs	r4, #105
+ 145              	.LVL24:
+ 146 007e 06E0     		b	.L10
+ 147              	.LVL25:
+ 148              	.L11:
+ 149              	.LBE5:
+ 150              	.LBB6:
+  56:ServoArm.c    ****             }
+  57:ServoArm.c    ****             
+  58:ServoArm.c    ****             for (int control4=105; control4 >= 90; control4= control4 - 1 ) 
+  59:ServoArm.c    ****             {
+  60:ServoArm.c    ****             PWM_4_WriteCompare(control4);
+ 151              		.loc 1 60 0 is_stmt 1 discriminator 3
+ 152 0080 A0B2     		uxth	r0, r4
+ 153 0082 FFF7FEFF 		bl	PWM_4_WriteCompare
+ 154              	.LVL26:
+  61:ServoArm.c    ****             CyDelay(50);    
+ 155              		.loc 1 61 0 discriminator 3
+ 156 0086 3220     		movs	r0, #50
+ 157 0088 FFF7FEFF 		bl	CyDelay
+ 158              	.LVL27:
+  58:ServoArm.c    ****             {
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 5
+
+
+ 159              		.loc 1 58 0 discriminator 3
+ 160 008c 013C     		subs	r4, r4, #1
+ 161              	.LVL28:
+ 162              	.L10:
+  58:ServoArm.c    ****             {
+ 163              		.loc 1 58 0 is_stmt 0 discriminator 1
+ 164 008e 592C     		cmp	r4, #89
+ 165 0090 F6DC     		bgt	.L11
+ 166              	.LBE6:
+  62:ServoArm.c    ****             }
+  63:ServoArm.c    ****         PWM_6_WriteCompare(80);
+ 167              		.loc 1 63 0 is_stmt 1
+ 168 0092 5020     		movs	r0, #80
+ 169 0094 FFF7FEFF 		bl	PWM_6_WriteCompare
+ 170              	.LVL29:
+  64:ServoArm.c    ****         UART_1_PutString("OBJEKT LOEFTET\r\n");
+ 171              		.loc 1 64 0
+ 172 0098 0248     		ldr	r0, .L13+4
+ 173 009a FFF7FEFF 		bl	UART_1_PutString
+ 174              	.LVL30:
+ 175 009e 10BD     		pop	{r4, pc}
+ 176              	.LVL31:
+ 177              	.L14:
+ 178              		.align	2
+ 179              	.L13:
+ 180 00a0 00000000 		.word	.LC0
+ 181 00a4 14000000 		.word	.LC1
+ 182              		.cfi_endproc
+ 183              	.LFE63:
+ 184              		.size	LOFT, .-LOFT
+ 185              		.section	.text.SANK,"ax",%progbits
+ 186              		.align	2
+ 187              		.global	SANK
+ 188              		.thumb
+ 189              		.thumb_func
+ 190              		.type	SANK, %function
+ 191              	SANK:
+ 192              	.LFB64:
+  65:ServoArm.c    **** 
+  66:ServoArm.c    **** }
+  67:ServoArm.c    **** 
+  68:ServoArm.c    **** void SANK()
+  69:ServoArm.c    **** {
+ 193              		.loc 1 69 0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 0
+ 196              		@ frame_needed = 0, uses_anonymous_args = 0
+ 197 0000 10B5     		push	{r4, lr}
+ 198              		.cfi_def_cfa_offset 8
+ 199              		.cfi_offset 4, -8
+ 200              		.cfi_offset 14, -4
+  70:ServoArm.c    ****         UART_1_PutString("SAENK AF OBJEKT\r\n\n");
+ 201              		.loc 1 70 0
+ 202 0002 2348     		ldr	r0, .L23
+ 203 0004 FFF7FEFF 		bl	UART_1_PutString
+ 204              	.LVL32:
+ 205              	.LBB7:
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 6
+
+
+  71:ServoArm.c    ****         
+  72:ServoArm.c    ****         for (int control2=65; control2 >= 56; control2= control2 - 1 ) 
+ 206              		.loc 1 72 0
+ 207 0008 4124     		movs	r4, #65
+ 208 000a 06E0     		b	.L16
+ 209              	.LVL33:
+ 210              	.L17:
+  73:ServoArm.c    ****             {
+  74:ServoArm.c    ****             PWM_2_WriteCompare(control2);
+ 211              		.loc 1 74 0 discriminator 3
+ 212 000c A0B2     		uxth	r0, r4
+ 213 000e FFF7FEFF 		bl	PWM_2_WriteCompare
+ 214              	.LVL34:
+  75:ServoArm.c    ****             CyDelay(100);
+ 215              		.loc 1 75 0 discriminator 3
+ 216 0012 6420     		movs	r0, #100
+ 217 0014 FFF7FEFF 		bl	CyDelay
+ 218              	.LVL35:
+  72:ServoArm.c    ****             {
+ 219              		.loc 1 72 0 discriminator 3
+ 220 0018 013C     		subs	r4, r4, #1
+ 221              	.LVL36:
+ 222              	.L16:
+  72:ServoArm.c    ****             {
+ 223              		.loc 1 72 0 is_stmt 0 discriminator 1
+ 224 001a 372C     		cmp	r4, #55
+ 225 001c F6DC     		bgt	.L17
+ 226              	.LBE7:
+  76:ServoArm.c    ****             }
+  77:ServoArm.c    ****             PWM_4_WriteCompare(100);
+ 227              		.loc 1 77 0 is_stmt 1
+ 228 001e 6420     		movs	r0, #100
+ 229 0020 FFF7FEFF 		bl	PWM_4_WriteCompare
+ 230              	.LVL37:
+ 231              	.LBB8:
+  78:ServoArm.c    ****         for (int control3=45; control3 >= 30; control3= control3 - 1 ) 
+ 232              		.loc 1 78 0
+ 233 0024 2D24     		movs	r4, #45
+ 234              	.LVL38:
+ 235 0026 06E0     		b	.L18
+ 236              	.LVL39:
+ 237              	.L19:
+  79:ServoArm.c    ****             {
+  80:ServoArm.c    ****             PWM_3_WriteCompare(control3);
+ 238              		.loc 1 80 0 discriminator 3
+ 239 0028 A0B2     		uxth	r0, r4
+ 240 002a FFF7FEFF 		bl	PWM_3_WriteCompare
+ 241              	.LVL40:
+  81:ServoArm.c    ****             CyDelay(100);
+ 242              		.loc 1 81 0 discriminator 3
+ 243 002e 6420     		movs	r0, #100
+ 244 0030 FFF7FEFF 		bl	CyDelay
+ 245              	.LVL41:
+  78:ServoArm.c    ****         for (int control3=45; control3 >= 30; control3= control3 - 1 ) 
+ 246              		.loc 1 78 0 discriminator 3
+ 247 0034 013C     		subs	r4, r4, #1
+ 248              	.LVL42:
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 7
+
+
+ 249              	.L18:
+  78:ServoArm.c    ****         for (int control3=45; control3 >= 30; control3= control3 - 1 ) 
+ 250              		.loc 1 78 0 is_stmt 0 discriminator 1
+ 251 0036 1D2C     		cmp	r4, #29
+ 252 0038 F6DC     		bgt	.L19
+ 253              	.LBE8:
+  82:ServoArm.c    ****             }
+  83:ServoArm.c    ****        
+  84:ServoArm.c    ****         
+  85:ServoArm.c    ****         PWM_6_WriteCompare(80);
+ 254              		.loc 1 85 0 is_stmt 1
+ 255 003a 5020     		movs	r0, #80
+ 256 003c FFF7FEFF 		bl	PWM_6_WriteCompare
+ 257              	.LVL43:
+  86:ServoArm.c    ****         CyDelay(1000);
+ 258              		.loc 1 86 0
+ 259 0040 4FF47A70 		mov	r0, #1000
+ 260 0044 FFF7FEFF 		bl	CyDelay
+ 261              	.LVL44:
+  87:ServoArm.c    ****         PWM_6_WriteCompare(50);
+ 262              		.loc 1 87 0
+ 263 0048 3220     		movs	r0, #50
+ 264 004a FFF7FEFF 		bl	PWM_6_WriteCompare
+ 265              	.LVL45:
+ 266              	.LBB9:
+  88:ServoArm.c    ****        
+  89:ServoArm.c    ****        // Justere gribe arm mod objekt
+  90:ServoArm.c    ****         
+  91:ServoArm.c    ****          for (int control2=56; control2 <= 78; control2= control2 + 1 ) 
+ 267              		.loc 1 91 0
+ 268 004e 3824     		movs	r4, #56
+ 269              	.LVL46:
+ 270 0050 06E0     		b	.L20
+ 271              	.LVL47:
+ 272              	.L21:
+  92:ServoArm.c    ****             {
+  93:ServoArm.c    ****             PWM_2_WriteCompare(control2);
+ 273              		.loc 1 93 0 discriminator 3
+ 274 0052 A0B2     		uxth	r0, r4
+ 275 0054 FFF7FEFF 		bl	PWM_2_WriteCompare
+ 276              	.LVL48:
+  94:ServoArm.c    ****             CyDelay(100);
+ 277              		.loc 1 94 0 discriminator 3
+ 278 0058 6420     		movs	r0, #100
+ 279 005a FFF7FEFF 		bl	CyDelay
+ 280              	.LVL49:
+  91:ServoArm.c    ****             {
+ 281              		.loc 1 91 0 discriminator 3
+ 282 005e 0134     		adds	r4, r4, #1
+ 283              	.LVL50:
+ 284              	.L20:
+  91:ServoArm.c    ****             {
+ 285              		.loc 1 91 0 is_stmt 0 discriminator 1
+ 286 0060 4E2C     		cmp	r4, #78
+ 287 0062 F6DD     		ble	.L21
+ 288              	.LBE9:
+  95:ServoArm.c    ****             }
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 8
+
+
+  96:ServoArm.c    ****             
+  97:ServoArm.c    ****         PWM_4_WriteCompare(30);
+ 289              		.loc 1 97 0 is_stmt 1
+ 290 0064 1E20     		movs	r0, #30
+ 291 0066 FFF7FEFF 		bl	PWM_4_WriteCompare
+ 292              	.LVL51:
+  98:ServoArm.c    ****         CyDelay(500);    
+ 293              		.loc 1 98 0
+ 294 006a 4FF4FA70 		mov	r0, #500
+ 295 006e FFF7FEFF 		bl	CyDelay
+ 296              	.LVL52:
+  99:ServoArm.c    ****         PWM_3_WriteCompare(32); 
+ 297              		.loc 1 99 0
+ 298 0072 2020     		movs	r0, #32
+ 299 0074 FFF7FEFF 		bl	PWM_3_WriteCompare
+ 300              	.LVL53:
+ 100:ServoArm.c    ****         CyDelay(1000);
+ 301              		.loc 1 100 0
+ 302 0078 4FF47A70 		mov	r0, #1000
+ 303 007c FFF7FEFF 		bl	CyDelay
+ 304              	.LVL54:
+ 101:ServoArm.c    ****         PWM_6_WriteCompare(50); 
+ 305              		.loc 1 101 0
+ 306 0080 3220     		movs	r0, #50
+ 307 0082 FFF7FEFF 		bl	PWM_6_WriteCompare
+ 308              	.LVL55:
+ 102:ServoArm.c    ****         UART_1_PutString("OBJEKT SAENKET\r\n");
+ 309              		.loc 1 102 0
+ 310 0086 0348     		ldr	r0, .L23+4
+ 311 0088 FFF7FEFF 		bl	UART_1_PutString
+ 312              	.LVL56:
+ 313 008c 10BD     		pop	{r4, pc}
+ 314              	.LVL57:
+ 315              	.L24:
+ 316 008e 00BF     		.align	2
+ 317              	.L23:
+ 318 0090 28000000 		.word	.LC2
+ 319 0094 3C000000 		.word	.LC3
+ 320              		.cfi_endproc
+ 321              	.LFE64:
+ 322              		.size	SANK, .-SANK
+ 323              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 324              		.align	2
+ 325              	.LC0:
+ 326 0000 4C4F4546 		.ascii	"LOEFT AF OBJEKT\015\012\012\000"
+ 326      54204146 
+ 326      204F424A 
+ 326      454B540D 
+ 326      0A0A00
+ 327 0013 00       		.space	1
+ 328              	.LC1:
+ 329 0014 4F424A45 		.ascii	"OBJEKT LOEFTET\015\012\000"
+ 329      4B54204C 
+ 329      4F454654 
+ 329      45540D0A 
+ 329      00
+ 330 0025 000000   		.space	3
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 9
+
+
+ 331              	.LC2:
+ 332 0028 5341454E 		.ascii	"SAENK AF OBJEKT\015\012\012\000"
+ 332      4B204146 
+ 332      204F424A 
+ 332      454B540D 
+ 332      0A0A00
+ 333 003b 00       		.space	1
+ 334              	.LC3:
+ 335 003c 4F424A45 		.ascii	"OBJEKT SAENKET\015\012\000"
+ 335      4B542053 
+ 335      41454E4B 
+ 335      45540D0A 
+ 335      00
+ 336              		.text
+ 337              	.Letext0:
+ 338              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 339              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 340              		.file 4 "Generated_Source\\PSoC5/PWM_4.h"
+ 341              		.file 5 "Generated_Source\\PSoC5/CyLib.h"
+ 342              		.file 6 "Generated_Source\\PSoC5/PWM_2.h"
+ 343              		.file 7 "Generated_Source\\PSoC5/PWM_3.h"
+ 344              		.file 8 "Generated_Source\\PSoC5/UART_1.h"
+ 345              		.file 9 "Generated_Source\\PSoC5/PWM_6.h"
+ 346              		.file 10 "Generated_Source\\PSoC5/core_cm3.h"
+ 347              		.section	.debug_info,"",%progbits
+ 348              	.Ldebug_info0:
+ 349 0000 97040000 		.4byte	0x497
+ 350 0004 0400     		.2byte	0x4
+ 351 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 352 000a 04       		.byte	0x4
+ 353 000b 01       		.uleb128 0x1
+ 354 000c 53000000 		.4byte	.LASF27
+ 355 0010 0C       		.byte	0xc
+ 356 0011 A8010000 		.4byte	.LASF28
+ 357 0015 C8010000 		.4byte	.LASF29
+ 358 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 359 001d 00000000 		.4byte	0
+ 360 0021 00000000 		.4byte	.Ldebug_line0
+ 361 0025 02       		.uleb128 0x2
+ 362 0026 01       		.byte	0x1
+ 363 0027 06       		.byte	0x6
+ 364 0028 26020000 		.4byte	.LASF0
+ 365 002c 02       		.uleb128 0x2
+ 366 002d 01       		.byte	0x1
+ 367 002e 08       		.byte	0x8
+ 368 002f 45000000 		.4byte	.LASF1
+ 369 0033 02       		.uleb128 0x2
+ 370 0034 02       		.byte	0x2
+ 371 0035 05       		.byte	0x5
+ 372 0036 2B010000 		.4byte	.LASF2
+ 373 003a 02       		.uleb128 0x2
+ 374 003b 02       		.byte	0x2
+ 375 003c 07       		.byte	0x7
+ 376 003d E6000000 		.4byte	.LASF3
+ 377 0041 03       		.uleb128 0x3
+ 378 0042 00000000 		.4byte	.LASF9
+ 379 0046 02       		.byte	0x2
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 10
+
+
+ 380 0047 3F       		.byte	0x3f
+ 381 0048 4C000000 		.4byte	0x4c
+ 382 004c 02       		.uleb128 0x2
+ 383 004d 04       		.byte	0x4
+ 384 004e 05       		.byte	0x5
+ 385 004f B3010000 		.4byte	.LASF4
+ 386 0053 02       		.uleb128 0x2
+ 387 0054 04       		.byte	0x4
+ 388 0055 07       		.byte	0x7
+ 389 0056 19010000 		.4byte	.LASF5
+ 390 005a 02       		.uleb128 0x2
+ 391 005b 08       		.byte	0x8
+ 392 005c 05       		.byte	0x5
+ 393 005d 7D010000 		.4byte	.LASF6
+ 394 0061 02       		.uleb128 0x2
+ 395 0062 08       		.byte	0x8
+ 396 0063 07       		.byte	0x7
+ 397 0064 42010000 		.4byte	.LASF7
+ 398 0068 04       		.uleb128 0x4
+ 399 0069 04       		.byte	0x4
+ 400 006a 05       		.byte	0x5
+ 401 006b 696E7400 		.ascii	"int\000"
+ 402 006f 02       		.uleb128 0x2
+ 403 0070 04       		.byte	0x4
+ 404 0071 07       		.byte	0x7
+ 405 0072 35010000 		.4byte	.LASF8
+ 406 0076 03       		.uleb128 0x3
+ 407 0077 24000000 		.4byte	.LASF10
+ 408 007b 03       		.byte	0x3
+ 409 007c 2C       		.byte	0x2c
+ 410 007d 41000000 		.4byte	0x41
+ 411 0081 02       		.uleb128 0x2
+ 412 0082 04       		.byte	0x4
+ 413 0083 04       		.byte	0x4
+ 414 0084 3F000000 		.4byte	.LASF11
+ 415 0088 02       		.uleb128 0x2
+ 416 0089 08       		.byte	0x8
+ 417 008a 04       		.byte	0x4
+ 418 008b 0A000000 		.4byte	.LASF12
+ 419 008f 02       		.uleb128 0x2
+ 420 0090 01       		.byte	0x1
+ 421 0091 08       		.byte	0x8
+ 422 0092 9E010000 		.4byte	.LASF13
+ 423 0096 02       		.uleb128 0x2
+ 424 0097 08       		.byte	0x8
+ 425 0098 04       		.byte	0x4
+ 426 0099 BC010000 		.4byte	.LASF14
+ 427 009d 02       		.uleb128 0x2
+ 428 009e 04       		.byte	0x4
+ 429 009f 07       		.byte	0x7
+ 430 00a0 74010000 		.4byte	.LASF15
+ 431 00a4 05       		.uleb128 0x5
+ 432 00a5 A3010000 		.4byte	.LASF19
+ 433 00a9 01       		.byte	0x1
+ 434 00aa 13       		.byte	0x13
+ 435 00ab 00000000 		.4byte	.LFB63
+ 436 00af A8000000 		.4byte	.LFE63-.LFB63
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 11
+
+
+ 437 00b3 01       		.uleb128 0x1
+ 438 00b4 9C       		.byte	0x9c
+ 439 00b5 8E020000 		.4byte	0x28e
+ 440 00b9 06       		.uleb128 0x6
+ 441 00ba 08000000 		.4byte	.LBB2
+ 442 00be 1A000000 		.4byte	.LBE2-.LBB2
+ 443 00c2 FA000000 		.4byte	0xfa
+ 444 00c6 07       		.uleb128 0x7
+ 445 00c7 6B010000 		.4byte	.LASF16
+ 446 00cb 01       		.byte	0x1
+ 447 00cc 19       		.byte	0x19
+ 448 00cd 68000000 		.4byte	0x68
+ 449 00d1 00000000 		.4byte	.LLST0
+ 450 00d5 08       		.uleb128 0x8
+ 451 00d6 12000000 		.4byte	.LVL2
+ 452 00da 58040000 		.4byte	0x458
+ 453 00de E9000000 		.4byte	0xe9
+ 454 00e2 09       		.uleb128 0x9
+ 455 00e3 01       		.uleb128 0x1
+ 456 00e4 50       		.byte	0x50
+ 457 00e5 02       		.uleb128 0x2
+ 458 00e6 74       		.byte	0x74
+ 459 00e7 00       		.sleb128 0
+ 460 00e8 00       		.byte	0
+ 461 00e9 0A       		.uleb128 0xa
+ 462 00ea 18000000 		.4byte	.LVL3
+ 463 00ee 63040000 		.4byte	0x463
+ 464 00f2 09       		.uleb128 0x9
+ 465 00f3 01       		.uleb128 0x1
+ 466 00f4 50       		.byte	0x50
+ 467 00f5 02       		.uleb128 0x2
+ 468 00f6 08       		.byte	0x8
+ 469 00f7 32       		.byte	0x32
+ 470 00f8 00       		.byte	0
+ 471 00f9 00       		.byte	0
+ 472 00fa 06       		.uleb128 0x6
+ 473 00fb 22000000 		.4byte	.LBB3
+ 474 00ff 12000000 		.4byte	.LBE3-.LBB3
+ 475 0103 3B010000 		.4byte	0x13b
+ 476 0107 07       		.uleb128 0x7
+ 477 0108 59010000 		.4byte	.LASF17
+ 478 010c 01       		.byte	0x1
+ 479 010d 1F       		.byte	0x1f
+ 480 010e 68000000 		.4byte	0x68
+ 481 0112 1F000000 		.4byte	.LLST1
+ 482 0116 08       		.uleb128 0x8
+ 483 0117 28000000 		.4byte	.LVL7
+ 484 011b 6E040000 		.4byte	0x46e
+ 485 011f 2A010000 		.4byte	0x12a
+ 486 0123 09       		.uleb128 0x9
+ 487 0124 01       		.uleb128 0x1
+ 488 0125 50       		.byte	0x50
+ 489 0126 02       		.uleb128 0x2
+ 490 0127 74       		.byte	0x74
+ 491 0128 00       		.sleb128 0
+ 492 0129 00       		.byte	0
+ 493 012a 0A       		.uleb128 0xa
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 12
+
+
+ 494 012b 2E000000 		.4byte	.LVL8
+ 495 012f 63040000 		.4byte	0x463
+ 496 0133 09       		.uleb128 0x9
+ 497 0134 01       		.uleb128 0x1
+ 498 0135 50       		.byte	0x50
+ 499 0136 02       		.uleb128 0x2
+ 500 0137 08       		.byte	0x8
+ 501 0138 32       		.byte	0x32
+ 502 0139 00       		.byte	0
+ 503 013a 00       		.byte	0
+ 504 013b 06       		.uleb128 0x6
+ 505 013c 50000000 		.4byte	.LBB4
+ 506 0140 1A000000 		.4byte	.LBE4-.LBB4
+ 507 0144 7C010000 		.4byte	0x17c
+ 508 0148 07       		.uleb128 0x7
+ 509 0149 59010000 		.4byte	.LASF17
+ 510 014d 01       		.byte	0x1
+ 511 014e 2E       		.byte	0x2e
+ 512 014f 68000000 		.4byte	0x68
+ 513 0153 32000000 		.4byte	.LLST2
+ 514 0157 08       		.uleb128 0x8
+ 515 0158 5A000000 		.4byte	.LVL16
+ 516 015c 6E040000 		.4byte	0x46e
+ 517 0160 6B010000 		.4byte	0x16b
+ 518 0164 09       		.uleb128 0x9
+ 519 0165 01       		.uleb128 0x1
+ 520 0166 50       		.byte	0x50
+ 521 0167 02       		.uleb128 0x2
+ 522 0168 74       		.byte	0x74
+ 523 0169 00       		.sleb128 0
+ 524 016a 00       		.byte	0
+ 525 016b 0A       		.uleb128 0xa
+ 526 016c 60000000 		.4byte	.LVL17
+ 527 0170 63040000 		.4byte	0x463
+ 528 0174 09       		.uleb128 0x9
+ 529 0175 01       		.uleb128 0x1
+ 530 0176 50       		.byte	0x50
+ 531 0177 02       		.uleb128 0x2
+ 532 0178 08       		.byte	0x8
+ 533 0179 32       		.byte	0x32
+ 534 017a 00       		.byte	0
+ 535 017b 00       		.byte	0
+ 536 017c 06       		.uleb128 0x6
+ 537 017d 6A000000 		.4byte	.LBB5
+ 538 0181 16000000 		.4byte	.LBE5-.LBB5
+ 539 0185 BD010000 		.4byte	0x1bd
+ 540 0189 07       		.uleb128 0x7
+ 541 018a 62010000 		.4byte	.LASF18
+ 542 018e 01       		.byte	0x1
+ 543 018f 34       		.byte	0x34
+ 544 0190 68000000 		.4byte	0x68
+ 545 0194 52000000 		.4byte	.LLST3
+ 546 0198 08       		.uleb128 0x8
+ 547 0199 70000000 		.4byte	.LVL21
+ 548 019d 79040000 		.4byte	0x479
+ 549 01a1 AC010000 		.4byte	0x1ac
+ 550 01a5 09       		.uleb128 0x9
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 13
+
+
+ 551 01a6 01       		.uleb128 0x1
+ 552 01a7 50       		.byte	0x50
+ 553 01a8 02       		.uleb128 0x2
+ 554 01a9 74       		.byte	0x74
+ 555 01aa 00       		.sleb128 0
+ 556 01ab 00       		.byte	0
+ 557 01ac 0A       		.uleb128 0xa
+ 558 01ad 76000000 		.4byte	.LVL22
+ 559 01b1 63040000 		.4byte	0x463
+ 560 01b5 09       		.uleb128 0x9
+ 561 01b6 01       		.uleb128 0x1
+ 562 01b7 50       		.byte	0x50
+ 563 01b8 02       		.uleb128 0x2
+ 564 01b9 08       		.byte	0x8
+ 565 01ba 32       		.byte	0x32
+ 566 01bb 00       		.byte	0
+ 567 01bc 00       		.byte	0
+ 568 01bd 06       		.uleb128 0x6
+ 569 01be 80000000 		.4byte	.LBB6
+ 570 01c2 12000000 		.4byte	.LBE6-.LBB6
+ 571 01c6 FE010000 		.4byte	0x1fe
+ 572 01ca 07       		.uleb128 0x7
+ 573 01cb 6B010000 		.4byte	.LASF16
+ 574 01cf 01       		.byte	0x1
+ 575 01d0 3A       		.byte	0x3a
+ 576 01d1 68000000 		.4byte	0x68
+ 577 01d5 65000000 		.4byte	.LLST4
+ 578 01d9 08       		.uleb128 0x8
+ 579 01da 86000000 		.4byte	.LVL26
+ 580 01de 58040000 		.4byte	0x458
+ 581 01e2 ED010000 		.4byte	0x1ed
+ 582 01e6 09       		.uleb128 0x9
+ 583 01e7 01       		.uleb128 0x1
+ 584 01e8 50       		.byte	0x50
+ 585 01e9 02       		.uleb128 0x2
+ 586 01ea 74       		.byte	0x74
+ 587 01eb 00       		.sleb128 0
+ 588 01ec 00       		.byte	0
+ 589 01ed 0A       		.uleb128 0xa
+ 590 01ee 8C000000 		.4byte	.LVL27
+ 591 01f2 63040000 		.4byte	0x463
+ 592 01f6 09       		.uleb128 0x9
+ 593 01f7 01       		.uleb128 0x1
+ 594 01f8 50       		.byte	0x50
+ 595 01f9 02       		.uleb128 0x2
+ 596 01fa 08       		.byte	0x8
+ 597 01fb 32       		.byte	0x32
+ 598 01fc 00       		.byte	0
+ 599 01fd 00       		.byte	0
+ 600 01fe 08       		.uleb128 0x8
+ 601 01ff 08000000 		.4byte	.LVL0
+ 602 0203 84040000 		.4byte	0x484
+ 603 0207 15020000 		.4byte	0x215
+ 604 020b 09       		.uleb128 0x9
+ 605 020c 01       		.uleb128 0x1
+ 606 020d 50       		.byte	0x50
+ 607 020e 05       		.uleb128 0x5
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 14
+
+
+ 608 020f 03       		.byte	0x3
+ 609 0210 00000000 		.4byte	.LC0
+ 610 0214 00       		.byte	0
+ 611 0215 08       		.uleb128 0x8
+ 612 0216 3A000000 		.4byte	.LVL10
+ 613 021a 79040000 		.4byte	0x479
+ 614 021e 28020000 		.4byte	0x228
+ 615 0222 09       		.uleb128 0x9
+ 616 0223 01       		.uleb128 0x1
+ 617 0224 50       		.byte	0x50
+ 618 0225 01       		.uleb128 0x1
+ 619 0226 44       		.byte	0x44
+ 620 0227 00       		.byte	0
+ 621 0228 08       		.uleb128 0x8
+ 622 0229 42000000 		.4byte	.LVL11
+ 623 022d 63040000 		.4byte	0x463
+ 624 0231 3D020000 		.4byte	0x23d
+ 625 0235 09       		.uleb128 0x9
+ 626 0236 01       		.uleb128 0x1
+ 627 0237 50       		.byte	0x50
+ 628 0238 03       		.uleb128 0x3
+ 629 0239 0A       		.byte	0xa
+ 630 023a E803     		.2byte	0x3e8
+ 631 023c 00       		.byte	0
+ 632 023d 08       		.uleb128 0x8
+ 633 023e 48000000 		.4byte	.LVL12
+ 634 0242 8F040000 		.4byte	0x48f
+ 635 0246 51020000 		.4byte	0x251
+ 636 024a 09       		.uleb128 0x9
+ 637 024b 01       		.uleb128 0x1
+ 638 024c 50       		.byte	0x50
+ 639 024d 02       		.uleb128 0x2
+ 640 024e 08       		.byte	0x8
+ 641 024f 50       		.byte	0x50
+ 642 0250 00       		.byte	0
+ 643 0251 08       		.uleb128 0x8
+ 644 0252 50000000 		.4byte	.LVL13
+ 645 0256 63040000 		.4byte	0x463
+ 646 025a 66020000 		.4byte	0x266
+ 647 025e 09       		.uleb128 0x9
+ 648 025f 01       		.uleb128 0x1
+ 649 0260 50       		.byte	0x50
+ 650 0261 03       		.uleb128 0x3
+ 651 0262 0A       		.byte	0xa
+ 652 0263 F401     		.2byte	0x1f4
+ 653 0265 00       		.byte	0
+ 654 0266 08       		.uleb128 0x8
+ 655 0267 98000000 		.4byte	.LVL29
+ 656 026b 8F040000 		.4byte	0x48f
+ 657 026f 7A020000 		.4byte	0x27a
+ 658 0273 09       		.uleb128 0x9
+ 659 0274 01       		.uleb128 0x1
+ 660 0275 50       		.byte	0x50
+ 661 0276 02       		.uleb128 0x2
+ 662 0277 08       		.byte	0x8
+ 663 0278 50       		.byte	0x50
+ 664 0279 00       		.byte	0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 15
+
+
+ 665 027a 0A       		.uleb128 0xa
+ 666 027b 9E000000 		.4byte	.LVL30
+ 667 027f 84040000 		.4byte	0x484
+ 668 0283 09       		.uleb128 0x9
+ 669 0284 01       		.uleb128 0x1
+ 670 0285 50       		.byte	0x50
+ 671 0286 05       		.uleb128 0x5
+ 672 0287 03       		.byte	0x3
+ 673 0288 14000000 		.4byte	.LC1
+ 674 028c 00       		.byte	0
+ 675 028d 00       		.byte	0
+ 676 028e 05       		.uleb128 0x5
+ 677 028f E1000000 		.4byte	.LASF20
+ 678 0293 01       		.byte	0x1
+ 679 0294 44       		.byte	0x44
+ 680 0295 00000000 		.4byte	.LFB64
+ 681 0299 98000000 		.4byte	.LFE64-.LFB64
+ 682 029d 01       		.uleb128 0x1
+ 683 029e 9C       		.byte	0x9c
+ 684 029f 47040000 		.4byte	0x447
+ 685 02a3 06       		.uleb128 0x6
+ 686 02a4 08000000 		.4byte	.LBB7
+ 687 02a8 16000000 		.4byte	.LBE7-.LBB7
+ 688 02ac E4020000 		.4byte	0x2e4
+ 689 02b0 07       		.uleb128 0x7
+ 690 02b1 59010000 		.4byte	.LASF17
+ 691 02b5 01       		.byte	0x1
+ 692 02b6 48       		.byte	0x48
+ 693 02b7 68000000 		.4byte	0x68
+ 694 02bb 78000000 		.4byte	.LLST5
+ 695 02bf 08       		.uleb128 0x8
+ 696 02c0 12000000 		.4byte	.LVL34
+ 697 02c4 6E040000 		.4byte	0x46e
+ 698 02c8 D3020000 		.4byte	0x2d3
+ 699 02cc 09       		.uleb128 0x9
+ 700 02cd 01       		.uleb128 0x1
+ 701 02ce 50       		.byte	0x50
+ 702 02cf 02       		.uleb128 0x2
+ 703 02d0 74       		.byte	0x74
+ 704 02d1 00       		.sleb128 0
+ 705 02d2 00       		.byte	0
+ 706 02d3 0A       		.uleb128 0xa
+ 707 02d4 18000000 		.4byte	.LVL35
+ 708 02d8 63040000 		.4byte	0x463
+ 709 02dc 09       		.uleb128 0x9
+ 710 02dd 01       		.uleb128 0x1
+ 711 02de 50       		.byte	0x50
+ 712 02df 02       		.uleb128 0x2
+ 713 02e0 08       		.byte	0x8
+ 714 02e1 64       		.byte	0x64
+ 715 02e2 00       		.byte	0
+ 716 02e3 00       		.byte	0
+ 717 02e4 06       		.uleb128 0x6
+ 718 02e5 24000000 		.4byte	.LBB8
+ 719 02e9 16000000 		.4byte	.LBE8-.LBB8
+ 720 02ed 25030000 		.4byte	0x325
+ 721 02f1 07       		.uleb128 0x7
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 16
+
+
+ 722 02f2 62010000 		.4byte	.LASF18
+ 723 02f6 01       		.byte	0x1
+ 724 02f7 4E       		.byte	0x4e
+ 725 02f8 68000000 		.4byte	0x68
+ 726 02fc 98000000 		.4byte	.LLST6
+ 727 0300 08       		.uleb128 0x8
+ 728 0301 2E000000 		.4byte	.LVL40
+ 729 0305 79040000 		.4byte	0x479
+ 730 0309 14030000 		.4byte	0x314
+ 731 030d 09       		.uleb128 0x9
+ 732 030e 01       		.uleb128 0x1
+ 733 030f 50       		.byte	0x50
+ 734 0310 02       		.uleb128 0x2
+ 735 0311 74       		.byte	0x74
+ 736 0312 00       		.sleb128 0
+ 737 0313 00       		.byte	0
+ 738 0314 0A       		.uleb128 0xa
+ 739 0315 34000000 		.4byte	.LVL41
+ 740 0319 63040000 		.4byte	0x463
+ 741 031d 09       		.uleb128 0x9
+ 742 031e 01       		.uleb128 0x1
+ 743 031f 50       		.byte	0x50
+ 744 0320 02       		.uleb128 0x2
+ 745 0321 08       		.byte	0x8
+ 746 0322 64       		.byte	0x64
+ 747 0323 00       		.byte	0
+ 748 0324 00       		.byte	0
+ 749 0325 06       		.uleb128 0x6
+ 750 0326 4E000000 		.4byte	.LBB9
+ 751 032a 16000000 		.4byte	.LBE9-.LBB9
+ 752 032e 66030000 		.4byte	0x366
+ 753 0332 07       		.uleb128 0x7
+ 754 0333 59010000 		.4byte	.LASF17
+ 755 0337 01       		.byte	0x1
+ 756 0338 5B       		.byte	0x5b
+ 757 0339 68000000 		.4byte	0x68
+ 758 033d B8000000 		.4byte	.LLST7
+ 759 0341 08       		.uleb128 0x8
+ 760 0342 58000000 		.4byte	.LVL48
+ 761 0346 6E040000 		.4byte	0x46e
+ 762 034a 55030000 		.4byte	0x355
+ 763 034e 09       		.uleb128 0x9
+ 764 034f 01       		.uleb128 0x1
+ 765 0350 50       		.byte	0x50
+ 766 0351 02       		.uleb128 0x2
+ 767 0352 74       		.byte	0x74
+ 768 0353 00       		.sleb128 0
+ 769 0354 00       		.byte	0
+ 770 0355 0A       		.uleb128 0xa
+ 771 0356 5E000000 		.4byte	.LVL49
+ 772 035a 63040000 		.4byte	0x463
+ 773 035e 09       		.uleb128 0x9
+ 774 035f 01       		.uleb128 0x1
+ 775 0360 50       		.byte	0x50
+ 776 0361 02       		.uleb128 0x2
+ 777 0362 08       		.byte	0x8
+ 778 0363 64       		.byte	0x64
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 17
+
+
+ 779 0364 00       		.byte	0
+ 780 0365 00       		.byte	0
+ 781 0366 08       		.uleb128 0x8
+ 782 0367 08000000 		.4byte	.LVL32
+ 783 036b 84040000 		.4byte	0x484
+ 784 036f 7D030000 		.4byte	0x37d
+ 785 0373 09       		.uleb128 0x9
+ 786 0374 01       		.uleb128 0x1
+ 787 0375 50       		.byte	0x50
+ 788 0376 05       		.uleb128 0x5
+ 789 0377 03       		.byte	0x3
+ 790 0378 28000000 		.4byte	.LC2
+ 791 037c 00       		.byte	0
+ 792 037d 08       		.uleb128 0x8
+ 793 037e 24000000 		.4byte	.LVL37
+ 794 0382 58040000 		.4byte	0x458
+ 795 0386 91030000 		.4byte	0x391
+ 796 038a 09       		.uleb128 0x9
+ 797 038b 01       		.uleb128 0x1
+ 798 038c 50       		.byte	0x50
+ 799 038d 02       		.uleb128 0x2
+ 800 038e 08       		.byte	0x8
+ 801 038f 64       		.byte	0x64
+ 802 0390 00       		.byte	0
+ 803 0391 08       		.uleb128 0x8
+ 804 0392 40000000 		.4byte	.LVL43
+ 805 0396 8F040000 		.4byte	0x48f
+ 806 039a A5030000 		.4byte	0x3a5
+ 807 039e 09       		.uleb128 0x9
+ 808 039f 01       		.uleb128 0x1
+ 809 03a0 50       		.byte	0x50
+ 810 03a1 02       		.uleb128 0x2
+ 811 03a2 08       		.byte	0x8
+ 812 03a3 50       		.byte	0x50
+ 813 03a4 00       		.byte	0
+ 814 03a5 08       		.uleb128 0x8
+ 815 03a6 48000000 		.4byte	.LVL44
+ 816 03aa 63040000 		.4byte	0x463
+ 817 03ae BA030000 		.4byte	0x3ba
+ 818 03b2 09       		.uleb128 0x9
+ 819 03b3 01       		.uleb128 0x1
+ 820 03b4 50       		.byte	0x50
+ 821 03b5 03       		.uleb128 0x3
+ 822 03b6 0A       		.byte	0xa
+ 823 03b7 E803     		.2byte	0x3e8
+ 824 03b9 00       		.byte	0
+ 825 03ba 08       		.uleb128 0x8
+ 826 03bb 4E000000 		.4byte	.LVL45
+ 827 03bf 8F040000 		.4byte	0x48f
+ 828 03c3 CE030000 		.4byte	0x3ce
+ 829 03c7 09       		.uleb128 0x9
+ 830 03c8 01       		.uleb128 0x1
+ 831 03c9 50       		.byte	0x50
+ 832 03ca 02       		.uleb128 0x2
+ 833 03cb 08       		.byte	0x8
+ 834 03cc 32       		.byte	0x32
+ 835 03cd 00       		.byte	0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 18
+
+
+ 836 03ce 08       		.uleb128 0x8
+ 837 03cf 6A000000 		.4byte	.LVL51
+ 838 03d3 58040000 		.4byte	0x458
+ 839 03d7 E1030000 		.4byte	0x3e1
+ 840 03db 09       		.uleb128 0x9
+ 841 03dc 01       		.uleb128 0x1
+ 842 03dd 50       		.byte	0x50
+ 843 03de 01       		.uleb128 0x1
+ 844 03df 4E       		.byte	0x4e
+ 845 03e0 00       		.byte	0
+ 846 03e1 08       		.uleb128 0x8
+ 847 03e2 72000000 		.4byte	.LVL52
+ 848 03e6 63040000 		.4byte	0x463
+ 849 03ea F6030000 		.4byte	0x3f6
+ 850 03ee 09       		.uleb128 0x9
+ 851 03ef 01       		.uleb128 0x1
+ 852 03f0 50       		.byte	0x50
+ 853 03f1 03       		.uleb128 0x3
+ 854 03f2 0A       		.byte	0xa
+ 855 03f3 F401     		.2byte	0x1f4
+ 856 03f5 00       		.byte	0
+ 857 03f6 08       		.uleb128 0x8
+ 858 03f7 78000000 		.4byte	.LVL53
+ 859 03fb 79040000 		.4byte	0x479
+ 860 03ff 0A040000 		.4byte	0x40a
+ 861 0403 09       		.uleb128 0x9
+ 862 0404 01       		.uleb128 0x1
+ 863 0405 50       		.byte	0x50
+ 864 0406 02       		.uleb128 0x2
+ 865 0407 08       		.byte	0x8
+ 866 0408 20       		.byte	0x20
+ 867 0409 00       		.byte	0
+ 868 040a 08       		.uleb128 0x8
+ 869 040b 80000000 		.4byte	.LVL54
+ 870 040f 63040000 		.4byte	0x463
+ 871 0413 1F040000 		.4byte	0x41f
+ 872 0417 09       		.uleb128 0x9
+ 873 0418 01       		.uleb128 0x1
+ 874 0419 50       		.byte	0x50
+ 875 041a 03       		.uleb128 0x3
+ 876 041b 0A       		.byte	0xa
+ 877 041c E803     		.2byte	0x3e8
+ 878 041e 00       		.byte	0
+ 879 041f 08       		.uleb128 0x8
+ 880 0420 86000000 		.4byte	.LVL55
+ 881 0424 8F040000 		.4byte	0x48f
+ 882 0428 33040000 		.4byte	0x433
+ 883 042c 09       		.uleb128 0x9
+ 884 042d 01       		.uleb128 0x1
+ 885 042e 50       		.byte	0x50
+ 886 042f 02       		.uleb128 0x2
+ 887 0430 08       		.byte	0x8
+ 888 0431 32       		.byte	0x32
+ 889 0432 00       		.byte	0
+ 890 0433 0A       		.uleb128 0xa
+ 891 0434 8C000000 		.4byte	.LVL56
+ 892 0438 84040000 		.4byte	0x484
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 19
+
+
+ 893 043c 09       		.uleb128 0x9
+ 894 043d 01       		.uleb128 0x1
+ 895 043e 50       		.byte	0x50
+ 896 043f 05       		.uleb128 0x5
+ 897 0440 03       		.byte	0x3
+ 898 0441 3C000000 		.4byte	.LC3
+ 899 0445 00       		.byte	0
+ 900 0446 00       		.byte	0
+ 901 0447 0B       		.uleb128 0xb
+ 902 0448 0C010000 		.4byte	.LASF30
+ 903 044c 0A       		.byte	0xa
+ 904 044d 1207     		.2byte	0x712
+ 905 044f 53040000 		.4byte	0x453
+ 906 0453 0C       		.uleb128 0xc
+ 907 0454 76000000 		.4byte	0x76
+ 908 0458 0D       		.uleb128 0xd
+ 909 0459 2C000000 		.4byte	.LASF21
+ 910 045d 2C000000 		.4byte	.LASF21
+ 911 0461 04       		.byte	0x4
+ 912 0462 C3       		.byte	0xc3
+ 913 0463 0D       		.uleb128 0xd
+ 914 0464 43020000 		.4byte	.LASF22
+ 915 0468 43020000 		.4byte	.LASF22
+ 916 046c 05       		.byte	0x5
+ 917 046d 76       		.byte	0x76
+ 918 046e 0D       		.uleb128 0xd
+ 919 046f 11000000 		.4byte	.LASF23
+ 920 0473 11000000 		.4byte	.LASF23
+ 921 0477 06       		.byte	0x6
+ 922 0478 C3       		.byte	0xc3
+ 923 0479 0D       		.uleb128 0xd
+ 924 047a 8B010000 		.4byte	.LASF24
+ 925 047e 8B010000 		.4byte	.LASF24
+ 926 0482 07       		.byte	0x7
+ 927 0483 C3       		.byte	0xc3
+ 928 0484 0D       		.uleb128 0xd
+ 929 0485 32020000 		.4byte	.LASF25
+ 930 0489 32020000 		.4byte	.LASF25
+ 931 048d 08       		.byte	0x8
+ 932 048e 8B       		.byte	0x8b
+ 933 048f 0D       		.uleb128 0xd
+ 934 0490 F9000000 		.4byte	.LASF26
+ 935 0494 F9000000 		.4byte	.LASF26
+ 936 0498 09       		.byte	0x9
+ 937 0499 C3       		.byte	0xc3
+ 938 049a 00       		.byte	0
+ 939              		.section	.debug_abbrev,"",%progbits
+ 940              	.Ldebug_abbrev0:
+ 941 0000 01       		.uleb128 0x1
+ 942 0001 11       		.uleb128 0x11
+ 943 0002 01       		.byte	0x1
+ 944 0003 25       		.uleb128 0x25
+ 945 0004 0E       		.uleb128 0xe
+ 946 0005 13       		.uleb128 0x13
+ 947 0006 0B       		.uleb128 0xb
+ 948 0007 03       		.uleb128 0x3
+ 949 0008 0E       		.uleb128 0xe
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 20
+
+
+ 950 0009 1B       		.uleb128 0x1b
+ 951 000a 0E       		.uleb128 0xe
+ 952 000b 55       		.uleb128 0x55
+ 953 000c 17       		.uleb128 0x17
+ 954 000d 11       		.uleb128 0x11
+ 955 000e 01       		.uleb128 0x1
+ 956 000f 10       		.uleb128 0x10
+ 957 0010 17       		.uleb128 0x17
+ 958 0011 00       		.byte	0
+ 959 0012 00       		.byte	0
+ 960 0013 02       		.uleb128 0x2
+ 961 0014 24       		.uleb128 0x24
+ 962 0015 00       		.byte	0
+ 963 0016 0B       		.uleb128 0xb
+ 964 0017 0B       		.uleb128 0xb
+ 965 0018 3E       		.uleb128 0x3e
+ 966 0019 0B       		.uleb128 0xb
+ 967 001a 03       		.uleb128 0x3
+ 968 001b 0E       		.uleb128 0xe
+ 969 001c 00       		.byte	0
+ 970 001d 00       		.byte	0
+ 971 001e 03       		.uleb128 0x3
+ 972 001f 16       		.uleb128 0x16
+ 973 0020 00       		.byte	0
+ 974 0021 03       		.uleb128 0x3
+ 975 0022 0E       		.uleb128 0xe
+ 976 0023 3A       		.uleb128 0x3a
+ 977 0024 0B       		.uleb128 0xb
+ 978 0025 3B       		.uleb128 0x3b
+ 979 0026 0B       		.uleb128 0xb
+ 980 0027 49       		.uleb128 0x49
+ 981 0028 13       		.uleb128 0x13
+ 982 0029 00       		.byte	0
+ 983 002a 00       		.byte	0
+ 984 002b 04       		.uleb128 0x4
+ 985 002c 24       		.uleb128 0x24
+ 986 002d 00       		.byte	0
+ 987 002e 0B       		.uleb128 0xb
+ 988 002f 0B       		.uleb128 0xb
+ 989 0030 3E       		.uleb128 0x3e
+ 990 0031 0B       		.uleb128 0xb
+ 991 0032 03       		.uleb128 0x3
+ 992 0033 08       		.uleb128 0x8
+ 993 0034 00       		.byte	0
+ 994 0035 00       		.byte	0
+ 995 0036 05       		.uleb128 0x5
+ 996 0037 2E       		.uleb128 0x2e
+ 997 0038 01       		.byte	0x1
+ 998 0039 3F       		.uleb128 0x3f
+ 999 003a 19       		.uleb128 0x19
+ 1000 003b 03       		.uleb128 0x3
+ 1001 003c 0E       		.uleb128 0xe
+ 1002 003d 3A       		.uleb128 0x3a
+ 1003 003e 0B       		.uleb128 0xb
+ 1004 003f 3B       		.uleb128 0x3b
+ 1005 0040 0B       		.uleb128 0xb
+ 1006 0041 27       		.uleb128 0x27
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 21
+
+
+ 1007 0042 19       		.uleb128 0x19
+ 1008 0043 11       		.uleb128 0x11
+ 1009 0044 01       		.uleb128 0x1
+ 1010 0045 12       		.uleb128 0x12
+ 1011 0046 06       		.uleb128 0x6
+ 1012 0047 40       		.uleb128 0x40
+ 1013 0048 18       		.uleb128 0x18
+ 1014 0049 9742     		.uleb128 0x2117
+ 1015 004b 19       		.uleb128 0x19
+ 1016 004c 01       		.uleb128 0x1
+ 1017 004d 13       		.uleb128 0x13
+ 1018 004e 00       		.byte	0
+ 1019 004f 00       		.byte	0
+ 1020 0050 06       		.uleb128 0x6
+ 1021 0051 0B       		.uleb128 0xb
+ 1022 0052 01       		.byte	0x1
+ 1023 0053 11       		.uleb128 0x11
+ 1024 0054 01       		.uleb128 0x1
+ 1025 0055 12       		.uleb128 0x12
+ 1026 0056 06       		.uleb128 0x6
+ 1027 0057 01       		.uleb128 0x1
+ 1028 0058 13       		.uleb128 0x13
+ 1029 0059 00       		.byte	0
+ 1030 005a 00       		.byte	0
+ 1031 005b 07       		.uleb128 0x7
+ 1032 005c 34       		.uleb128 0x34
+ 1033 005d 00       		.byte	0
+ 1034 005e 03       		.uleb128 0x3
+ 1035 005f 0E       		.uleb128 0xe
+ 1036 0060 3A       		.uleb128 0x3a
+ 1037 0061 0B       		.uleb128 0xb
+ 1038 0062 3B       		.uleb128 0x3b
+ 1039 0063 0B       		.uleb128 0xb
+ 1040 0064 49       		.uleb128 0x49
+ 1041 0065 13       		.uleb128 0x13
+ 1042 0066 02       		.uleb128 0x2
+ 1043 0067 17       		.uleb128 0x17
+ 1044 0068 00       		.byte	0
+ 1045 0069 00       		.byte	0
+ 1046 006a 08       		.uleb128 0x8
+ 1047 006b 898201   		.uleb128 0x4109
+ 1048 006e 01       		.byte	0x1
+ 1049 006f 11       		.uleb128 0x11
+ 1050 0070 01       		.uleb128 0x1
+ 1051 0071 31       		.uleb128 0x31
+ 1052 0072 13       		.uleb128 0x13
+ 1053 0073 01       		.uleb128 0x1
+ 1054 0074 13       		.uleb128 0x13
+ 1055 0075 00       		.byte	0
+ 1056 0076 00       		.byte	0
+ 1057 0077 09       		.uleb128 0x9
+ 1058 0078 8A8201   		.uleb128 0x410a
+ 1059 007b 00       		.byte	0
+ 1060 007c 02       		.uleb128 0x2
+ 1061 007d 18       		.uleb128 0x18
+ 1062 007e 9142     		.uleb128 0x2111
+ 1063 0080 18       		.uleb128 0x18
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 22
+
+
+ 1064 0081 00       		.byte	0
+ 1065 0082 00       		.byte	0
+ 1066 0083 0A       		.uleb128 0xa
+ 1067 0084 898201   		.uleb128 0x4109
+ 1068 0087 01       		.byte	0x1
+ 1069 0088 11       		.uleb128 0x11
+ 1070 0089 01       		.uleb128 0x1
+ 1071 008a 31       		.uleb128 0x31
+ 1072 008b 13       		.uleb128 0x13
+ 1073 008c 00       		.byte	0
+ 1074 008d 00       		.byte	0
+ 1075 008e 0B       		.uleb128 0xb
+ 1076 008f 34       		.uleb128 0x34
+ 1077 0090 00       		.byte	0
+ 1078 0091 03       		.uleb128 0x3
+ 1079 0092 0E       		.uleb128 0xe
+ 1080 0093 3A       		.uleb128 0x3a
+ 1081 0094 0B       		.uleb128 0xb
+ 1082 0095 3B       		.uleb128 0x3b
+ 1083 0096 05       		.uleb128 0x5
+ 1084 0097 49       		.uleb128 0x49
+ 1085 0098 13       		.uleb128 0x13
+ 1086 0099 3F       		.uleb128 0x3f
+ 1087 009a 19       		.uleb128 0x19
+ 1088 009b 3C       		.uleb128 0x3c
+ 1089 009c 19       		.uleb128 0x19
+ 1090 009d 00       		.byte	0
+ 1091 009e 00       		.byte	0
+ 1092 009f 0C       		.uleb128 0xc
+ 1093 00a0 35       		.uleb128 0x35
+ 1094 00a1 00       		.byte	0
+ 1095 00a2 49       		.uleb128 0x49
+ 1096 00a3 13       		.uleb128 0x13
+ 1097 00a4 00       		.byte	0
+ 1098 00a5 00       		.byte	0
+ 1099 00a6 0D       		.uleb128 0xd
+ 1100 00a7 2E       		.uleb128 0x2e
+ 1101 00a8 00       		.byte	0
+ 1102 00a9 3F       		.uleb128 0x3f
+ 1103 00aa 19       		.uleb128 0x19
+ 1104 00ab 3C       		.uleb128 0x3c
+ 1105 00ac 19       		.uleb128 0x19
+ 1106 00ad 6E       		.uleb128 0x6e
+ 1107 00ae 0E       		.uleb128 0xe
+ 1108 00af 03       		.uleb128 0x3
+ 1109 00b0 0E       		.uleb128 0xe
+ 1110 00b1 3A       		.uleb128 0x3a
+ 1111 00b2 0B       		.uleb128 0xb
+ 1112 00b3 3B       		.uleb128 0x3b
+ 1113 00b4 0B       		.uleb128 0xb
+ 1114 00b5 00       		.byte	0
+ 1115 00b6 00       		.byte	0
+ 1116 00b7 00       		.byte	0
+ 1117              		.section	.debug_loc,"",%progbits
+ 1118              	.Ldebug_loc0:
+ 1119              	.LLST0:
+ 1120 0000 08000000 		.4byte	.LVL0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 23
+
+
+ 1121 0004 0C000000 		.4byte	.LVL1
+ 1122 0008 0200     		.2byte	0x2
+ 1123 000a 4E       		.byte	0x4e
+ 1124 000b 9F       		.byte	0x9f
+ 1125 000c 0C000000 		.4byte	.LVL1
+ 1126 0010 20000000 		.4byte	.LVL5
+ 1127 0014 0100     		.2byte	0x1
+ 1128 0016 54       		.byte	0x54
+ 1129 0017 00000000 		.4byte	0
+ 1130 001b 00000000 		.4byte	0
+ 1131              	.LLST1:
+ 1132 001f 22000000 		.4byte	.LVL6
+ 1133 0023 52000000 		.4byte	.LVL14
+ 1134 0027 0100     		.2byte	0x1
+ 1135 0029 54       		.byte	0x54
+ 1136 002a 00000000 		.4byte	0
+ 1137 002e 00000000 		.4byte	0
+ 1138              	.LLST2:
+ 1139 0032 50000000 		.4byte	.LVL13
+ 1140 0036 54000000 		.4byte	.LVL15
+ 1141 003a 0300     		.2byte	0x3
+ 1142 003c 08       		.byte	0x8
+ 1143 003d 32       		.byte	0x32
+ 1144 003e 9F       		.byte	0x9f
+ 1145 003f 54000000 		.4byte	.LVL15
+ 1146 0043 68000000 		.4byte	.LVL19
+ 1147 0047 0100     		.2byte	0x1
+ 1148 0049 54       		.byte	0x54
+ 1149 004a 00000000 		.4byte	0
+ 1150 004e 00000000 		.4byte	0
+ 1151              	.LLST3:
+ 1152 0052 6A000000 		.4byte	.LVL20
+ 1153 0056 7E000000 		.4byte	.LVL24
+ 1154 005a 0100     		.2byte	0x1
+ 1155 005c 54       		.byte	0x54
+ 1156 005d 00000000 		.4byte	0
+ 1157 0061 00000000 		.4byte	0
+ 1158              	.LLST4:
+ 1159 0065 80000000 		.4byte	.LVL25
+ 1160 0069 A0000000 		.4byte	.LVL31
+ 1161 006d 0100     		.2byte	0x1
+ 1162 006f 54       		.byte	0x54
+ 1163 0070 00000000 		.4byte	0
+ 1164 0074 00000000 		.4byte	0
+ 1165              	.LLST5:
+ 1166 0078 08000000 		.4byte	.LVL32
+ 1167 007c 0C000000 		.4byte	.LVL33
+ 1168 0080 0300     		.2byte	0x3
+ 1169 0082 08       		.byte	0x8
+ 1170 0083 41       		.byte	0x41
+ 1171 0084 9F       		.byte	0x9f
+ 1172 0085 0C000000 		.4byte	.LVL33
+ 1173 0089 26000000 		.4byte	.LVL38
+ 1174 008d 0100     		.2byte	0x1
+ 1175 008f 54       		.byte	0x54
+ 1176 0090 00000000 		.4byte	0
+ 1177 0094 00000000 		.4byte	0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 24
+
+
+ 1178              	.LLST6:
+ 1179 0098 24000000 		.4byte	.LVL37
+ 1180 009c 28000000 		.4byte	.LVL39
+ 1181 00a0 0300     		.2byte	0x3
+ 1182 00a2 08       		.byte	0x8
+ 1183 00a3 2D       		.byte	0x2d
+ 1184 00a4 9F       		.byte	0x9f
+ 1185 00a5 28000000 		.4byte	.LVL39
+ 1186 00a9 50000000 		.4byte	.LVL46
+ 1187 00ad 0100     		.2byte	0x1
+ 1188 00af 54       		.byte	0x54
+ 1189 00b0 00000000 		.4byte	0
+ 1190 00b4 00000000 		.4byte	0
+ 1191              	.LLST7:
+ 1192 00b8 4E000000 		.4byte	.LVL45
+ 1193 00bc 52000000 		.4byte	.LVL47
+ 1194 00c0 0300     		.2byte	0x3
+ 1195 00c2 08       		.byte	0x8
+ 1196 00c3 38       		.byte	0x38
+ 1197 00c4 9F       		.byte	0x9f
+ 1198 00c5 52000000 		.4byte	.LVL47
+ 1199 00c9 8E000000 		.4byte	.LVL57
+ 1200 00cd 0100     		.2byte	0x1
+ 1201 00cf 54       		.byte	0x54
+ 1202 00d0 00000000 		.4byte	0
+ 1203 00d4 00000000 		.4byte	0
+ 1204              		.section	.debug_aranges,"",%progbits
+ 1205 0000 24000000 		.4byte	0x24
+ 1206 0004 0200     		.2byte	0x2
+ 1207 0006 00000000 		.4byte	.Ldebug_info0
+ 1208 000a 04       		.byte	0x4
+ 1209 000b 00       		.byte	0
+ 1210 000c 0000     		.2byte	0
+ 1211 000e 0000     		.2byte	0
+ 1212 0010 00000000 		.4byte	.LFB63
+ 1213 0014 A8000000 		.4byte	.LFE63-.LFB63
+ 1214 0018 00000000 		.4byte	.LFB64
+ 1215 001c 98000000 		.4byte	.LFE64-.LFB64
+ 1216 0020 00000000 		.4byte	0
+ 1217 0024 00000000 		.4byte	0
+ 1218              		.section	.debug_ranges,"",%progbits
+ 1219              	.Ldebug_ranges0:
+ 1220 0000 00000000 		.4byte	.LFB63
+ 1221 0004 A8000000 		.4byte	.LFE63
+ 1222 0008 00000000 		.4byte	.LFB64
+ 1223 000c 98000000 		.4byte	.LFE64
+ 1224 0010 00000000 		.4byte	0
+ 1225 0014 00000000 		.4byte	0
+ 1226              		.section	.debug_line,"",%progbits
+ 1227              	.Ldebug_line0:
+ 1228 0000 72020000 		.section	.debug_str,"MS",%progbits,1
+ 1228      02008601 
+ 1228      00000201 
+ 1228      FB0E0D00 
+ 1228      01010101 
+ 1229              	.LASF9:
+ 1230 0000 5F5F696E 		.ascii	"__int32_t\000"
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 25
+
+
+ 1230      7433325F 
+ 1230      7400
+ 1231              	.LASF12:
+ 1232 000a 646F7562 		.ascii	"double\000"
+ 1232      6C6500
+ 1233              	.LASF23:
+ 1234 0011 50574D5F 		.ascii	"PWM_2_WriteCompare\000"
+ 1234      325F5772 
+ 1234      69746543 
+ 1234      6F6D7061 
+ 1234      726500
+ 1235              	.LASF10:
+ 1236 0024 696E7433 		.ascii	"int32_t\000"
+ 1236      325F7400 
+ 1237              	.LASF21:
+ 1238 002c 50574D5F 		.ascii	"PWM_4_WriteCompare\000"
+ 1238      345F5772 
+ 1238      69746543 
+ 1238      6F6D7061 
+ 1238      726500
+ 1239              	.LASF11:
+ 1240 003f 666C6F61 		.ascii	"float\000"
+ 1240      7400
+ 1241              	.LASF1:
+ 1242 0045 756E7369 		.ascii	"unsigned char\000"
+ 1242      676E6564 
+ 1242      20636861 
+ 1242      7200
+ 1243              	.LASF27:
+ 1244 0053 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1244      43313120 
+ 1244      352E342E 
+ 1244      31203230 
+ 1244      31363036 
+ 1245 0086 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1245      20726576 
+ 1245      6973696F 
+ 1245      6E203233 
+ 1245      37373135 
+ 1246 00b9 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1246      66756E63 
+ 1246      74696F6E 
+ 1246      2D736563 
+ 1246      74696F6E 
+ 1247              	.LASF20:
+ 1248 00e1 53414E4B 		.ascii	"SANK\000"
+ 1248      00
+ 1249              	.LASF3:
+ 1250 00e6 73686F72 		.ascii	"short unsigned int\000"
+ 1250      7420756E 
+ 1250      7369676E 
+ 1250      65642069 
+ 1250      6E7400
+ 1251              	.LASF26:
+ 1252 00f9 50574D5F 		.ascii	"PWM_6_WriteCompare\000"
+ 1252      365F5772 
+ 1252      69746543 
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 26
+
+
+ 1252      6F6D7061 
+ 1252      726500
+ 1253              	.LASF30:
+ 1254 010c 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1254      52784275 
+ 1254      66666572 
+ 1254      00
+ 1255              	.LASF5:
+ 1256 0119 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1256      20756E73 
+ 1256      69676E65 
+ 1256      6420696E 
+ 1256      7400
+ 1257              	.LASF2:
+ 1258 012b 73686F72 		.ascii	"short int\000"
+ 1258      7420696E 
+ 1258      7400
+ 1259              	.LASF8:
+ 1260 0135 756E7369 		.ascii	"unsigned int\000"
+ 1260      676E6564 
+ 1260      20696E74 
+ 1260      00
+ 1261              	.LASF7:
+ 1262 0142 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1262      206C6F6E 
+ 1262      6720756E 
+ 1262      7369676E 
+ 1262      65642069 
+ 1263              	.LASF17:
+ 1264 0159 636F6E74 		.ascii	"control2\000"
+ 1264      726F6C32 
+ 1264      00
+ 1265              	.LASF18:
+ 1266 0162 636F6E74 		.ascii	"control3\000"
+ 1266      726F6C33 
+ 1266      00
+ 1267              	.LASF16:
+ 1268 016b 636F6E74 		.ascii	"control4\000"
+ 1268      726F6C34 
+ 1268      00
+ 1269              	.LASF15:
+ 1270 0174 73697A65 		.ascii	"sizetype\000"
+ 1270      74797065 
+ 1270      00
+ 1271              	.LASF6:
+ 1272 017d 6C6F6E67 		.ascii	"long long int\000"
+ 1272      206C6F6E 
+ 1272      6720696E 
+ 1272      7400
+ 1273              	.LASF24:
+ 1274 018b 50574D5F 		.ascii	"PWM_3_WriteCompare\000"
+ 1274      335F5772 
+ 1274      69746543 
+ 1274      6F6D7061 
+ 1274      726500
+ 1275              	.LASF13:
+ 1276 019e 63686172 		.ascii	"char\000"
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccglqBwU.s 			page 27
+
+
+ 1276      00
+ 1277              	.LASF19:
+ 1278 01a3 4C4F4654 		.ascii	"LOFT\000"
+ 1278      00
+ 1279              	.LASF28:
+ 1280 01a8 53657276 		.ascii	"ServoArm.c\000"
+ 1280      6F41726D 
+ 1280      2E6300
+ 1281              	.LASF4:
+ 1282 01b3 6C6F6E67 		.ascii	"long int\000"
+ 1282      20696E74 
+ 1282      00
+ 1283              	.LASF14:
+ 1284 01bc 6C6F6E67 		.ascii	"long double\000"
+ 1284      20646F75 
+ 1284      626C6500 
+ 1285              	.LASF29:
+ 1286 01c8 433A5C55 		.ascii	"C:\\Users\\Jesper\\OneDrive - Aarhus universitet\\E"
+ 1286      73657273 
+ 1286      5C4A6573 
+ 1286      7065725C 
+ 1286      4F6E6544 
+ 1287 01f7 6C656B74 		.ascii	"lektronik\\3-Semester\\PROJEKT3\\ProjektBIL.cydsn\000"
+ 1287      726F6E69 
+ 1287      6B5C332D 
+ 1287      53656D65 
+ 1287      73746572 
+ 1288              	.LASF0:
+ 1289 0226 7369676E 		.ascii	"signed char\000"
+ 1289      65642063 
+ 1289      68617200 
+ 1290              	.LASF25:
+ 1291 0232 55415254 		.ascii	"UART_1_PutString\000"
+ 1291      5F315F50 
+ 1291      75745374 
+ 1291      72696E67 
+ 1291      00
+ 1292              	.LASF22:
+ 1293 0243 43794465 		.ascii	"CyDelay\000"
+ 1293      6C617900 
+ 1294              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

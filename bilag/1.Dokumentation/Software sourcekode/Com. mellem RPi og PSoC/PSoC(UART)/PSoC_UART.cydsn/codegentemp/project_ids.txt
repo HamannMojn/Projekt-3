@@ -1,0 +1,6 @@
+C:\Users\maths\Desktop\3. semester\PRJ3\PSoC-UART\PSoC_UART\PSoC_UART.cydsn\PSoC_UART.cyprj|5ac97339-db7b-40b3-8af9-d49cd4e363f3
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|fb1c9c6c-63a9-42e6-b2fc-6633a80bda6f
+C:\Users\maths\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|8ffbbaa3-c1a3-42ea-8cde-51cc52c66bc9
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|a74a644d-3a2a-4d6e-a765-f97888572fc4
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|153aa9bb-1cc2-409a-8d2a-695afbc0e676
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|e454f599-1d30-414f-853e-9cde2d502014

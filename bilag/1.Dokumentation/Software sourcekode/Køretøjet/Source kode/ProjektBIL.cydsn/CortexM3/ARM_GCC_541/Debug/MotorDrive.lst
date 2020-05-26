@@ -1,0 +1,1597 @@
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"MotorDrive.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.decreaseSpeed,"ax",%progbits
+  20              		.align	2
+  21              		.global	decreaseSpeed
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	decreaseSpeed, %function
+  25              	decreaseSpeed:
+  26              	.LFB63:
+  27              		.file 1 "MotorDrive.c"
+   1:MotorDrive.c  **** /* ========================================
+   2:MotorDrive.c  ****  *
+   3:MotorDrive.c  ****  * Copyright YOUR COMPANY, THE YEAR
+   4:MotorDrive.c  ****  * All Rights Reserved
+   5:MotorDrive.c  ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:MotorDrive.c  ****  *
+   7:MotorDrive.c  ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:MotorDrive.c  ****  * WHICH IS THE PROPERTY OF your company.
+   9:MotorDrive.c  ****  *
+  10:MotorDrive.c  ****  * ========================================
+  11:MotorDrive.c  **** */
+  12:MotorDrive.c  **** 
+  13:MotorDrive.c  **** #include"MotorDrive.h"
+  14:MotorDrive.c  **** #include"Sensor.h"
+  15:MotorDrive.c  **** #include <project.h>
+  16:MotorDrive.c  **** 
+  17:MotorDrive.c  **** 
+  18:MotorDrive.c  **** 
+  19:MotorDrive.c  **** 
+  20:MotorDrive.c  **** 
+  21:MotorDrive.c  **** int dutycycle = 50;
+  22:MotorDrive.c  **** void decreaseSpeed()
+  23:MotorDrive.c  **** {
+  28              		.loc 1 23 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 2
+
+
+  35              		.cfi_offset 14, -4
+  24:MotorDrive.c  ****     stby_Write(1);
+  36              		.loc 1 24 0
+  37 0002 0120     		movs	r0, #1
+  38 0004 FFF7FEFF 		bl	stby_Write
+  39              	.LVL0:
+  25:MotorDrive.c  ****     UART_1_PutString("Decreasing speed\r\n");
+  40              		.loc 1 25 0
+  41 0008 0548     		ldr	r0, .L3
+  42 000a FFF7FEFF 		bl	UART_1_PutString
+  43              	.LVL1:
+  26:MotorDrive.c  ****   
+  27:MotorDrive.c  ****     PWMA_WriteCompare(dutycycle=dutycycle-10);
+  44              		.loc 1 27 0
+  45 000e 054B     		ldr	r3, .L3+4
+  46 0010 1868     		ldr	r0, [r3]
+  47 0012 0A38     		subs	r0, r0, #10
+  48 0014 1860     		str	r0, [r3]
+  49 0016 C0B2     		uxtb	r0, r0
+  50 0018 FFF7FEFF 		bl	PWMA_WriteCompare
+  51              	.LVL2:
+  52 001c 08BD     		pop	{r3, pc}
+  53              	.L4:
+  54 001e 00BF     		.align	2
+  55              	.L3:
+  56 0020 00000000 		.word	.LC0
+  57 0024 00000000 		.word	.LANCHOR0
+  58              		.cfi_endproc
+  59              	.LFE63:
+  60              		.size	decreaseSpeed, .-decreaseSpeed
+  61              		.section	.text.increaseSpeed,"ax",%progbits
+  62              		.align	2
+  63              		.global	increaseSpeed
+  64              		.thumb
+  65              		.thumb_func
+  66              		.type	increaseSpeed, %function
+  67              	increaseSpeed:
+  68              	.LFB64:
+  28:MotorDrive.c  ****    
+  29:MotorDrive.c  **** }
+  30:MotorDrive.c  **** 
+  31:MotorDrive.c  **** void increaseSpeed()
+  32:MotorDrive.c  **** {
+  69              		.loc 1 32 0
+  70              		.cfi_startproc
+  71              		@ args = 0, pretend = 0, frame = 0
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  73 0000 08B5     		push	{r3, lr}
+  74              		.cfi_def_cfa_offset 8
+  75              		.cfi_offset 3, -8
+  76              		.cfi_offset 14, -4
+  33:MotorDrive.c  ****     stby_Write(1);
+  77              		.loc 1 33 0
+  78 0002 0120     		movs	r0, #1
+  79 0004 FFF7FEFF 		bl	stby_Write
+  80              	.LVL3:
+  34:MotorDrive.c  ****     UART_1_PutString("Increasing speed\r\n");
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 3
+
+
+  81              		.loc 1 34 0
+  82 0008 0548     		ldr	r0, .L7
+  83 000a FFF7FEFF 		bl	UART_1_PutString
+  84              	.LVL4:
+  35:MotorDrive.c  ****     
+  36:MotorDrive.c  ****     PWMA_WriteCompare(dutycycle=dutycycle+10);
+  85              		.loc 1 36 0
+  86 000e 054B     		ldr	r3, .L7+4
+  87 0010 1868     		ldr	r0, [r3]
+  88 0012 0A30     		adds	r0, r0, #10
+  89 0014 1860     		str	r0, [r3]
+  90 0016 C0B2     		uxtb	r0, r0
+  91 0018 FFF7FEFF 		bl	PWMA_WriteCompare
+  92              	.LVL5:
+  93 001c 08BD     		pop	{r3, pc}
+  94              	.L8:
+  95 001e 00BF     		.align	2
+  96              	.L7:
+  97 0020 14000000 		.word	.LC1
+  98 0024 00000000 		.word	.LANCHOR0
+  99              		.cfi_endproc
+ 100              	.LFE64:
+ 101              		.size	increaseSpeed, .-increaseSpeed
+ 102              		.section	.text.driveForwards,"ax",%progbits
+ 103              		.align	2
+ 104              		.global	driveForwards
+ 105              		.thumb
+ 106              		.thumb_func
+ 107              		.type	driveForwards, %function
+ 108              	driveForwards:
+ 109              	.LFB65:
+  37:MotorDrive.c  ****    
+  38:MotorDrive.c  **** }
+  39:MotorDrive.c  **** 
+  40:MotorDrive.c  **** void driveForwards()
+  41:MotorDrive.c  **** {
+ 110              		.loc 1 41 0
+ 111              		.cfi_startproc
+ 112              		@ args = 0, pretend = 0, frame = 0
+ 113              		@ frame_needed = 0, uses_anonymous_args = 0
+ 114 0000 10B5     		push	{r4, lr}
+ 115              		.cfi_def_cfa_offset 8
+ 116              		.cfi_offset 4, -8
+ 117              		.cfi_offset 14, -4
+  42:MotorDrive.c  ****      
+  43:MotorDrive.c  ****     stby_Write(1);
+ 118              		.loc 1 43 0
+ 119 0002 0120     		movs	r0, #1
+ 120 0004 FFF7FEFF 		bl	stby_Write
+ 121              	.LVL6:
+  44:MotorDrive.c  ****     UART_1_PutString("Set direction: forwards\r\n");
+ 122              		.loc 1 44 0
+ 123 0008 0B48     		ldr	r0, .L11
+ 124 000a FFF7FEFF 		bl	UART_1_PutString
+ 125              	.LVL7:
+  45:MotorDrive.c  ****     
+  46:MotorDrive.c  ****     PWMA_WriteCompare(dutycycle);
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 4
+
+
+ 126              		.loc 1 46 0
+ 127 000e 0B4C     		ldr	r4, .L11+4
+ 128 0010 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 129 0012 FFF7FEFF 		bl	PWMA_WriteCompare
+ 130              	.LVL8:
+  47:MotorDrive.c  ****     Ain1_Write(1);
+ 131              		.loc 1 47 0
+ 132 0016 0120     		movs	r0, #1
+ 133 0018 FFF7FEFF 		bl	Ain1_Write
+ 134              	.LVL9:
+  48:MotorDrive.c  ****     Ain2_Write(0);
+ 135              		.loc 1 48 0
+ 136 001c 0020     		movs	r0, #0
+ 137 001e FFF7FEFF 		bl	Ain2_Write
+ 138              	.LVL10:
+  49:MotorDrive.c  ****     
+  50:MotorDrive.c  ****     PWMB_WriteCompare(dutycycle);
+ 139              		.loc 1 50 0
+ 140 0022 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 141 0024 FFF7FEFF 		bl	PWMB_WriteCompare
+ 142              	.LVL11:
+  51:MotorDrive.c  ****     Bin1_Write(1);
+ 143              		.loc 1 51 0
+ 144 0028 0120     		movs	r0, #1
+ 145 002a FFF7FEFF 		bl	Bin1_Write
+ 146              	.LVL12:
+  52:MotorDrive.c  ****     Bin2_Write(0);
+ 147              		.loc 1 52 0
+ 148 002e 0020     		movs	r0, #0
+ 149 0030 FFF7FEFF 		bl	Bin2_Write
+ 150              	.LVL13:
+ 151 0034 10BD     		pop	{r4, pc}
+ 152              	.L12:
+ 153 0036 00BF     		.align	2
+ 154              	.L11:
+ 155 0038 28000000 		.word	.LC2
+ 156 003c 00000000 		.word	.LANCHOR0
+ 157              		.cfi_endproc
+ 158              	.LFE65:
+ 159              		.size	driveForwards, .-driveForwards
+ 160              		.section	.text.driveBackwards,"ax",%progbits
+ 161              		.align	2
+ 162              		.global	driveBackwards
+ 163              		.thumb
+ 164              		.thumb_func
+ 165              		.type	driveBackwards, %function
+ 166              	driveBackwards:
+ 167              	.LFB66:
+  53:MotorDrive.c  ****     
+  54:MotorDrive.c  **** }
+  55:MotorDrive.c  **** 
+  56:MotorDrive.c  **** void driveBackwards()
+  57:MotorDrive.c  **** {
+ 168              		.loc 1 57 0
+ 169              		.cfi_startproc
+ 170              		@ args = 0, pretend = 0, frame = 0
+ 171              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 5
+
+
+ 172 0000 10B5     		push	{r4, lr}
+ 173              		.cfi_def_cfa_offset 8
+ 174              		.cfi_offset 4, -8
+ 175              		.cfi_offset 14, -4
+  58:MotorDrive.c  ****     stby_Write(1);
+ 176              		.loc 1 58 0
+ 177 0002 0120     		movs	r0, #1
+ 178 0004 FFF7FEFF 		bl	stby_Write
+ 179              	.LVL14:
+  59:MotorDrive.c  ****     UART_1_PutString("Set direction: backwards\r\n");
+ 180              		.loc 1 59 0
+ 181 0008 0B48     		ldr	r0, .L15
+ 182 000a FFF7FEFF 		bl	UART_1_PutString
+ 183              	.LVL15:
+  60:MotorDrive.c  ****     
+  61:MotorDrive.c  ****     PWMA_WriteCompare(dutycycle);
+ 184              		.loc 1 61 0
+ 185 000e 0B4C     		ldr	r4, .L15+4
+ 186 0010 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 187 0012 FFF7FEFF 		bl	PWMA_WriteCompare
+ 188              	.LVL16:
+  62:MotorDrive.c  ****     Ain1_Write(0);
+ 189              		.loc 1 62 0
+ 190 0016 0020     		movs	r0, #0
+ 191 0018 FFF7FEFF 		bl	Ain1_Write
+ 192              	.LVL17:
+  63:MotorDrive.c  ****     Ain2_Write(1);
+ 193              		.loc 1 63 0
+ 194 001c 0120     		movs	r0, #1
+ 195 001e FFF7FEFF 		bl	Ain2_Write
+ 196              	.LVL18:
+  64:MotorDrive.c  ****     
+  65:MotorDrive.c  ****     PWMB_WriteCompare(dutycycle);
+ 197              		.loc 1 65 0
+ 198 0022 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 199 0024 FFF7FEFF 		bl	PWMB_WriteCompare
+ 200              	.LVL19:
+  66:MotorDrive.c  ****     Bin1_Write(0);
+ 201              		.loc 1 66 0
+ 202 0028 0020     		movs	r0, #0
+ 203 002a FFF7FEFF 		bl	Bin1_Write
+ 204              	.LVL20:
+  67:MotorDrive.c  ****     Bin2_Write(1);
+ 205              		.loc 1 67 0
+ 206 002e 0120     		movs	r0, #1
+ 207 0030 FFF7FEFF 		bl	Bin2_Write
+ 208              	.LVL21:
+ 209 0034 10BD     		pop	{r4, pc}
+ 210              	.L16:
+ 211 0036 00BF     		.align	2
+ 212              	.L15:
+ 213 0038 44000000 		.word	.LC3
+ 214 003c 00000000 		.word	.LANCHOR0
+ 215              		.cfi_endproc
+ 216              	.LFE66:
+ 217              		.size	driveBackwards, .-driveBackwards
+ 218              		.section	.text.driveLeft,"ax",%progbits
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 6
+
+
+ 219              		.align	2
+ 220              		.global	driveLeft
+ 221              		.thumb
+ 222              		.thumb_func
+ 223              		.type	driveLeft, %function
+ 224              	driveLeft:
+ 225              	.LFB67:
+  68:MotorDrive.c  ****     
+  69:MotorDrive.c  ****    
+  70:MotorDrive.c  **** }
+  71:MotorDrive.c  **** void driveLeft()
+  72:MotorDrive.c  **** {
+ 226              		.loc 1 72 0
+ 227              		.cfi_startproc
+ 228              		@ args = 0, pretend = 0, frame = 0
+ 229              		@ frame_needed = 0, uses_anonymous_args = 0
+ 230 0000 10B5     		push	{r4, lr}
+ 231              		.cfi_def_cfa_offset 8
+ 232              		.cfi_offset 4, -8
+ 233              		.cfi_offset 14, -4
+  73:MotorDrive.c  ****     stby_Write(1);
+ 234              		.loc 1 73 0
+ 235 0002 0120     		movs	r0, #1
+ 236 0004 FFF7FEFF 		bl	stby_Write
+ 237              	.LVL22:
+  74:MotorDrive.c  ****     UART_1_PutString("Set direction: Left\r\n");
+ 238              		.loc 1 74 0
+ 239 0008 0B48     		ldr	r0, .L19
+ 240 000a FFF7FEFF 		bl	UART_1_PutString
+ 241              	.LVL23:
+  75:MotorDrive.c  ****     
+  76:MotorDrive.c  ****     PWMA_WriteCompare(dutycycle);
+ 242              		.loc 1 76 0
+ 243 000e 0B4C     		ldr	r4, .L19+4
+ 244 0010 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 245 0012 FFF7FEFF 		bl	PWMA_WriteCompare
+ 246              	.LVL24:
+  77:MotorDrive.c  ****     Ain1_Write(1);
+ 247              		.loc 1 77 0
+ 248 0016 0120     		movs	r0, #1
+ 249 0018 FFF7FEFF 		bl	Ain1_Write
+ 250              	.LVL25:
+  78:MotorDrive.c  ****     Ain2_Write(0);
+ 251              		.loc 1 78 0
+ 252 001c 0020     		movs	r0, #0
+ 253 001e FFF7FEFF 		bl	Ain2_Write
+ 254              	.LVL26:
+  79:MotorDrive.c  ****     
+  80:MotorDrive.c  ****     PWMB_WriteCompare(dutycycle);
+ 255              		.loc 1 80 0
+ 256 0022 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 257 0024 FFF7FEFF 		bl	PWMB_WriteCompare
+ 258              	.LVL27:
+  81:MotorDrive.c  ****     Bin1_Write(0);
+ 259              		.loc 1 81 0
+ 260 0028 0020     		movs	r0, #0
+ 261 002a FFF7FEFF 		bl	Bin1_Write
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 7
+
+
+ 262              	.LVL28:
+  82:MotorDrive.c  ****     Bin2_Write(1);
+ 263              		.loc 1 82 0
+ 264 002e 0120     		movs	r0, #1
+ 265 0030 FFF7FEFF 		bl	Bin2_Write
+ 266              	.LVL29:
+ 267 0034 10BD     		pop	{r4, pc}
+ 268              	.L20:
+ 269 0036 00BF     		.align	2
+ 270              	.L19:
+ 271 0038 60000000 		.word	.LC4
+ 272 003c 00000000 		.word	.LANCHOR0
+ 273              		.cfi_endproc
+ 274              	.LFE67:
+ 275              		.size	driveLeft, .-driveLeft
+ 276              		.section	.text.driveRight,"ax",%progbits
+ 277              		.align	2
+ 278              		.global	driveRight
+ 279              		.thumb
+ 280              		.thumb_func
+ 281              		.type	driveRight, %function
+ 282              	driveRight:
+ 283              	.LFB68:
+  83:MotorDrive.c  ****     
+  84:MotorDrive.c  **** }
+  85:MotorDrive.c  **** void driveRight()
+  86:MotorDrive.c  **** {
+ 284              		.loc 1 86 0
+ 285              		.cfi_startproc
+ 286              		@ args = 0, pretend = 0, frame = 0
+ 287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288 0000 10B5     		push	{r4, lr}
+ 289              		.cfi_def_cfa_offset 8
+ 290              		.cfi_offset 4, -8
+ 291              		.cfi_offset 14, -4
+  87:MotorDrive.c  ****     stby_Write(1);
+ 292              		.loc 1 87 0
+ 293 0002 0120     		movs	r0, #1
+ 294 0004 FFF7FEFF 		bl	stby_Write
+ 295              	.LVL30:
+  88:MotorDrive.c  ****     UART_1_PutString("Set direction: Right\r\n");
+ 296              		.loc 1 88 0
+ 297 0008 0B48     		ldr	r0, .L23
+ 298 000a FFF7FEFF 		bl	UART_1_PutString
+ 299              	.LVL31:
+  89:MotorDrive.c  ****     
+  90:MotorDrive.c  ****     PWMA_WriteCompare(dutycycle);
+ 300              		.loc 1 90 0
+ 301 000e 0B4C     		ldr	r4, .L23+4
+ 302 0010 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 303 0012 FFF7FEFF 		bl	PWMA_WriteCompare
+ 304              	.LVL32:
+  91:MotorDrive.c  ****     Ain1_Write(0);
+ 305              		.loc 1 91 0
+ 306 0016 0020     		movs	r0, #0
+ 307 0018 FFF7FEFF 		bl	Ain1_Write
+ 308              	.LVL33:
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 8
+
+
+  92:MotorDrive.c  ****     Ain2_Write(1);
+ 309              		.loc 1 92 0
+ 310 001c 0120     		movs	r0, #1
+ 311 001e FFF7FEFF 		bl	Ain2_Write
+ 312              	.LVL34:
+  93:MotorDrive.c  ****     
+  94:MotorDrive.c  ****     PWMB_WriteCompare(dutycycle);
+ 313              		.loc 1 94 0
+ 314 0022 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 315 0024 FFF7FEFF 		bl	PWMB_WriteCompare
+ 316              	.LVL35:
+  95:MotorDrive.c  ****     Bin1_Write(1);
+ 317              		.loc 1 95 0
+ 318 0028 0120     		movs	r0, #1
+ 319 002a FFF7FEFF 		bl	Bin1_Write
+ 320              	.LVL36:
+  96:MotorDrive.c  ****     Bin2_Write(0);
+ 321              		.loc 1 96 0
+ 322 002e 0020     		movs	r0, #0
+ 323 0030 FFF7FEFF 		bl	Bin2_Write
+ 324              	.LVL37:
+ 325 0034 10BD     		pop	{r4, pc}
+ 326              	.L24:
+ 327 0036 00BF     		.align	2
+ 328              	.L23:
+ 329 0038 78000000 		.word	.LC5
+ 330 003c 00000000 		.word	.LANCHOR0
+ 331              		.cfi_endproc
+ 332              	.LFE68:
+ 333              		.size	driveRight, .-driveRight
+ 334              		.section	.text.stop,"ax",%progbits
+ 335              		.align	2
+ 336              		.global	stop
+ 337              		.thumb
+ 338              		.thumb_func
+ 339              		.type	stop, %function
+ 340              	stop:
+ 341              	.LFB69:
+  97:MotorDrive.c  ****     
+  98:MotorDrive.c  **** }
+  99:MotorDrive.c  **** 
+ 100:MotorDrive.c  **** void stop()
+ 101:MotorDrive.c  **** {
+ 342              		.loc 1 101 0
+ 343              		.cfi_startproc
+ 344              		@ args = 0, pretend = 0, frame = 0
+ 345              		@ frame_needed = 0, uses_anonymous_args = 0
+ 346 0000 08B5     		push	{r3, lr}
+ 347              		.cfi_def_cfa_offset 8
+ 348              		.cfi_offset 3, -8
+ 349              		.cfi_offset 14, -4
+ 102:MotorDrive.c  ****     stby_Write(0);
+ 350              		.loc 1 102 0
+ 351 0002 0020     		movs	r0, #0
+ 352 0004 FFF7FEFF 		bl	stby_Write
+ 353              	.LVL38:
+ 103:MotorDrive.c  ****     UART_1_PutString("Stop\r\n");
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 9
+
+
+ 354              		.loc 1 103 0
+ 355 0008 0448     		ldr	r0, .L27
+ 356 000a FFF7FEFF 		bl	UART_1_PutString
+ 357              	.LVL39:
+ 104:MotorDrive.c  ****     
+ 105:MotorDrive.c  ****     PWMA_WriteCompare(0);
+ 358              		.loc 1 105 0
+ 359 000e 0020     		movs	r0, #0
+ 360 0010 FFF7FEFF 		bl	PWMA_WriteCompare
+ 361              	.LVL40:
+ 106:MotorDrive.c  ****     PWMB_WriteCompare(0);   
+ 362              		.loc 1 106 0
+ 363 0014 0020     		movs	r0, #0
+ 364 0016 FFF7FEFF 		bl	PWMB_WriteCompare
+ 365              	.LVL41:
+ 366 001a 08BD     		pop	{r3, pc}
+ 367              	.L28:
+ 368              		.align	2
+ 369              	.L27:
+ 370 001c 90000000 		.word	.LC6
+ 371              		.cfi_endproc
+ 372              	.LFE69:
+ 373              		.size	stop, .-stop
+ 374              		.global	dutycycle
+ 375              		.data
+ 376              		.align	2
+ 377              		.set	.LANCHOR0,. + 0
+ 378              		.type	dutycycle, %object
+ 379              		.size	dutycycle, 4
+ 380              	dutycycle:
+ 381 0000 32000000 		.word	50
+ 382              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 383              		.align	2
+ 384              	.LC0:
+ 385 0000 44656372 		.ascii	"Decreasing speed\015\012\000"
+ 385      65617369 
+ 385      6E672073 
+ 385      70656564 
+ 385      0D0A00
+ 386 0013 00       		.space	1
+ 387              	.LC1:
+ 388 0014 496E6372 		.ascii	"Increasing speed\015\012\000"
+ 388      65617369 
+ 388      6E672073 
+ 388      70656564 
+ 388      0D0A00
+ 389 0027 00       		.space	1
+ 390              	.LC2:
+ 391 0028 53657420 		.ascii	"Set direction: forwards\015\012\000"
+ 391      64697265 
+ 391      6374696F 
+ 391      6E3A2066 
+ 391      6F727761 
+ 392 0042 0000     		.space	2
+ 393              	.LC3:
+ 394 0044 53657420 		.ascii	"Set direction: backwards\015\012\000"
+ 394      64697265 
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 10
+
+
+ 394      6374696F 
+ 394      6E3A2062 
+ 394      61636B77 
+ 395 005f 00       		.space	1
+ 396              	.LC4:
+ 397 0060 53657420 		.ascii	"Set direction: Left\015\012\000"
+ 397      64697265 
+ 397      6374696F 
+ 397      6E3A204C 
+ 397      6566740D 
+ 398 0076 0000     		.space	2
+ 399              	.LC5:
+ 400 0078 53657420 		.ascii	"Set direction: Right\015\012\000"
+ 400      64697265 
+ 400      6374696F 
+ 400      6E3A2052 
+ 400      69676874 
+ 401 008f 00       		.space	1
+ 402              	.LC6:
+ 403 0090 53746F70 		.ascii	"Stop\015\012\000"
+ 403      0D0A00
+ 404              		.text
+ 405              	.Letext0:
+ 406              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 407              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 408              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 409              		.file 5 "Generated_Source\\PSoC5/stby.h"
+ 410              		.file 6 "Generated_Source\\PSoC5/UART_1.h"
+ 411              		.file 7 "Generated_Source\\PSoC5/PWMA.h"
+ 412              		.file 8 "Generated_Source\\PSoC5/Ain1.h"
+ 413              		.file 9 "Generated_Source\\PSoC5/Ain2.h"
+ 414              		.file 10 "Generated_Source\\PSoC5/PWMB.h"
+ 415              		.file 11 "Generated_Source\\PSoC5/Bin1.h"
+ 416              		.file 12 "Generated_Source\\PSoC5/Bin2.h"
+ 417              		.section	.debug_info,"",%progbits
+ 418              	.Ldebug_info0:
+ 419 0000 77040000 		.4byte	0x477
+ 420 0004 0400     		.2byte	0x4
+ 421 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 422 000a 04       		.byte	0x4
+ 423 000b 01       		.uleb128 0x1
+ 424 000c 4B000000 		.4byte	.LASF33
+ 425 0010 0C       		.byte	0xc
+ 426 0011 18000000 		.4byte	.LASF34
+ 427 0015 FC010000 		.4byte	.LASF35
+ 428 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 429 001d 00000000 		.4byte	0
+ 430 0021 00000000 		.4byte	.Ldebug_line0
+ 431 0025 02       		.uleb128 0x2
+ 432 0026 01       		.byte	0x1
+ 433 0027 06       		.byte	0x6
+ 434 0028 5A020000 		.4byte	.LASF0
+ 435 002c 02       		.uleb128 0x2
+ 436 002d 01       		.byte	0x1
+ 437 002e 08       		.byte	0x8
+ 438 002f 3D000000 		.4byte	.LASF1
+ 439 0033 02       		.uleb128 0x2
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 11
+
+
+ 440 0034 02       		.byte	0x2
+ 441 0035 05       		.byte	0x5
+ 442 0036 DD010000 		.4byte	.LASF2
+ 443 003a 02       		.uleb128 0x2
+ 444 003b 02       		.byte	0x2
+ 445 003c 07       		.byte	0x7
+ 446 003d EB000000 		.4byte	.LASF3
+ 447 0041 03       		.uleb128 0x3
+ 448 0042 00000000 		.4byte	.LASF9
+ 449 0046 02       		.byte	0x2
+ 450 0047 3F       		.byte	0x3f
+ 451 0048 4C000000 		.4byte	0x4c
+ 452 004c 02       		.uleb128 0x2
+ 453 004d 04       		.byte	0x4
+ 454 004e 05       		.byte	0x5
+ 455 004f E7010000 		.4byte	.LASF4
+ 456 0053 02       		.uleb128 0x2
+ 457 0054 04       		.byte	0x4
+ 458 0055 07       		.byte	0x7
+ 459 0056 D9000000 		.4byte	.LASF5
+ 460 005a 02       		.uleb128 0x2
+ 461 005b 08       		.byte	0x8
+ 462 005c 05       		.byte	0x5
+ 463 005d A0010000 		.4byte	.LASF6
+ 464 0061 02       		.uleb128 0x2
+ 465 0062 08       		.byte	0x8
+ 466 0063 07       		.byte	0x7
+ 467 0064 5E010000 		.4byte	.LASF7
+ 468 0068 04       		.uleb128 0x4
+ 469 0069 04       		.byte	0x4
+ 470 006a 05       		.byte	0x5
+ 471 006b 696E7400 		.ascii	"int\000"
+ 472 006f 02       		.uleb128 0x2
+ 473 0070 04       		.byte	0x4
+ 474 0071 07       		.byte	0x7
+ 475 0072 43010000 		.4byte	.LASF8
+ 476 0076 03       		.uleb128 0x3
+ 477 0077 80010000 		.4byte	.LASF10
+ 478 007b 03       		.byte	0x3
+ 479 007c 2C       		.byte	0x2c
+ 480 007d 41000000 		.4byte	0x41
+ 481 0081 02       		.uleb128 0x2
+ 482 0082 04       		.byte	0x4
+ 483 0083 04       		.byte	0x4
+ 484 0084 25000000 		.4byte	.LASF11
+ 485 0088 02       		.uleb128 0x2
+ 486 0089 08       		.byte	0x8
+ 487 008a 04       		.byte	0x4
+ 488 008b 26010000 		.4byte	.LASF12
+ 489 008f 02       		.uleb128 0x2
+ 490 0090 01       		.byte	0x1
+ 491 0091 08       		.byte	0x8
+ 492 0092 B8010000 		.4byte	.LASF13
+ 493 0096 02       		.uleb128 0x2
+ 494 0097 08       		.byte	0x8
+ 495 0098 04       		.byte	0x4
+ 496 0099 F0010000 		.4byte	.LASF14
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 12
+
+
+ 497 009d 02       		.uleb128 0x2
+ 498 009e 04       		.byte	0x4
+ 499 009f 07       		.byte	0x7
+ 500 00a0 97010000 		.4byte	.LASF15
+ 501 00a4 05       		.uleb128 0x5
+ 502 00a5 BD010000 		.4byte	.LASF16
+ 503 00a9 01       		.byte	0x1
+ 504 00aa 16       		.byte	0x16
+ 505 00ab 00000000 		.4byte	.LFB63
+ 506 00af 28000000 		.4byte	.LFE63-.LFB63
+ 507 00b3 01       		.uleb128 0x1
+ 508 00b4 9C       		.byte	0x9c
+ 509 00b5 ED000000 		.4byte	0xed
+ 510 00b9 06       		.uleb128 0x6
+ 511 00ba 08000000 		.4byte	.LVL0
+ 512 00be 22040000 		.4byte	0x422
+ 513 00c2 CC000000 		.4byte	0xcc
+ 514 00c6 07       		.uleb128 0x7
+ 515 00c7 01       		.uleb128 0x1
+ 516 00c8 50       		.byte	0x50
+ 517 00c9 01       		.uleb128 0x1
+ 518 00ca 31       		.byte	0x31
+ 519 00cb 00       		.byte	0
+ 520 00cc 06       		.uleb128 0x6
+ 521 00cd 0E000000 		.4byte	.LVL1
+ 522 00d1 2D040000 		.4byte	0x42d
+ 523 00d5 E3000000 		.4byte	0xe3
+ 524 00d9 07       		.uleb128 0x7
+ 525 00da 01       		.uleb128 0x1
+ 526 00db 50       		.byte	0x50
+ 527 00dc 05       		.uleb128 0x5
+ 528 00dd 03       		.byte	0x3
+ 529 00de 00000000 		.4byte	.LC0
+ 530 00e2 00       		.byte	0
+ 531 00e3 08       		.uleb128 0x8
+ 532 00e4 1C000000 		.4byte	.LVL2
+ 533 00e8 38040000 		.4byte	0x438
+ 534 00ec 00       		.byte	0
+ 535 00ed 05       		.uleb128 0x5
+ 536 00ee 0A000000 		.4byte	.LASF17
+ 537 00f2 01       		.byte	0x1
+ 538 00f3 1F       		.byte	0x1f
+ 539 00f4 00000000 		.4byte	.LFB64
+ 540 00f8 28000000 		.4byte	.LFE64-.LFB64
+ 541 00fc 01       		.uleb128 0x1
+ 542 00fd 9C       		.byte	0x9c
+ 543 00fe 36010000 		.4byte	0x136
+ 544 0102 06       		.uleb128 0x6
+ 545 0103 08000000 		.4byte	.LVL3
+ 546 0107 22040000 		.4byte	0x422
+ 547 010b 15010000 		.4byte	0x115
+ 548 010f 07       		.uleb128 0x7
+ 549 0110 01       		.uleb128 0x1
+ 550 0111 50       		.byte	0x50
+ 551 0112 01       		.uleb128 0x1
+ 552 0113 31       		.byte	0x31
+ 553 0114 00       		.byte	0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 13
+
+
+ 554 0115 06       		.uleb128 0x6
+ 555 0116 0E000000 		.4byte	.LVL4
+ 556 011a 2D040000 		.4byte	0x42d
+ 557 011e 2C010000 		.4byte	0x12c
+ 558 0122 07       		.uleb128 0x7
+ 559 0123 01       		.uleb128 0x1
+ 560 0124 50       		.byte	0x50
+ 561 0125 05       		.uleb128 0x5
+ 562 0126 03       		.byte	0x3
+ 563 0127 14000000 		.4byte	.LC1
+ 564 012b 00       		.byte	0
+ 565 012c 08       		.uleb128 0x8
+ 566 012d 1C000000 		.4byte	.LVL5
+ 567 0131 38040000 		.4byte	0x438
+ 568 0135 00       		.byte	0
+ 569 0136 05       		.uleb128 0x5
+ 570 0137 50010000 		.4byte	.LASF18
+ 571 013b 01       		.byte	0x1
+ 572 013c 28       		.byte	0x28
+ 573 013d 00000000 		.4byte	.LFB65
+ 574 0141 40000000 		.4byte	.LFE65-.LFB65
+ 575 0145 01       		.uleb128 0x1
+ 576 0146 9C       		.byte	0x9c
+ 577 0147 D0010000 		.4byte	0x1d0
+ 578 014b 06       		.uleb128 0x6
+ 579 014c 08000000 		.4byte	.LVL6
+ 580 0150 22040000 		.4byte	0x422
+ 581 0154 5E010000 		.4byte	0x15e
+ 582 0158 07       		.uleb128 0x7
+ 583 0159 01       		.uleb128 0x1
+ 584 015a 50       		.byte	0x50
+ 585 015b 01       		.uleb128 0x1
+ 586 015c 31       		.byte	0x31
+ 587 015d 00       		.byte	0
+ 588 015e 06       		.uleb128 0x6
+ 589 015f 0E000000 		.4byte	.LVL7
+ 590 0163 2D040000 		.4byte	0x42d
+ 591 0167 75010000 		.4byte	0x175
+ 592 016b 07       		.uleb128 0x7
+ 593 016c 01       		.uleb128 0x1
+ 594 016d 50       		.byte	0x50
+ 595 016e 05       		.uleb128 0x5
+ 596 016f 03       		.byte	0x3
+ 597 0170 28000000 		.4byte	.LC2
+ 598 0174 00       		.byte	0
+ 599 0175 08       		.uleb128 0x8
+ 600 0176 16000000 		.4byte	.LVL8
+ 601 017a 38040000 		.4byte	0x438
+ 602 017e 06       		.uleb128 0x6
+ 603 017f 1C000000 		.4byte	.LVL9
+ 604 0183 43040000 		.4byte	0x443
+ 605 0187 91010000 		.4byte	0x191
+ 606 018b 07       		.uleb128 0x7
+ 607 018c 01       		.uleb128 0x1
+ 608 018d 50       		.byte	0x50
+ 609 018e 01       		.uleb128 0x1
+ 610 018f 31       		.byte	0x31
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 14
+
+
+ 611 0190 00       		.byte	0
+ 612 0191 06       		.uleb128 0x6
+ 613 0192 22000000 		.4byte	.LVL10
+ 614 0196 4E040000 		.4byte	0x44e
+ 615 019a A4010000 		.4byte	0x1a4
+ 616 019e 07       		.uleb128 0x7
+ 617 019f 01       		.uleb128 0x1
+ 618 01a0 50       		.byte	0x50
+ 619 01a1 01       		.uleb128 0x1
+ 620 01a2 30       		.byte	0x30
+ 621 01a3 00       		.byte	0
+ 622 01a4 08       		.uleb128 0x8
+ 623 01a5 28000000 		.4byte	.LVL11
+ 624 01a9 59040000 		.4byte	0x459
+ 625 01ad 06       		.uleb128 0x6
+ 626 01ae 2E000000 		.4byte	.LVL12
+ 627 01b2 64040000 		.4byte	0x464
+ 628 01b6 C0010000 		.4byte	0x1c0
+ 629 01ba 07       		.uleb128 0x7
+ 630 01bb 01       		.uleb128 0x1
+ 631 01bc 50       		.byte	0x50
+ 632 01bd 01       		.uleb128 0x1
+ 633 01be 31       		.byte	0x31
+ 634 01bf 00       		.byte	0
+ 635 01c0 09       		.uleb128 0x9
+ 636 01c1 34000000 		.4byte	.LVL13
+ 637 01c5 6F040000 		.4byte	0x46f
+ 638 01c9 07       		.uleb128 0x7
+ 639 01ca 01       		.uleb128 0x1
+ 640 01cb 50       		.byte	0x50
+ 641 01cc 01       		.uleb128 0x1
+ 642 01cd 30       		.byte	0x30
+ 643 01ce 00       		.byte	0
+ 644 01cf 00       		.byte	0
+ 645 01d0 05       		.uleb128 0x5
+ 646 01d1 88010000 		.4byte	.LASF19
+ 647 01d5 01       		.byte	0x1
+ 648 01d6 38       		.byte	0x38
+ 649 01d7 00000000 		.4byte	.LFB66
+ 650 01db 40000000 		.4byte	.LFE66-.LFB66
+ 651 01df 01       		.uleb128 0x1
+ 652 01e0 9C       		.byte	0x9c
+ 653 01e1 6A020000 		.4byte	0x26a
+ 654 01e5 06       		.uleb128 0x6
+ 655 01e6 08000000 		.4byte	.LVL14
+ 656 01ea 22040000 		.4byte	0x422
+ 657 01ee F8010000 		.4byte	0x1f8
+ 658 01f2 07       		.uleb128 0x7
+ 659 01f3 01       		.uleb128 0x1
+ 660 01f4 50       		.byte	0x50
+ 661 01f5 01       		.uleb128 0x1
+ 662 01f6 31       		.byte	0x31
+ 663 01f7 00       		.byte	0
+ 664 01f8 06       		.uleb128 0x6
+ 665 01f9 0E000000 		.4byte	.LVL15
+ 666 01fd 2D040000 		.4byte	0x42d
+ 667 0201 0F020000 		.4byte	0x20f
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 15
+
+
+ 668 0205 07       		.uleb128 0x7
+ 669 0206 01       		.uleb128 0x1
+ 670 0207 50       		.byte	0x50
+ 671 0208 05       		.uleb128 0x5
+ 672 0209 03       		.byte	0x3
+ 673 020a 44000000 		.4byte	.LC3
+ 674 020e 00       		.byte	0
+ 675 020f 08       		.uleb128 0x8
+ 676 0210 16000000 		.4byte	.LVL16
+ 677 0214 38040000 		.4byte	0x438
+ 678 0218 06       		.uleb128 0x6
+ 679 0219 1C000000 		.4byte	.LVL17
+ 680 021d 43040000 		.4byte	0x443
+ 681 0221 2B020000 		.4byte	0x22b
+ 682 0225 07       		.uleb128 0x7
+ 683 0226 01       		.uleb128 0x1
+ 684 0227 50       		.byte	0x50
+ 685 0228 01       		.uleb128 0x1
+ 686 0229 30       		.byte	0x30
+ 687 022a 00       		.byte	0
+ 688 022b 06       		.uleb128 0x6
+ 689 022c 22000000 		.4byte	.LVL18
+ 690 0230 4E040000 		.4byte	0x44e
+ 691 0234 3E020000 		.4byte	0x23e
+ 692 0238 07       		.uleb128 0x7
+ 693 0239 01       		.uleb128 0x1
+ 694 023a 50       		.byte	0x50
+ 695 023b 01       		.uleb128 0x1
+ 696 023c 31       		.byte	0x31
+ 697 023d 00       		.byte	0
+ 698 023e 08       		.uleb128 0x8
+ 699 023f 28000000 		.4byte	.LVL19
+ 700 0243 59040000 		.4byte	0x459
+ 701 0247 06       		.uleb128 0x6
+ 702 0248 2E000000 		.4byte	.LVL20
+ 703 024c 64040000 		.4byte	0x464
+ 704 0250 5A020000 		.4byte	0x25a
+ 705 0254 07       		.uleb128 0x7
+ 706 0255 01       		.uleb128 0x1
+ 707 0256 50       		.byte	0x50
+ 708 0257 01       		.uleb128 0x1
+ 709 0258 30       		.byte	0x30
+ 710 0259 00       		.byte	0
+ 711 025a 09       		.uleb128 0x9
+ 712 025b 34000000 		.4byte	.LVL21
+ 713 025f 6F040000 		.4byte	0x46f
+ 714 0263 07       		.uleb128 0x7
+ 715 0264 01       		.uleb128 0x1
+ 716 0265 50       		.byte	0x50
+ 717 0266 01       		.uleb128 0x1
+ 718 0267 31       		.byte	0x31
+ 719 0268 00       		.byte	0
+ 720 0269 00       		.byte	0
+ 721 026a 05       		.uleb128 0x5
+ 722 026b 77020000 		.4byte	.LASF20
+ 723 026f 01       		.byte	0x1
+ 724 0270 47       		.byte	0x47
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 16
+
+
+ 725 0271 00000000 		.4byte	.LFB67
+ 726 0275 40000000 		.4byte	.LFE67-.LFB67
+ 727 0279 01       		.uleb128 0x1
+ 728 027a 9C       		.byte	0x9c
+ 729 027b 04030000 		.4byte	0x304
+ 730 027f 06       		.uleb128 0x6
+ 731 0280 08000000 		.4byte	.LVL22
+ 732 0284 22040000 		.4byte	0x422
+ 733 0288 92020000 		.4byte	0x292
+ 734 028c 07       		.uleb128 0x7
+ 735 028d 01       		.uleb128 0x1
+ 736 028e 50       		.byte	0x50
+ 737 028f 01       		.uleb128 0x1
+ 738 0290 31       		.byte	0x31
+ 739 0291 00       		.byte	0
+ 740 0292 06       		.uleb128 0x6
+ 741 0293 0E000000 		.4byte	.LVL23
+ 742 0297 2D040000 		.4byte	0x42d
+ 743 029b A9020000 		.4byte	0x2a9
+ 744 029f 07       		.uleb128 0x7
+ 745 02a0 01       		.uleb128 0x1
+ 746 02a1 50       		.byte	0x50
+ 747 02a2 05       		.uleb128 0x5
+ 748 02a3 03       		.byte	0x3
+ 749 02a4 60000000 		.4byte	.LC4
+ 750 02a8 00       		.byte	0
+ 751 02a9 08       		.uleb128 0x8
+ 752 02aa 16000000 		.4byte	.LVL24
+ 753 02ae 38040000 		.4byte	0x438
+ 754 02b2 06       		.uleb128 0x6
+ 755 02b3 1C000000 		.4byte	.LVL25
+ 756 02b7 43040000 		.4byte	0x443
+ 757 02bb C5020000 		.4byte	0x2c5
+ 758 02bf 07       		.uleb128 0x7
+ 759 02c0 01       		.uleb128 0x1
+ 760 02c1 50       		.byte	0x50
+ 761 02c2 01       		.uleb128 0x1
+ 762 02c3 31       		.byte	0x31
+ 763 02c4 00       		.byte	0
+ 764 02c5 06       		.uleb128 0x6
+ 765 02c6 22000000 		.4byte	.LVL26
+ 766 02ca 4E040000 		.4byte	0x44e
+ 767 02ce D8020000 		.4byte	0x2d8
+ 768 02d2 07       		.uleb128 0x7
+ 769 02d3 01       		.uleb128 0x1
+ 770 02d4 50       		.byte	0x50
+ 771 02d5 01       		.uleb128 0x1
+ 772 02d6 30       		.byte	0x30
+ 773 02d7 00       		.byte	0
+ 774 02d8 08       		.uleb128 0x8
+ 775 02d9 28000000 		.4byte	.LVL27
+ 776 02dd 59040000 		.4byte	0x459
+ 777 02e1 06       		.uleb128 0x6
+ 778 02e2 2E000000 		.4byte	.LVL28
+ 779 02e6 64040000 		.4byte	0x464
+ 780 02ea F4020000 		.4byte	0x2f4
+ 781 02ee 07       		.uleb128 0x7
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 17
+
+
+ 782 02ef 01       		.uleb128 0x1
+ 783 02f0 50       		.byte	0x50
+ 784 02f1 01       		.uleb128 0x1
+ 785 02f2 30       		.byte	0x30
+ 786 02f3 00       		.byte	0
+ 787 02f4 09       		.uleb128 0x9
+ 788 02f5 34000000 		.4byte	.LVL29
+ 789 02f9 6F040000 		.4byte	0x46f
+ 790 02fd 07       		.uleb128 0x7
+ 791 02fe 01       		.uleb128 0x1
+ 792 02ff 50       		.byte	0x50
+ 793 0300 01       		.uleb128 0x1
+ 794 0301 31       		.byte	0x31
+ 795 0302 00       		.byte	0
+ 796 0303 00       		.byte	0
+ 797 0304 05       		.uleb128 0x5
+ 798 0305 81020000 		.4byte	.LASF21
+ 799 0309 01       		.byte	0x1
+ 800 030a 55       		.byte	0x55
+ 801 030b 00000000 		.4byte	.LFB68
+ 802 030f 40000000 		.4byte	.LFE68-.LFB68
+ 803 0313 01       		.uleb128 0x1
+ 804 0314 9C       		.byte	0x9c
+ 805 0315 9E030000 		.4byte	0x39e
+ 806 0319 06       		.uleb128 0x6
+ 807 031a 08000000 		.4byte	.LVL30
+ 808 031e 22040000 		.4byte	0x422
+ 809 0322 2C030000 		.4byte	0x32c
+ 810 0326 07       		.uleb128 0x7
+ 811 0327 01       		.uleb128 0x1
+ 812 0328 50       		.byte	0x50
+ 813 0329 01       		.uleb128 0x1
+ 814 032a 31       		.byte	0x31
+ 815 032b 00       		.byte	0
+ 816 032c 06       		.uleb128 0x6
+ 817 032d 0E000000 		.4byte	.LVL31
+ 818 0331 2D040000 		.4byte	0x42d
+ 819 0335 43030000 		.4byte	0x343
+ 820 0339 07       		.uleb128 0x7
+ 821 033a 01       		.uleb128 0x1
+ 822 033b 50       		.byte	0x50
+ 823 033c 05       		.uleb128 0x5
+ 824 033d 03       		.byte	0x3
+ 825 033e 78000000 		.4byte	.LC5
+ 826 0342 00       		.byte	0
+ 827 0343 08       		.uleb128 0x8
+ 828 0344 16000000 		.4byte	.LVL32
+ 829 0348 38040000 		.4byte	0x438
+ 830 034c 06       		.uleb128 0x6
+ 831 034d 1C000000 		.4byte	.LVL33
+ 832 0351 43040000 		.4byte	0x443
+ 833 0355 5F030000 		.4byte	0x35f
+ 834 0359 07       		.uleb128 0x7
+ 835 035a 01       		.uleb128 0x1
+ 836 035b 50       		.byte	0x50
+ 837 035c 01       		.uleb128 0x1
+ 838 035d 30       		.byte	0x30
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 18
+
+
+ 839 035e 00       		.byte	0
+ 840 035f 06       		.uleb128 0x6
+ 841 0360 22000000 		.4byte	.LVL34
+ 842 0364 4E040000 		.4byte	0x44e
+ 843 0368 72030000 		.4byte	0x372
+ 844 036c 07       		.uleb128 0x7
+ 845 036d 01       		.uleb128 0x1
+ 846 036e 50       		.byte	0x50
+ 847 036f 01       		.uleb128 0x1
+ 848 0370 31       		.byte	0x31
+ 849 0371 00       		.byte	0
+ 850 0372 08       		.uleb128 0x8
+ 851 0373 28000000 		.4byte	.LVL35
+ 852 0377 59040000 		.4byte	0x459
+ 853 037b 06       		.uleb128 0x6
+ 854 037c 2E000000 		.4byte	.LVL36
+ 855 0380 64040000 		.4byte	0x464
+ 856 0384 8E030000 		.4byte	0x38e
+ 857 0388 07       		.uleb128 0x7
+ 858 0389 01       		.uleb128 0x1
+ 859 038a 50       		.byte	0x50
+ 860 038b 01       		.uleb128 0x1
+ 861 038c 31       		.byte	0x31
+ 862 038d 00       		.byte	0
+ 863 038e 09       		.uleb128 0x9
+ 864 038f 34000000 		.4byte	.LVL37
+ 865 0393 6F040000 		.4byte	0x46f
+ 866 0397 07       		.uleb128 0x7
+ 867 0398 01       		.uleb128 0x1
+ 868 0399 50       		.byte	0x50
+ 869 039a 01       		.uleb128 0x1
+ 870 039b 30       		.byte	0x30
+ 871 039c 00       		.byte	0
+ 872 039d 00       		.byte	0
+ 873 039e 05       		.uleb128 0x5
+ 874 039f FE000000 		.4byte	.LASF22
+ 875 03a3 01       		.byte	0x1
+ 876 03a4 64       		.byte	0x64
+ 877 03a5 00000000 		.4byte	.LFB69
+ 878 03a9 20000000 		.4byte	.LFE69-.LFB69
+ 879 03ad 01       		.uleb128 0x1
+ 880 03ae 9C       		.byte	0x9c
+ 881 03af 00040000 		.4byte	0x400
+ 882 03b3 06       		.uleb128 0x6
+ 883 03b4 08000000 		.4byte	.LVL38
+ 884 03b8 22040000 		.4byte	0x422
+ 885 03bc C6030000 		.4byte	0x3c6
+ 886 03c0 07       		.uleb128 0x7
+ 887 03c1 01       		.uleb128 0x1
+ 888 03c2 50       		.byte	0x50
+ 889 03c3 01       		.uleb128 0x1
+ 890 03c4 30       		.byte	0x30
+ 891 03c5 00       		.byte	0
+ 892 03c6 06       		.uleb128 0x6
+ 893 03c7 0E000000 		.4byte	.LVL39
+ 894 03cb 2D040000 		.4byte	0x42d
+ 895 03cf DD030000 		.4byte	0x3dd
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 19
+
+
+ 896 03d3 07       		.uleb128 0x7
+ 897 03d4 01       		.uleb128 0x1
+ 898 03d5 50       		.byte	0x50
+ 899 03d6 05       		.uleb128 0x5
+ 900 03d7 03       		.byte	0x3
+ 901 03d8 90000000 		.4byte	.LC6
+ 902 03dc 00       		.byte	0
+ 903 03dd 06       		.uleb128 0x6
+ 904 03de 14000000 		.4byte	.LVL40
+ 905 03e2 38040000 		.4byte	0x438
+ 906 03e6 F0030000 		.4byte	0x3f0
+ 907 03ea 07       		.uleb128 0x7
+ 908 03eb 01       		.uleb128 0x1
+ 909 03ec 50       		.byte	0x50
+ 910 03ed 01       		.uleb128 0x1
+ 911 03ee 30       		.byte	0x30
+ 912 03ef 00       		.byte	0
+ 913 03f0 09       		.uleb128 0x9
+ 914 03f1 1A000000 		.4byte	.LVL41
+ 915 03f5 59040000 		.4byte	0x459
+ 916 03f9 07       		.uleb128 0x7
+ 917 03fa 01       		.uleb128 0x1
+ 918 03fb 50       		.byte	0x50
+ 919 03fc 01       		.uleb128 0x1
+ 920 03fd 30       		.byte	0x30
+ 921 03fe 00       		.byte	0
+ 922 03ff 00       		.byte	0
+ 923 0400 0A       		.uleb128 0xa
+ 924 0401 03010000 		.4byte	.LASF23
+ 925 0405 04       		.byte	0x4
+ 926 0406 1207     		.2byte	0x712
+ 927 0408 0C040000 		.4byte	0x40c
+ 928 040c 0B       		.uleb128 0xb
+ 929 040d 76000000 		.4byte	0x76
+ 930 0411 0C       		.uleb128 0xc
+ 931 0412 AE010000 		.4byte	.LASF24
+ 932 0416 01       		.byte	0x1
+ 933 0417 15       		.byte	0x15
+ 934 0418 68000000 		.4byte	0x68
+ 935 041c 05       		.uleb128 0x5
+ 936 041d 03       		.byte	0x3
+ 937 041e 00000000 		.4byte	dutycycle
+ 938 0422 0D       		.uleb128 0xd
+ 939 0423 1B010000 		.4byte	.LASF25
+ 940 0427 1B010000 		.4byte	.LASF25
+ 941 042b 05       		.byte	0x5
+ 942 042c 26       		.byte	0x26
+ 943 042d 0D       		.uleb128 0xd
+ 944 042e 66020000 		.4byte	.LASF26
+ 945 0432 66020000 		.4byte	.LASF26
+ 946 0436 06       		.byte	0x6
+ 947 0437 8B       		.byte	0x8b
+ 948 0438 0D       		.uleb128 0xd
+ 949 0439 CB010000 		.4byte	.LASF27
+ 950 043d CB010000 		.4byte	.LASF27
+ 951 0441 07       		.byte	0x7
+ 952 0442 C3       		.byte	0xc3
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 20
+
+
+ 953 0443 0D       		.uleb128 0xd
+ 954 0444 38010000 		.4byte	.LASF28
+ 955 0448 38010000 		.4byte	.LASF28
+ 956 044c 08       		.byte	0x8
+ 957 044d 26       		.byte	0x26
+ 958 044e 0D       		.uleb128 0xd
+ 959 044f 75010000 		.4byte	.LASF29
+ 960 0453 75010000 		.4byte	.LASF29
+ 961 0457 09       		.byte	0x9
+ 962 0458 26       		.byte	0x26
+ 963 0459 0D       		.uleb128 0xd
+ 964 045a 2B000000 		.4byte	.LASF30
+ 965 045e 2B000000 		.4byte	.LASF30
+ 966 0462 0A       		.byte	0xa
+ 967 0463 C3       		.byte	0xc3
+ 968 0464 0D       		.uleb128 0xd
+ 969 0465 2D010000 		.4byte	.LASF31
+ 970 0469 2D010000 		.4byte	.LASF31
+ 971 046d 0B       		.byte	0xb
+ 972 046e 26       		.byte	0x26
+ 973 046f 0D       		.uleb128 0xd
+ 974 0470 10010000 		.4byte	.LASF32
+ 975 0474 10010000 		.4byte	.LASF32
+ 976 0478 0C       		.byte	0xc
+ 977 0479 26       		.byte	0x26
+ 978 047a 00       		.byte	0
+ 979              		.section	.debug_abbrev,"",%progbits
+ 980              	.Ldebug_abbrev0:
+ 981 0000 01       		.uleb128 0x1
+ 982 0001 11       		.uleb128 0x11
+ 983 0002 01       		.byte	0x1
+ 984 0003 25       		.uleb128 0x25
+ 985 0004 0E       		.uleb128 0xe
+ 986 0005 13       		.uleb128 0x13
+ 987 0006 0B       		.uleb128 0xb
+ 988 0007 03       		.uleb128 0x3
+ 989 0008 0E       		.uleb128 0xe
+ 990 0009 1B       		.uleb128 0x1b
+ 991 000a 0E       		.uleb128 0xe
+ 992 000b 55       		.uleb128 0x55
+ 993 000c 17       		.uleb128 0x17
+ 994 000d 11       		.uleb128 0x11
+ 995 000e 01       		.uleb128 0x1
+ 996 000f 10       		.uleb128 0x10
+ 997 0010 17       		.uleb128 0x17
+ 998 0011 00       		.byte	0
+ 999 0012 00       		.byte	0
+ 1000 0013 02       		.uleb128 0x2
+ 1001 0014 24       		.uleb128 0x24
+ 1002 0015 00       		.byte	0
+ 1003 0016 0B       		.uleb128 0xb
+ 1004 0017 0B       		.uleb128 0xb
+ 1005 0018 3E       		.uleb128 0x3e
+ 1006 0019 0B       		.uleb128 0xb
+ 1007 001a 03       		.uleb128 0x3
+ 1008 001b 0E       		.uleb128 0xe
+ 1009 001c 00       		.byte	0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 21
+
+
+ 1010 001d 00       		.byte	0
+ 1011 001e 03       		.uleb128 0x3
+ 1012 001f 16       		.uleb128 0x16
+ 1013 0020 00       		.byte	0
+ 1014 0021 03       		.uleb128 0x3
+ 1015 0022 0E       		.uleb128 0xe
+ 1016 0023 3A       		.uleb128 0x3a
+ 1017 0024 0B       		.uleb128 0xb
+ 1018 0025 3B       		.uleb128 0x3b
+ 1019 0026 0B       		.uleb128 0xb
+ 1020 0027 49       		.uleb128 0x49
+ 1021 0028 13       		.uleb128 0x13
+ 1022 0029 00       		.byte	0
+ 1023 002a 00       		.byte	0
+ 1024 002b 04       		.uleb128 0x4
+ 1025 002c 24       		.uleb128 0x24
+ 1026 002d 00       		.byte	0
+ 1027 002e 0B       		.uleb128 0xb
+ 1028 002f 0B       		.uleb128 0xb
+ 1029 0030 3E       		.uleb128 0x3e
+ 1030 0031 0B       		.uleb128 0xb
+ 1031 0032 03       		.uleb128 0x3
+ 1032 0033 08       		.uleb128 0x8
+ 1033 0034 00       		.byte	0
+ 1034 0035 00       		.byte	0
+ 1035 0036 05       		.uleb128 0x5
+ 1036 0037 2E       		.uleb128 0x2e
+ 1037 0038 01       		.byte	0x1
+ 1038 0039 3F       		.uleb128 0x3f
+ 1039 003a 19       		.uleb128 0x19
+ 1040 003b 03       		.uleb128 0x3
+ 1041 003c 0E       		.uleb128 0xe
+ 1042 003d 3A       		.uleb128 0x3a
+ 1043 003e 0B       		.uleb128 0xb
+ 1044 003f 3B       		.uleb128 0x3b
+ 1045 0040 0B       		.uleb128 0xb
+ 1046 0041 27       		.uleb128 0x27
+ 1047 0042 19       		.uleb128 0x19
+ 1048 0043 11       		.uleb128 0x11
+ 1049 0044 01       		.uleb128 0x1
+ 1050 0045 12       		.uleb128 0x12
+ 1051 0046 06       		.uleb128 0x6
+ 1052 0047 40       		.uleb128 0x40
+ 1053 0048 18       		.uleb128 0x18
+ 1054 0049 9742     		.uleb128 0x2117
+ 1055 004b 19       		.uleb128 0x19
+ 1056 004c 01       		.uleb128 0x1
+ 1057 004d 13       		.uleb128 0x13
+ 1058 004e 00       		.byte	0
+ 1059 004f 00       		.byte	0
+ 1060 0050 06       		.uleb128 0x6
+ 1061 0051 898201   		.uleb128 0x4109
+ 1062 0054 01       		.byte	0x1
+ 1063 0055 11       		.uleb128 0x11
+ 1064 0056 01       		.uleb128 0x1
+ 1065 0057 31       		.uleb128 0x31
+ 1066 0058 13       		.uleb128 0x13
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 22
+
+
+ 1067 0059 01       		.uleb128 0x1
+ 1068 005a 13       		.uleb128 0x13
+ 1069 005b 00       		.byte	0
+ 1070 005c 00       		.byte	0
+ 1071 005d 07       		.uleb128 0x7
+ 1072 005e 8A8201   		.uleb128 0x410a
+ 1073 0061 00       		.byte	0
+ 1074 0062 02       		.uleb128 0x2
+ 1075 0063 18       		.uleb128 0x18
+ 1076 0064 9142     		.uleb128 0x2111
+ 1077 0066 18       		.uleb128 0x18
+ 1078 0067 00       		.byte	0
+ 1079 0068 00       		.byte	0
+ 1080 0069 08       		.uleb128 0x8
+ 1081 006a 898201   		.uleb128 0x4109
+ 1082 006d 00       		.byte	0
+ 1083 006e 11       		.uleb128 0x11
+ 1084 006f 01       		.uleb128 0x1
+ 1085 0070 31       		.uleb128 0x31
+ 1086 0071 13       		.uleb128 0x13
+ 1087 0072 00       		.byte	0
+ 1088 0073 00       		.byte	0
+ 1089 0074 09       		.uleb128 0x9
+ 1090 0075 898201   		.uleb128 0x4109
+ 1091 0078 01       		.byte	0x1
+ 1092 0079 11       		.uleb128 0x11
+ 1093 007a 01       		.uleb128 0x1
+ 1094 007b 31       		.uleb128 0x31
+ 1095 007c 13       		.uleb128 0x13
+ 1096 007d 00       		.byte	0
+ 1097 007e 00       		.byte	0
+ 1098 007f 0A       		.uleb128 0xa
+ 1099 0080 34       		.uleb128 0x34
+ 1100 0081 00       		.byte	0
+ 1101 0082 03       		.uleb128 0x3
+ 1102 0083 0E       		.uleb128 0xe
+ 1103 0084 3A       		.uleb128 0x3a
+ 1104 0085 0B       		.uleb128 0xb
+ 1105 0086 3B       		.uleb128 0x3b
+ 1106 0087 05       		.uleb128 0x5
+ 1107 0088 49       		.uleb128 0x49
+ 1108 0089 13       		.uleb128 0x13
+ 1109 008a 3F       		.uleb128 0x3f
+ 1110 008b 19       		.uleb128 0x19
+ 1111 008c 3C       		.uleb128 0x3c
+ 1112 008d 19       		.uleb128 0x19
+ 1113 008e 00       		.byte	0
+ 1114 008f 00       		.byte	0
+ 1115 0090 0B       		.uleb128 0xb
+ 1116 0091 35       		.uleb128 0x35
+ 1117 0092 00       		.byte	0
+ 1118 0093 49       		.uleb128 0x49
+ 1119 0094 13       		.uleb128 0x13
+ 1120 0095 00       		.byte	0
+ 1121 0096 00       		.byte	0
+ 1122 0097 0C       		.uleb128 0xc
+ 1123 0098 34       		.uleb128 0x34
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 23
+
+
+ 1124 0099 00       		.byte	0
+ 1125 009a 03       		.uleb128 0x3
+ 1126 009b 0E       		.uleb128 0xe
+ 1127 009c 3A       		.uleb128 0x3a
+ 1128 009d 0B       		.uleb128 0xb
+ 1129 009e 3B       		.uleb128 0x3b
+ 1130 009f 0B       		.uleb128 0xb
+ 1131 00a0 49       		.uleb128 0x49
+ 1132 00a1 13       		.uleb128 0x13
+ 1133 00a2 3F       		.uleb128 0x3f
+ 1134 00a3 19       		.uleb128 0x19
+ 1135 00a4 02       		.uleb128 0x2
+ 1136 00a5 18       		.uleb128 0x18
+ 1137 00a6 00       		.byte	0
+ 1138 00a7 00       		.byte	0
+ 1139 00a8 0D       		.uleb128 0xd
+ 1140 00a9 2E       		.uleb128 0x2e
+ 1141 00aa 00       		.byte	0
+ 1142 00ab 3F       		.uleb128 0x3f
+ 1143 00ac 19       		.uleb128 0x19
+ 1144 00ad 3C       		.uleb128 0x3c
+ 1145 00ae 19       		.uleb128 0x19
+ 1146 00af 6E       		.uleb128 0x6e
+ 1147 00b0 0E       		.uleb128 0xe
+ 1148 00b1 03       		.uleb128 0x3
+ 1149 00b2 0E       		.uleb128 0xe
+ 1150 00b3 3A       		.uleb128 0x3a
+ 1151 00b4 0B       		.uleb128 0xb
+ 1152 00b5 3B       		.uleb128 0x3b
+ 1153 00b6 0B       		.uleb128 0xb
+ 1154 00b7 00       		.byte	0
+ 1155 00b8 00       		.byte	0
+ 1156 00b9 00       		.byte	0
+ 1157              		.section	.debug_aranges,"",%progbits
+ 1158 0000 4C000000 		.4byte	0x4c
+ 1159 0004 0200     		.2byte	0x2
+ 1160 0006 00000000 		.4byte	.Ldebug_info0
+ 1161 000a 04       		.byte	0x4
+ 1162 000b 00       		.byte	0
+ 1163 000c 0000     		.2byte	0
+ 1164 000e 0000     		.2byte	0
+ 1165 0010 00000000 		.4byte	.LFB63
+ 1166 0014 28000000 		.4byte	.LFE63-.LFB63
+ 1167 0018 00000000 		.4byte	.LFB64
+ 1168 001c 28000000 		.4byte	.LFE64-.LFB64
+ 1169 0020 00000000 		.4byte	.LFB65
+ 1170 0024 40000000 		.4byte	.LFE65-.LFB65
+ 1171 0028 00000000 		.4byte	.LFB66
+ 1172 002c 40000000 		.4byte	.LFE66-.LFB66
+ 1173 0030 00000000 		.4byte	.LFB67
+ 1174 0034 40000000 		.4byte	.LFE67-.LFB67
+ 1175 0038 00000000 		.4byte	.LFB68
+ 1176 003c 40000000 		.4byte	.LFE68-.LFB68
+ 1177 0040 00000000 		.4byte	.LFB69
+ 1178 0044 20000000 		.4byte	.LFE69-.LFB69
+ 1179 0048 00000000 		.4byte	0
+ 1180 004c 00000000 		.4byte	0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 24
+
+
+ 1181              		.section	.debug_ranges,"",%progbits
+ 1182              	.Ldebug_ranges0:
+ 1183 0000 00000000 		.4byte	.LFB63
+ 1184 0004 28000000 		.4byte	.LFE63
+ 1185 0008 00000000 		.4byte	.LFB64
+ 1186 000c 28000000 		.4byte	.LFE64
+ 1187 0010 00000000 		.4byte	.LFB65
+ 1188 0014 40000000 		.4byte	.LFE65
+ 1189 0018 00000000 		.4byte	.LFB66
+ 1190 001c 40000000 		.4byte	.LFE66
+ 1191 0020 00000000 		.4byte	.LFB67
+ 1192 0024 40000000 		.4byte	.LFE67
+ 1193 0028 00000000 		.4byte	.LFB68
+ 1194 002c 40000000 		.4byte	.LFE68
+ 1195 0030 00000000 		.4byte	.LFB69
+ 1196 0034 20000000 		.4byte	.LFE69
+ 1197 0038 00000000 		.4byte	0
+ 1198 003c 00000000 		.4byte	0
+ 1199              		.section	.debug_line,"",%progbits
+ 1200              	.Ldebug_line0:
+ 1201 0000 33020000 		.section	.debug_str,"MS",%progbits,1
+ 1201      02009701 
+ 1201      00000201 
+ 1201      FB0E0D00 
+ 1201      01010101 
+ 1202              	.LASF9:
+ 1203 0000 5F5F696E 		.ascii	"__int32_t\000"
+ 1203      7433325F 
+ 1203      7400
+ 1204              	.LASF17:
+ 1205 000a 696E6372 		.ascii	"increaseSpeed\000"
+ 1205      65617365 
+ 1205      53706565 
+ 1205      6400
+ 1206              	.LASF34:
+ 1207 0018 4D6F746F 		.ascii	"MotorDrive.c\000"
+ 1207      72447269 
+ 1207      76652E63 
+ 1207      00
+ 1208              	.LASF11:
+ 1209 0025 666C6F61 		.ascii	"float\000"
+ 1209      7400
+ 1210              	.LASF30:
+ 1211 002b 50574D42 		.ascii	"PWMB_WriteCompare\000"
+ 1211      5F577269 
+ 1211      7465436F 
+ 1211      6D706172 
+ 1211      6500
+ 1212              	.LASF1:
+ 1213 003d 756E7369 		.ascii	"unsigned char\000"
+ 1213      676E6564 
+ 1213      20636861 
+ 1213      7200
+ 1214              	.LASF33:
+ 1215 004b 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1215      43313120 
+ 1215      352E342E 
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 25
+
+
+ 1215      31203230 
+ 1215      31363036 
+ 1216 007e 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1216      20726576 
+ 1216      6973696F 
+ 1216      6E203233 
+ 1216      37373135 
+ 1217 00b1 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1217      66756E63 
+ 1217      74696F6E 
+ 1217      2D736563 
+ 1217      74696F6E 
+ 1218              	.LASF5:
+ 1219 00d9 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1219      20756E73 
+ 1219      69676E65 
+ 1219      6420696E 
+ 1219      7400
+ 1220              	.LASF3:
+ 1221 00eb 73686F72 		.ascii	"short unsigned int\000"
+ 1221      7420756E 
+ 1221      7369676E 
+ 1221      65642069 
+ 1221      6E7400
+ 1222              	.LASF22:
+ 1223 00fe 73746F70 		.ascii	"stop\000"
+ 1223      00
+ 1224              	.LASF23:
+ 1225 0103 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1225      52784275 
+ 1225      66666572 
+ 1225      00
+ 1226              	.LASF32:
+ 1227 0110 42696E32 		.ascii	"Bin2_Write\000"
+ 1227      5F577269 
+ 1227      746500
+ 1228              	.LASF25:
+ 1229 011b 73746279 		.ascii	"stby_Write\000"
+ 1229      5F577269 
+ 1229      746500
+ 1230              	.LASF12:
+ 1231 0126 646F7562 		.ascii	"double\000"
+ 1231      6C6500
+ 1232              	.LASF31:
+ 1233 012d 42696E31 		.ascii	"Bin1_Write\000"
+ 1233      5F577269 
+ 1233      746500
+ 1234              	.LASF28:
+ 1235 0138 41696E31 		.ascii	"Ain1_Write\000"
+ 1235      5F577269 
+ 1235      746500
+ 1236              	.LASF8:
+ 1237 0143 756E7369 		.ascii	"unsigned int\000"
+ 1237      676E6564 
+ 1237      20696E74 
+ 1237      00
+ 1238              	.LASF18:
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 26
+
+
+ 1239 0150 64726976 		.ascii	"driveForwards\000"
+ 1239      65466F72 
+ 1239      77617264 
+ 1239      7300
+ 1240              	.LASF7:
+ 1241 015e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1241      206C6F6E 
+ 1241      6720756E 
+ 1241      7369676E 
+ 1241      65642069 
+ 1242              	.LASF29:
+ 1243 0175 41696E32 		.ascii	"Ain2_Write\000"
+ 1243      5F577269 
+ 1243      746500
+ 1244              	.LASF10:
+ 1245 0180 696E7433 		.ascii	"int32_t\000"
+ 1245      325F7400 
+ 1246              	.LASF19:
+ 1247 0188 64726976 		.ascii	"driveBackwards\000"
+ 1247      65426163 
+ 1247      6B776172 
+ 1247      647300
+ 1248              	.LASF15:
+ 1249 0197 73697A65 		.ascii	"sizetype\000"
+ 1249      74797065 
+ 1249      00
+ 1250              	.LASF6:
+ 1251 01a0 6C6F6E67 		.ascii	"long long int\000"
+ 1251      206C6F6E 
+ 1251      6720696E 
+ 1251      7400
+ 1252              	.LASF24:
+ 1253 01ae 64757479 		.ascii	"dutycycle\000"
+ 1253      6379636C 
+ 1253      6500
+ 1254              	.LASF13:
+ 1255 01b8 63686172 		.ascii	"char\000"
+ 1255      00
+ 1256              	.LASF16:
+ 1257 01bd 64656372 		.ascii	"decreaseSpeed\000"
+ 1257      65617365 
+ 1257      53706565 
+ 1257      6400
+ 1258              	.LASF27:
+ 1259 01cb 50574D41 		.ascii	"PWMA_WriteCompare\000"
+ 1259      5F577269 
+ 1259      7465436F 
+ 1259      6D706172 
+ 1259      6500
+ 1260              	.LASF2:
+ 1261 01dd 73686F72 		.ascii	"short int\000"
+ 1261      7420696E 
+ 1261      7400
+ 1262              	.LASF4:
+ 1263 01e7 6C6F6E67 		.ascii	"long int\000"
+ 1263      20696E74 
+ 1263      00
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccjex6zY.s 			page 27
+
+
+ 1264              	.LASF14:
+ 1265 01f0 6C6F6E67 		.ascii	"long double\000"
+ 1265      20646F75 
+ 1265      626C6500 
+ 1266              	.LASF35:
+ 1267 01fc 433A5C55 		.ascii	"C:\\Users\\Jesper\\OneDrive - Aarhus universitet\\E"
+ 1267      73657273 
+ 1267      5C4A6573 
+ 1267      7065725C 
+ 1267      4F6E6544 
+ 1268 022b 6C656B74 		.ascii	"lektronik\\3-Semester\\PROJEKT3\\ProjektBIL.cydsn\000"
+ 1268      726F6E69 
+ 1268      6B5C332D 
+ 1268      53656D65 
+ 1268      73746572 
+ 1269              	.LASF0:
+ 1270 025a 7369676E 		.ascii	"signed char\000"
+ 1270      65642063 
+ 1270      68617200 
+ 1271              	.LASF26:
+ 1272 0266 55415254 		.ascii	"UART_1_PutString\000"
+ 1272      5F315F50 
+ 1272      75745374 
+ 1272      72696E67 
+ 1272      00
+ 1273              	.LASF20:
+ 1274 0277 64726976 		.ascii	"driveLeft\000"
+ 1274      654C6566 
+ 1274      7400
+ 1275              	.LASF21:
+ 1276 0281 64726976 		.ascii	"driveRight\000"
+ 1276      65526967 
+ 1276      687400
+ 1277              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

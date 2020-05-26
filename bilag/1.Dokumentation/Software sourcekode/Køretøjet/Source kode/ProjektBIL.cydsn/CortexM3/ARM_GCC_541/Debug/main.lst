@@ -1,0 +1,2064 @@
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	__aeabi_i2f
+  20              		.global	__aeabi_fdiv
+  21              		.section	.text.main,"ax",%progbits
+  22              		.align	2
+  23              		.global	main
+  24              		.thumb
+  25              		.thumb_func
+  26              		.type	main, %function
+  27              	main:
+  28              	.LFB64:
+  29              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright YOUR COMPANY, THE YEAR
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main.c        ****  *
+   7:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main.c        ****  * WHICH IS THE PROPERTY OF your company.
+   9:main.c        ****  *
+  10:main.c        ****  * ========================================
+  11:main.c        **** */
+  12:main.c        **** #include <stdio.h>
+  13:main.c        **** #include <stdlib.h>
+  14:main.c        **** #include "project.h"
+  15:main.c        **** #include "MotorDrive.h"
+  16:main.c        **** #include "ServoArm.h"
+  17:main.c        **** #include "Sensor.h"
+  18:main.c        **** 
+  19:main.c        **** CY_ISR_PROTO(ISR_UART_rx_handler);
+  20:main.c        **** void handleByteReceived(uint8_t byteReceived);
+  21:main.c        ****  
+  22:main.c        **** 
+  23:main.c        ****     int control_2   = 78;
+  24:main.c        ****     int control_3   = 32;
+  25:main.c        ****     int control_4   = 30;
+  26:main.c        ****     int control_6   = 60;
+  27:main.c        ****      
+  28:main.c        ****     //Sensor
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 2
+
+
+  29:main.c        ****     int counter = 0;
+  30:main.c        ****     float distance = 0.0;
+  31:main.c        ****    
+  32:main.c        **** 
+  33:main.c        **** 
+  34:main.c        **** int main(void)
+  35:main.c        **** {
+  30              		.loc 1 35 0
+  31              		.cfi_startproc
+  32              		@ Volatile: function does not return.
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35 0000 08B5     		push	{r3, lr}
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+  36:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  39              		.loc 1 36 0
+  40              		.syntax unified
+  41              	@ 36 "main.c" 1
+  42 0002 62B6     		CPSIE   i
+  43              	@ 0 "" 2
+  37:main.c        **** 
+  38:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  39:main.c        ****     isr_uart_rx_StartEx(ISR_UART_rx_handler);
+  44              		.loc 1 39 0
+  45              		.thumb
+  46              		.syntax unified
+  47 0004 2F48     		ldr	r0, .L7
+  48 0006 FFF7FEFF 		bl	isr_uart_rx_StartEx
+  49              	.LVL0:
+  40:main.c        ****     UART_1_Start();
+  50              		.loc 1 40 0
+  51 000a FFF7FEFF 		bl	UART_1_Start
+  52              	.LVL1:
+  41:main.c        ****     PWMA_Start();
+  53              		.loc 1 41 0
+  54 000e FFF7FEFF 		bl	PWMA_Start
+  55              	.LVL2:
+  42:main.c        ****     PWMB_Start();
+  56              		.loc 1 42 0
+  57 0012 FFF7FEFF 		bl	PWMB_Start
+  58              	.LVL3:
+  43:main.c        ****     stby_Write(0);
+  59              		.loc 1 43 0
+  60 0016 0020     		movs	r0, #0
+  61 0018 FFF7FEFF 		bl	stby_Write
+  62              	.LVL4:
+  44:main.c        ****     
+  45:main.c        ****     //Sensor
+  46:main.c        ****     Timer_1_Start();
+  63              		.loc 1 46 0
+  64 001c FFF7FEFF 		bl	Timer_1_Start
+  65              	.LVL5:
+  47:main.c        ****     
+  48:main.c        ****     UART_1_PutString("DC-Motor-PWM application started\r\n");
+  66              		.loc 1 48 0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 3
+
+
+  67 0020 2948     		ldr	r0, .L7+4
+  68 0022 FFF7FEFF 		bl	UART_1_PutString
+  69              	.LVL6:
+  49:main.c        ****     UART_1_PutString("0: Stop\r\n");
+  70              		.loc 1 49 0
+  71 0026 2948     		ldr	r0, .L7+8
+  72 0028 FFF7FEFF 		bl	UART_1_PutString
+  73              	.LVL7:
+  50:main.c        ****     UART_1_PutString("w: Drive forwards\r\n");
+  74              		.loc 1 50 0
+  75 002c 2848     		ldr	r0, .L7+12
+  76 002e FFF7FEFF 		bl	UART_1_PutString
+  77              	.LVL8:
+  51:main.c        ****     UART_1_PutString("s: Drive backwards\r\n");
+  78              		.loc 1 51 0
+  79 0032 2848     		ldr	r0, .L7+16
+  80 0034 FFF7FEFF 		bl	UART_1_PutString
+  81              	.LVL9:
+  52:main.c        ****     UART_1_PutString("a: Drive left\r\n");
+  82              		.loc 1 52 0
+  83 0038 2748     		ldr	r0, .L7+20
+  84 003a FFF7FEFF 		bl	UART_1_PutString
+  85              	.LVL10:
+  53:main.c        ****     UART_1_PutString("s: Drive right\r\n");
+  86              		.loc 1 53 0
+  87 003e 2748     		ldr	r0, .L7+24
+  88 0040 FFF7FEFF 		bl	UART_1_PutString
+  89              	.LVL11:
+  54:main.c        ****     UART_1_PutString("1: Increase speed\r\n");
+  90              		.loc 1 54 0
+  91 0044 2648     		ldr	r0, .L7+28
+  92 0046 FFF7FEFF 		bl	UART_1_PutString
+  93              	.LVL12:
+  55:main.c        ****     UART_1_PutString("2: Decrease speed\r\n");
+  94              		.loc 1 55 0
+  95 004a 2648     		ldr	r0, .L7+32
+  96 004c FFF7FEFF 		bl	UART_1_PutString
+  97              	.LVL13:
+  56:main.c        ****     
+  57:main.c        ****     //Servo arm
+  58:main.c        ****     PWM_2_Start();
+  98              		.loc 1 58 0
+  99 0050 FFF7FEFF 		bl	PWM_2_Start
+ 100              	.LVL14:
+  59:main.c        ****     PWM_3_Start();
+ 101              		.loc 1 59 0
+ 102 0054 FFF7FEFF 		bl	PWM_3_Start
+ 103              	.LVL15:
+  60:main.c        ****     PWM_4_Start();
+ 104              		.loc 1 60 0
+ 105 0058 FFF7FEFF 		bl	PWM_4_Start
+ 106              	.LVL16:
+  61:main.c        ****     PWM_6_Start();
+ 107              		.loc 1 61 0
+ 108 005c FFF7FEFF 		bl	PWM_6_Start
+ 109              	.LVL17:
+  62:main.c        ****    
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 4
+
+
+  63:main.c        ****     PWM_2_WriteCompare(control_2);
+ 110              		.loc 1 63 0
+ 111 0060 214C     		ldr	r4, .L7+36
+ 112 0062 2088     		ldrh	r0, [r4]
+ 113 0064 FFF7FEFF 		bl	PWM_2_WriteCompare
+ 114              	.LVL18:
+  64:main.c        ****     PWM_3_WriteCompare(control_3);
+ 115              		.loc 1 64 0
+ 116 0068 A088     		ldrh	r0, [r4, #4]
+ 117 006a FFF7FEFF 		bl	PWM_3_WriteCompare
+ 118              	.LVL19:
+  65:main.c        ****     PWM_4_WriteCompare(control_4);
+ 119              		.loc 1 65 0
+ 120 006e 2089     		ldrh	r0, [r4, #8]
+ 121 0070 FFF7FEFF 		bl	PWM_4_WriteCompare
+ 122              	.LVL20:
+  66:main.c        ****     PWM_6_WriteCompare(control_6);
+ 123              		.loc 1 66 0
+ 124 0074 A089     		ldrh	r0, [r4, #12]
+ 125 0076 FFF7FEFF 		bl	PWM_6_WriteCompare
+ 126              	.LVL21:
+ 127 007a 0BE0     		b	.L2
+ 128              	.L3:
+  67:main.c        ****     
+  68:main.c        **** 
+  69:main.c        ****     
+  70:main.c        ****     for(;;)
+  71:main.c        ****     {
+  72:main.c        ****         while(Echo_Read()==0){
+  73:main.c        ****        Control_Reg_1_Write(1);
+ 129              		.loc 1 73 0
+ 130 007c 0120     		movs	r0, #1
+ 131 007e FFF7FEFF 		bl	Control_Reg_1_Write
+ 132              	.LVL22:
+  74:main.c        ****        CyDelayUs(10);
+ 133              		.loc 1 74 0
+ 134 0082 0A20     		movs	r0, #10
+ 135 0084 FFF7FEFF 		bl	CyDelayUs
+ 136              	.LVL23:
+  75:main.c        ****        Control_Reg_1_Write(0);
+ 137              		.loc 1 75 0
+ 138 0088 0020     		movs	r0, #0
+ 139 008a FFF7FEFF 		bl	Control_Reg_1_Write
+ 140              	.LVL24:
+  76:main.c        ****        CyDelay(1);     
+ 141              		.loc 1 76 0
+ 142 008e 0120     		movs	r0, #1
+ 143 0090 FFF7FEFF 		bl	CyDelay
+ 144              	.LVL25:
+ 145              	.L2:
+  72:main.c        ****        Control_Reg_1_Write(1);
+ 146              		.loc 1 72 0
+ 147 0094 FFF7FEFF 		bl	Echo_Read
+ 148              	.LVL26:
+ 149 0098 0028     		cmp	r0, #0
+ 150 009a EFD0     		beq	.L3
+ 151              	.L4:
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 5
+
+
+  77:main.c        ****        }
+  78:main.c        ****        while (Echo_Read()==1){}
+ 152              		.loc 1 78 0 discriminator 1
+ 153 009c FFF7FEFF 		bl	Echo_Read
+ 154              	.LVL27:
+ 155 00a0 0128     		cmp	r0, #1
+ 156 00a2 FBD0     		beq	.L4
+  79:main.c        ****         
+  80:main.c        ****       counter = 65535 - Timer_1_ReadCounter();
+ 157              		.loc 1 80 0
+ 158 00a4 FFF7FEFF 		bl	Timer_1_ReadCounter
+ 159              	.LVL28:
+ 160 00a8 C0F57F40 		rsb	r0, r0, #65280
+ 161 00ac FF30     		adds	r0, r0, #255
+ 162 00ae 0F4C     		ldr	r4, .L7+40
+ 163 00b0 2060     		str	r0, [r4]
+  81:main.c        ****       distance= (float)counter/58.0;
+ 164              		.loc 1 81 0
+ 165 00b2 FFF7FEFF 		bl	__aeabi_i2f
+ 166              	.LVL29:
+ 167 00b6 0E49     		ldr	r1, .L7+44
+ 168 00b8 FFF7FEFF 		bl	__aeabi_fdiv
+ 169              	.LVL30:
+ 170 00bc 6060     		str	r0, [r4, #4]	@ float
+  82:main.c        ****       writesToUART(distance);
+ 171              		.loc 1 82 0
+ 172 00be FFF7FEFF 		bl	writesToUART
+ 173              	.LVL31:
+  83:main.c        ****     }
+ 174              		.loc 1 83 0
+ 175 00c2 E7E7     		b	.L2
+ 176              	.L8:
+ 177              		.align	2
+ 178              	.L7:
+ 179 00c4 00000000 		.word	ISR_UART_rx_handler
+ 180 00c8 00000000 		.word	.LC0
+ 181 00cc 24000000 		.word	.LC1
+ 182 00d0 30000000 		.word	.LC2
+ 183 00d4 44000000 		.word	.LC3
+ 184 00d8 5C000000 		.word	.LC4
+ 185 00dc 6C000000 		.word	.LC5
+ 186 00e0 80000000 		.word	.LC6
+ 187 00e4 94000000 		.word	.LC7
+ 188 00e8 00000000 		.word	.LANCHOR0
+ 189 00ec 00000000 		.word	.LANCHOR1
+ 190 00f0 00006842 		.word	1114112000
+ 191              		.cfi_endproc
+ 192              	.LFE64:
+ 193              		.size	main, .-main
+ 194              		.global	__aeabi_fcmple
+ 195              		.section	.text.handleByteReceived,"ax",%progbits
+ 196              		.align	2
+ 197              		.global	handleByteReceived
+ 198              		.thumb
+ 199              		.thumb_func
+ 200              		.type	handleByteReceived, %function
+ 201              	handleByteReceived:
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 6
+
+
+ 202              	.LFB66:
+  84:main.c        **** }
+  85:main.c        **** 
+  86:main.c        **** CY_ISR(ISR_UART_rx_handler)
+  87:main.c        **** {
+  88:main.c        ****     uint8_t bytesToRead = UART_1_GetRxBufferSize();
+  89:main.c        ****     while (bytesToRead > 0)
+  90:main.c        ****     {
+  91:main.c        ****         uint8_t byteReceived = UART_1_ReadRxData();
+  92:main.c        ****         UART_1_WriteTxData(byteReceived); // echo back
+  93:main.c        ****         
+  94:main.c        ****         handleByteReceived(byteReceived);
+  95:main.c        ****         
+  96:main.c        ****         bytesToRead--;
+  97:main.c        ****     }
+  98:main.c        **** }
+  99:main.c        **** 
+ 100:main.c        **** void handleByteReceived(uint8_t byteReceived)
+ 101:main.c        **** {
+ 203              		.loc 1 101 0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207              	.LVL32:
+ 208 0000 08B5     		push	{r3, lr}
+ 209              		.cfi_def_cfa_offset 8
+ 210              		.cfi_offset 3, -8
+ 211              		.cfi_offset 14, -4
+ 102:main.c        ****     switch(byteReceived)
+ 212              		.loc 1 102 0
+ 213 0002 3038     		subs	r0, r0, #48
+ 214              	.LVL33:
+ 215 0004 4728     		cmp	r0, #71
+ 216 0006 45D8     		bhi	.L9
+ 217 0008 DFE800F0 		tbb	[pc, r0]
+ 218              	.L12:
+ 219 000c 42       		.byte	(.L11-.L12)/2
+ 220 000d 27       		.byte	(.L13-.L12)/2
+ 221 000e 24       		.byte	(.L14-.L12)/2
+ 222 000f 36       		.byte	(.L15-.L12)/2
+ 223 0010 3F       		.byte	(.L16-.L12)/2
+ 224 0011 44       		.byte	(.L9-.L12)/2
+ 225 0012 44       		.byte	(.L9-.L12)/2
+ 226 0013 44       		.byte	(.L9-.L12)/2
+ 227 0014 44       		.byte	(.L9-.L12)/2
+ 228 0015 44       		.byte	(.L9-.L12)/2
+ 229 0016 44       		.byte	(.L9-.L12)/2
+ 230 0017 44       		.byte	(.L9-.L12)/2
+ 231 0018 44       		.byte	(.L9-.L12)/2
+ 232 0019 44       		.byte	(.L9-.L12)/2
+ 233 001a 44       		.byte	(.L9-.L12)/2
+ 234 001b 44       		.byte	(.L9-.L12)/2
+ 235 001c 44       		.byte	(.L9-.L12)/2
+ 236 001d 44       		.byte	(.L9-.L12)/2
+ 237 001e 44       		.byte	(.L9-.L12)/2
+ 238 001f 44       		.byte	(.L9-.L12)/2
+ 239 0020 44       		.byte	(.L9-.L12)/2
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 7
+
+
+ 240 0021 44       		.byte	(.L9-.L12)/2
+ 241 0022 44       		.byte	(.L9-.L12)/2
+ 242 0023 44       		.byte	(.L9-.L12)/2
+ 243 0024 44       		.byte	(.L9-.L12)/2
+ 244 0025 44       		.byte	(.L9-.L12)/2
+ 245 0026 44       		.byte	(.L9-.L12)/2
+ 246 0027 44       		.byte	(.L9-.L12)/2
+ 247 0028 44       		.byte	(.L9-.L12)/2
+ 248 0029 44       		.byte	(.L9-.L12)/2
+ 249 002a 44       		.byte	(.L9-.L12)/2
+ 250 002b 44       		.byte	(.L9-.L12)/2
+ 251 002c 44       		.byte	(.L9-.L12)/2
+ 252 002d 44       		.byte	(.L9-.L12)/2
+ 253 002e 44       		.byte	(.L9-.L12)/2
+ 254 002f 44       		.byte	(.L9-.L12)/2
+ 255 0030 44       		.byte	(.L9-.L12)/2
+ 256 0031 44       		.byte	(.L9-.L12)/2
+ 257 0032 44       		.byte	(.L9-.L12)/2
+ 258 0033 44       		.byte	(.L9-.L12)/2
+ 259 0034 44       		.byte	(.L9-.L12)/2
+ 260 0035 44       		.byte	(.L9-.L12)/2
+ 261 0036 44       		.byte	(.L9-.L12)/2
+ 262 0037 44       		.byte	(.L9-.L12)/2
+ 263 0038 44       		.byte	(.L9-.L12)/2
+ 264 0039 44       		.byte	(.L9-.L12)/2
+ 265 003a 44       		.byte	(.L9-.L12)/2
+ 266 003b 44       		.byte	(.L9-.L12)/2
+ 267 003c 44       		.byte	(.L9-.L12)/2
+ 268 003d 30       		.byte	(.L17-.L12)/2
+ 269 003e 44       		.byte	(.L9-.L12)/2
+ 270 003f 44       		.byte	(.L9-.L12)/2
+ 271 0040 33       		.byte	(.L18-.L12)/2
+ 272 0041 44       		.byte	(.L9-.L12)/2
+ 273 0042 44       		.byte	(.L9-.L12)/2
+ 274 0043 44       		.byte	(.L9-.L12)/2
+ 275 0044 44       		.byte	(.L9-.L12)/2
+ 276 0045 44       		.byte	(.L9-.L12)/2
+ 277 0046 44       		.byte	(.L9-.L12)/2
+ 278 0047 44       		.byte	(.L9-.L12)/2
+ 279 0048 44       		.byte	(.L9-.L12)/2
+ 280 0049 44       		.byte	(.L9-.L12)/2
+ 281 004a 44       		.byte	(.L9-.L12)/2
+ 282 004b 44       		.byte	(.L9-.L12)/2
+ 283 004c 44       		.byte	(.L9-.L12)/2
+ 284 004d 44       		.byte	(.L9-.L12)/2
+ 285 004e 44       		.byte	(.L9-.L12)/2
+ 286 004f 2D       		.byte	(.L19-.L12)/2
+ 287 0050 44       		.byte	(.L9-.L12)/2
+ 288 0051 44       		.byte	(.L9-.L12)/2
+ 289 0052 44       		.byte	(.L9-.L12)/2
+ 290 0053 2A       		.byte	(.L20-.L12)/2
+ 291              		.p2align 1
+ 292              	.L14:
+ 103:main.c        ****     {
+ 104:main.c        ****         case '2' :
+ 105:main.c        ****         {
+ 106:main.c        ****             decreaseSpeed();
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 8
+
+
+ 293              		.loc 1 106 0
+ 294 0054 FFF7FEFF 		bl	decreaseSpeed
+ 295              	.LVL34:
+ 107:main.c        ****         }
+ 108:main.c        ****         break;
+ 296              		.loc 1 108 0
+ 297 0058 08BD     		pop	{r3, pc}
+ 298              	.L13:
+ 109:main.c        ****         case '1' :
+ 110:main.c        ****         {
+ 111:main.c        ****             increaseSpeed();
+ 299              		.loc 1 111 0
+ 300 005a FFF7FEFF 		bl	increaseSpeed
+ 301              	.LVL35:
+ 112:main.c        ****         }
+ 113:main.c        ****         break;
+ 302              		.loc 1 113 0
+ 303 005e 08BD     		pop	{r3, pc}
+ 304              	.L20:
+ 114:main.c        ****         case 'w' :
+ 115:main.c        ****         {
+ 116:main.c        ****             //writesToUART(distance);
+ 117:main.c        ****             driveForwards();
+ 305              		.loc 1 117 0
+ 306 0060 FFF7FEFF 		bl	driveForwards
+ 307              	.LVL36:
+ 118:main.c        ****         }
+ 119:main.c        ****         break;
+ 308              		.loc 1 119 0
+ 309 0064 08BD     		pop	{r3, pc}
+ 310              	.L19:
+ 120:main.c        ****         case 's' :
+ 121:main.c        ****         {
+ 122:main.c        ****             driveBackwards();
+ 311              		.loc 1 122 0
+ 312 0066 FFF7FEFF 		bl	driveBackwards
+ 313              	.LVL37:
+ 123:main.c        ****         }
+ 124:main.c        ****         break;
+ 314              		.loc 1 124 0
+ 315 006a 08BD     		pop	{r3, pc}
+ 316              	.L17:
+ 125:main.c        ****          case 'a' :
+ 126:main.c        ****         {
+ 127:main.c        ****             driveLeft();
+ 317              		.loc 1 127 0
+ 318 006c FFF7FEFF 		bl	driveLeft
+ 319              	.LVL38:
+ 128:main.c        ****         }
+ 129:main.c        ****         break;
+ 320              		.loc 1 129 0
+ 321 0070 08BD     		pop	{r3, pc}
+ 322              	.L18:
+ 130:main.c        ****          case 'd' :
+ 131:main.c        ****         {
+ 132:main.c        ****             driveRight();
+ 323              		.loc 1 132 0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 9
+
+
+ 324 0072 FFF7FEFF 		bl	driveRight
+ 325              	.LVL39:
+ 133:main.c        ****         }
+ 134:main.c        ****         break;
+ 326              		.loc 1 134 0
+ 327 0076 08BD     		pop	{r3, pc}
+ 328              	.L15:
+ 135:main.c        ****          case '3' :
+ 136:main.c        ****         {
+ 137:main.c        ****             if(distance <= 30)
+ 329              		.loc 1 137 0
+ 330 0078 0749     		ldr	r1, .L24
+ 331 007a 084B     		ldr	r3, .L24+4
+ 332 007c 5868     		ldr	r0, [r3, #4]	@ float
+ 333 007e FFF7FEFF 		bl	__aeabi_fcmple
+ 334              	.LVL40:
+ 335 0082 38B1     		cbz	r0, .L9
+ 138:main.c        ****             {
+ 139:main.c        ****                 LOFT();
+ 336              		.loc 1 139 0
+ 337 0084 FFF7FEFF 		bl	LOFT
+ 338              	.LVL41:
+ 339 0088 08BD     		pop	{r3, pc}
+ 340              	.L16:
+ 140:main.c        ****             }
+ 141:main.c        ****             
+ 142:main.c        ****             else{}
+ 143:main.c        ****         }
+ 144:main.c        ****         break;
+ 145:main.c        ****          case '4' :
+ 146:main.c        ****         {
+ 147:main.c        ****             SANK();
+ 341              		.loc 1 147 0
+ 342 008a FFF7FEFF 		bl	SANK
+ 343              	.LVL42:
+ 148:main.c        ****         }
+ 149:main.c        ****         break;
+ 344              		.loc 1 149 0
+ 345 008e 08BD     		pop	{r3, pc}
+ 346              	.L11:
+ 150:main.c        ****         case '0' :
+ 151:main.c        ****         {
+ 152:main.c        ****             stop();
+ 347              		.loc 1 152 0
+ 348 0090 FFF7FEFF 		bl	stop
+ 349              	.LVL43:
+ 350              	.L9:
+ 351 0094 08BD     		pop	{r3, pc}
+ 352              	.L25:
+ 353 0096 00BF     		.align	2
+ 354              	.L24:
+ 355 0098 0000F041 		.word	1106247680
+ 356 009c 00000000 		.word	.LANCHOR1
+ 357              		.cfi_endproc
+ 358              	.LFE66:
+ 359              		.size	handleByteReceived, .-handleByteReceived
+ 360              		.section	.text.ISR_UART_rx_handler,"ax",%progbits
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 10
+
+
+ 361              		.align	2
+ 362              		.global	ISR_UART_rx_handler
+ 363              		.thumb
+ 364              		.thumb_func
+ 365              		.type	ISR_UART_rx_handler, %function
+ 366              	ISR_UART_rx_handler:
+ 367              	.LFB65:
+  87:main.c        ****     uint8_t bytesToRead = UART_1_GetRxBufferSize();
+ 368              		.loc 1 87 0
+ 369              		.cfi_startproc
+ 370              		@ args = 0, pretend = 0, frame = 0
+ 371              		@ frame_needed = 0, uses_anonymous_args = 0
+ 372 0000 38B5     		push	{r3, r4, r5, lr}
+ 373              		.cfi_def_cfa_offset 16
+ 374              		.cfi_offset 3, -16
+ 375              		.cfi_offset 4, -12
+ 376              		.cfi_offset 5, -8
+ 377              		.cfi_offset 14, -4
+  88:main.c        ****     while (bytesToRead > 0)
+ 378              		.loc 1 88 0
+ 379 0002 FFF7FEFF 		bl	UART_1_GetRxBufferSize
+ 380              	.LVL44:
+ 381 0006 0446     		mov	r4, r0
+ 382              	.LVL45:
+  89:main.c        ****     {
+ 383              		.loc 1 89 0
+ 384 0008 09E0     		b	.L27
+ 385              	.L28:
+ 386              	.LBB2:
+  91:main.c        ****         UART_1_WriteTxData(byteReceived); // echo back
+ 387              		.loc 1 91 0
+ 388 000a FFF7FEFF 		bl	UART_1_ReadRxData
+ 389              	.LVL46:
+ 390 000e 0546     		mov	r5, r0
+ 391              	.LVL47:
+  92:main.c        ****         
+ 392              		.loc 1 92 0
+ 393 0010 FFF7FEFF 		bl	UART_1_WriteTxData
+ 394              	.LVL48:
+  94:main.c        ****         
+ 395              		.loc 1 94 0
+ 396 0014 2846     		mov	r0, r5
+ 397 0016 FFF7FEFF 		bl	handleByteReceived
+ 398              	.LVL49:
+  96:main.c        ****     }
+ 399              		.loc 1 96 0
+ 400 001a 013C     		subs	r4, r4, #1
+ 401              	.LVL50:
+ 402 001c E4B2     		uxtb	r4, r4
+ 403              	.LVL51:
+ 404              	.L27:
+ 405              	.LBE2:
+  89:main.c        ****     {
+ 406              		.loc 1 89 0
+ 407 001e 002C     		cmp	r4, #0
+ 408 0020 F3D1     		bne	.L28
+  98:main.c        **** 
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 11
+
+
+ 409              		.loc 1 98 0
+ 410 0022 38BD     		pop	{r3, r4, r5, pc}
+ 411              		.cfi_endproc
+ 412              	.LFE65:
+ 413              		.size	ISR_UART_rx_handler, .-ISR_UART_rx_handler
+ 414              		.global	distance
+ 415              		.global	counter
+ 416              		.global	control_6
+ 417              		.global	control_4
+ 418              		.global	control_3
+ 419              		.global	control_2
+ 420              		.data
+ 421              		.align	2
+ 422              		.set	.LANCHOR0,. + 0
+ 423              		.type	control_2, %object
+ 424              		.size	control_2, 4
+ 425              	control_2:
+ 426 0000 4E000000 		.word	78
+ 427              		.type	control_3, %object
+ 428              		.size	control_3, 4
+ 429              	control_3:
+ 430 0004 20000000 		.word	32
+ 431              		.type	control_4, %object
+ 432              		.size	control_4, 4
+ 433              	control_4:
+ 434 0008 1E000000 		.word	30
+ 435              		.type	control_6, %object
+ 436              		.size	control_6, 4
+ 437              	control_6:
+ 438 000c 3C000000 		.word	60
+ 439              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 440              		.align	2
+ 441              	.LC0:
+ 442 0000 44432D4D 		.ascii	"DC-Motor-PWM application started\015\012\000"
+ 442      6F746F72 
+ 442      2D50574D 
+ 442      20617070 
+ 442      6C696361 
+ 443 0023 00       		.space	1
+ 444              	.LC1:
+ 445 0024 303A2053 		.ascii	"0: Stop\015\012\000"
+ 445      746F700D 
+ 445      0A00
+ 446 002e 0000     		.space	2
+ 447              	.LC2:
+ 448 0030 773A2044 		.ascii	"w: Drive forwards\015\012\000"
+ 448      72697665 
+ 448      20666F72 
+ 448      77617264 
+ 448      730D0A00 
+ 449              	.LC3:
+ 450 0044 733A2044 		.ascii	"s: Drive backwards\015\012\000"
+ 450      72697665 
+ 450      20626163 
+ 450      6B776172 
+ 450      64730D0A 
+ 451 0059 000000   		.space	3
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 12
+
+
+ 452              	.LC4:
+ 453 005c 613A2044 		.ascii	"a: Drive left\015\012\000"
+ 453      72697665 
+ 453      206C6566 
+ 453      740D0A00 
+ 454              	.LC5:
+ 455 006c 733A2044 		.ascii	"s: Drive right\015\012\000"
+ 455      72697665 
+ 455      20726967 
+ 455      68740D0A 
+ 455      00
+ 456 007d 000000   		.space	3
+ 457              	.LC6:
+ 458 0080 313A2049 		.ascii	"1: Increase speed\015\012\000"
+ 458      6E637265 
+ 458      61736520 
+ 458      73706565 
+ 458      640D0A00 
+ 459              	.LC7:
+ 460 0094 323A2044 		.ascii	"2: Decrease speed\015\012\000"
+ 460      65637265 
+ 460      61736520 
+ 460      73706565 
+ 460      640D0A00 
+ 461              		.bss
+ 462              		.align	2
+ 463              		.set	.LANCHOR1,. + 0
+ 464              		.type	counter, %object
+ 465              		.size	counter, 4
+ 466              	counter:
+ 467 0000 00000000 		.space	4
+ 468              		.type	distance, %object
+ 469              		.size	distance, 4
+ 470              	distance:
+ 471 0004 00000000 		.space	4
+ 472              		.text
+ 473              	.Letext0:
+ 474              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 475              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 476              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 477              		.file 5 "Generated_Source\\PSoC5/isr_uart_rx.h"
+ 478              		.file 6 "Generated_Source\\PSoC5/UART_1.h"
+ 479              		.file 7 "Generated_Source\\PSoC5/PWMA.h"
+ 480              		.file 8 "Generated_Source\\PSoC5/PWMB.h"
+ 481              		.file 9 "Generated_Source\\PSoC5/stby.h"
+ 482              		.file 10 "Generated_Source\\PSoC5/Timer_1.h"
+ 483              		.file 11 "Generated_Source\\PSoC5/PWM_2.h"
+ 484              		.file 12 "Generated_Source\\PSoC5/PWM_3.h"
+ 485              		.file 13 "Generated_Source\\PSoC5/PWM_4.h"
+ 486              		.file 14 "Generated_Source\\PSoC5/PWM_6.h"
+ 487              		.file 15 "Generated_Source\\PSoC5/Control_Reg_1.h"
+ 488              		.file 16 "Generated_Source\\PSoC5/CyLib.h"
+ 489              		.file 17 "Generated_Source\\PSoC5/Echo.h"
+ 490              		.file 18 "Sensor.h"
+ 491              		.file 19 "MotorDrive.h"
+ 492              		.file 20 "ServoArm.h"
+ 493              		.section	.debug_info,"",%progbits
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 13
+
+
+ 494              	.Ldebug_info0:
+ 495 0000 5F050000 		.4byte	0x55f
+ 496 0004 0400     		.2byte	0x4
+ 497 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 498 000a 04       		.byte	0x4
+ 499 000b 01       		.uleb128 0x1
+ 500 000c 35030000 		.4byte	.LASF62
+ 501 0010 0C       		.byte	0xc
+ 502 0011 92020000 		.4byte	.LASF63
+ 503 0015 BB000000 		.4byte	.LASF64
+ 504 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 505 001d 00000000 		.4byte	0
+ 506 0021 00000000 		.4byte	.Ldebug_line0
+ 507 0025 02       		.uleb128 0x2
+ 508 0026 01       		.byte	0x1
+ 509 0027 06       		.byte	0x6
+ 510 0028 CC010000 		.4byte	.LASF0
+ 511 002c 03       		.uleb128 0x3
+ 512 002d 0A040000 		.4byte	.LASF4
+ 513 0031 02       		.byte	0x2
+ 514 0032 1D       		.byte	0x1d
+ 515 0033 37000000 		.4byte	0x37
+ 516 0037 02       		.uleb128 0x2
+ 517 0038 01       		.byte	0x1
+ 518 0039 08       		.byte	0x8
+ 519 003a B6010000 		.4byte	.LASF1
+ 520 003e 02       		.uleb128 0x2
+ 521 003f 02       		.byte	0x2
+ 522 0040 05       		.byte	0x5
+ 523 0041 52000000 		.4byte	.LASF2
+ 524 0045 02       		.uleb128 0x2
+ 525 0046 02       		.byte	0x2
+ 526 0047 07       		.byte	0x7
+ 527 0048 1E020000 		.4byte	.LASF3
+ 528 004c 03       		.uleb128 0x3
+ 529 004d 03030000 		.4byte	.LASF5
+ 530 0051 02       		.byte	0x2
+ 531 0052 3F       		.byte	0x3f
+ 532 0053 57000000 		.4byte	0x57
+ 533 0057 02       		.uleb128 0x2
+ 534 0058 04       		.byte	0x4
+ 535 0059 05       		.byte	0x5
+ 536 005a 74010000 		.4byte	.LASF6
+ 537 005e 02       		.uleb128 0x2
+ 538 005f 04       		.byte	0x4
+ 539 0060 07       		.byte	0x7
+ 540 0061 99020000 		.4byte	.LASF7
+ 541 0065 02       		.uleb128 0x2
+ 542 0066 08       		.byte	0x8
+ 543 0067 05       		.byte	0x5
+ 544 0068 59010000 		.4byte	.LASF8
+ 545 006c 02       		.uleb128 0x2
+ 546 006d 08       		.byte	0x8
+ 547 006e 07       		.byte	0x7
+ 548 006f D8010000 		.4byte	.LASF9
+ 549 0073 04       		.uleb128 0x4
+ 550 0074 04       		.byte	0x4
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 14
+
+
+ 551 0075 05       		.byte	0x5
+ 552 0076 696E7400 		.ascii	"int\000"
+ 553 007a 02       		.uleb128 0x2
+ 554 007b 04       		.byte	0x4
+ 555 007c 07       		.byte	0x7
+ 556 007d EF010000 		.4byte	.LASF10
+ 557 0081 02       		.uleb128 0x2
+ 558 0082 08       		.byte	0x8
+ 559 0083 04       		.byte	0x4
+ 560 0084 A0010000 		.4byte	.LASF11
+ 561 0088 02       		.uleb128 0x2
+ 562 0089 04       		.byte	0x4
+ 563 008a 07       		.byte	0x7
+ 564 008b 5C000000 		.4byte	.LASF12
+ 565 008f 02       		.uleb128 0x2
+ 566 0090 01       		.byte	0x1
+ 567 0091 08       		.byte	0x8
+ 568 0092 45020000 		.4byte	.LASF13
+ 569 0096 03       		.uleb128 0x3
+ 570 0097 2C010000 		.4byte	.LASF14
+ 571 009b 03       		.byte	0x3
+ 572 009c 18       		.byte	0x18
+ 573 009d 2C000000 		.4byte	0x2c
+ 574 00a1 03       		.uleb128 0x3
+ 575 00a2 53020000 		.4byte	.LASF15
+ 576 00a6 03       		.byte	0x3
+ 577 00a7 2C       		.byte	0x2c
+ 578 00a8 4C000000 		.4byte	0x4c
+ 579 00ac 02       		.uleb128 0x2
+ 580 00ad 04       		.byte	0x4
+ 581 00ae 04       		.byte	0x4
+ 582 00af 53010000 		.4byte	.LASF16
+ 583 00b3 02       		.uleb128 0x2
+ 584 00b4 08       		.byte	0x8
+ 585 00b5 04       		.byte	0x4
+ 586 00b6 0D030000 		.4byte	.LASF17
+ 587 00ba 05       		.uleb128 0x5
+ 588 00bb 85000000 		.4byte	.LASF65
+ 589 00bf 01       		.byte	0x1
+ 590 00c0 22       		.byte	0x22
+ 591 00c1 73000000 		.4byte	0x73
+ 592 00c5 00000000 		.4byte	.LFB64
+ 593 00c9 F4000000 		.4byte	.LFE64-.LFB64
+ 594 00cd 01       		.uleb128 0x1
+ 595 00ce 9C       		.byte	0x9c
+ 596 00cf 92020000 		.4byte	0x292
+ 597 00d3 06       		.uleb128 0x6
+ 598 00d4 0A000000 		.4byte	.LVL0
+ 599 00d8 F7030000 		.4byte	0x3f7
+ 600 00dc EA000000 		.4byte	0xea
+ 601 00e0 07       		.uleb128 0x7
+ 602 00e1 01       		.uleb128 0x1
+ 603 00e2 50       		.byte	0x50
+ 604 00e3 05       		.uleb128 0x5
+ 605 00e4 03       		.byte	0x3
+ 606 00e5 00000000 		.4byte	ISR_UART_rx_handler
+ 607 00e9 00       		.byte	0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 15
+
+
+ 608 00ea 08       		.uleb128 0x8
+ 609 00eb 0E000000 		.4byte	.LVL1
+ 610 00ef 02040000 		.4byte	0x402
+ 611 00f3 08       		.uleb128 0x8
+ 612 00f4 12000000 		.4byte	.LVL2
+ 613 00f8 0D040000 		.4byte	0x40d
+ 614 00fc 08       		.uleb128 0x8
+ 615 00fd 16000000 		.4byte	.LVL3
+ 616 0101 18040000 		.4byte	0x418
+ 617 0105 06       		.uleb128 0x6
+ 618 0106 1C000000 		.4byte	.LVL4
+ 619 010a 23040000 		.4byte	0x423
+ 620 010e 18010000 		.4byte	0x118
+ 621 0112 07       		.uleb128 0x7
+ 622 0113 01       		.uleb128 0x1
+ 623 0114 50       		.byte	0x50
+ 624 0115 01       		.uleb128 0x1
+ 625 0116 30       		.byte	0x30
+ 626 0117 00       		.byte	0
+ 627 0118 08       		.uleb128 0x8
+ 628 0119 20000000 		.4byte	.LVL5
+ 629 011d 2E040000 		.4byte	0x42e
+ 630 0121 06       		.uleb128 0x6
+ 631 0122 26000000 		.4byte	.LVL6
+ 632 0126 39040000 		.4byte	0x439
+ 633 012a 38010000 		.4byte	0x138
+ 634 012e 07       		.uleb128 0x7
+ 635 012f 01       		.uleb128 0x1
+ 636 0130 50       		.byte	0x50
+ 637 0131 05       		.uleb128 0x5
+ 638 0132 03       		.byte	0x3
+ 639 0133 00000000 		.4byte	.LC0
+ 640 0137 00       		.byte	0
+ 641 0138 06       		.uleb128 0x6
+ 642 0139 2C000000 		.4byte	.LVL7
+ 643 013d 39040000 		.4byte	0x439
+ 644 0141 4F010000 		.4byte	0x14f
+ 645 0145 07       		.uleb128 0x7
+ 646 0146 01       		.uleb128 0x1
+ 647 0147 50       		.byte	0x50
+ 648 0148 05       		.uleb128 0x5
+ 649 0149 03       		.byte	0x3
+ 650 014a 24000000 		.4byte	.LC1
+ 651 014e 00       		.byte	0
+ 652 014f 06       		.uleb128 0x6
+ 653 0150 32000000 		.4byte	.LVL8
+ 654 0154 39040000 		.4byte	0x439
+ 655 0158 66010000 		.4byte	0x166
+ 656 015c 07       		.uleb128 0x7
+ 657 015d 01       		.uleb128 0x1
+ 658 015e 50       		.byte	0x50
+ 659 015f 05       		.uleb128 0x5
+ 660 0160 03       		.byte	0x3
+ 661 0161 30000000 		.4byte	.LC2
+ 662 0165 00       		.byte	0
+ 663 0166 06       		.uleb128 0x6
+ 664 0167 38000000 		.4byte	.LVL9
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 16
+
+
+ 665 016b 39040000 		.4byte	0x439
+ 666 016f 7D010000 		.4byte	0x17d
+ 667 0173 07       		.uleb128 0x7
+ 668 0174 01       		.uleb128 0x1
+ 669 0175 50       		.byte	0x50
+ 670 0176 05       		.uleb128 0x5
+ 671 0177 03       		.byte	0x3
+ 672 0178 44000000 		.4byte	.LC3
+ 673 017c 00       		.byte	0
+ 674 017d 06       		.uleb128 0x6
+ 675 017e 3E000000 		.4byte	.LVL10
+ 676 0182 39040000 		.4byte	0x439
+ 677 0186 94010000 		.4byte	0x194
+ 678 018a 07       		.uleb128 0x7
+ 679 018b 01       		.uleb128 0x1
+ 680 018c 50       		.byte	0x50
+ 681 018d 05       		.uleb128 0x5
+ 682 018e 03       		.byte	0x3
+ 683 018f 5C000000 		.4byte	.LC4
+ 684 0193 00       		.byte	0
+ 685 0194 06       		.uleb128 0x6
+ 686 0195 44000000 		.4byte	.LVL11
+ 687 0199 39040000 		.4byte	0x439
+ 688 019d AB010000 		.4byte	0x1ab
+ 689 01a1 07       		.uleb128 0x7
+ 690 01a2 01       		.uleb128 0x1
+ 691 01a3 50       		.byte	0x50
+ 692 01a4 05       		.uleb128 0x5
+ 693 01a5 03       		.byte	0x3
+ 694 01a6 6C000000 		.4byte	.LC5
+ 695 01aa 00       		.byte	0
+ 696 01ab 06       		.uleb128 0x6
+ 697 01ac 4A000000 		.4byte	.LVL12
+ 698 01b0 39040000 		.4byte	0x439
+ 699 01b4 C2010000 		.4byte	0x1c2
+ 700 01b8 07       		.uleb128 0x7
+ 701 01b9 01       		.uleb128 0x1
+ 702 01ba 50       		.byte	0x50
+ 703 01bb 05       		.uleb128 0x5
+ 704 01bc 03       		.byte	0x3
+ 705 01bd 80000000 		.4byte	.LC6
+ 706 01c1 00       		.byte	0
+ 707 01c2 06       		.uleb128 0x6
+ 708 01c3 50000000 		.4byte	.LVL13
+ 709 01c7 39040000 		.4byte	0x439
+ 710 01cb D9010000 		.4byte	0x1d9
+ 711 01cf 07       		.uleb128 0x7
+ 712 01d0 01       		.uleb128 0x1
+ 713 01d1 50       		.byte	0x50
+ 714 01d2 05       		.uleb128 0x5
+ 715 01d3 03       		.byte	0x3
+ 716 01d4 94000000 		.4byte	.LC7
+ 717 01d8 00       		.byte	0
+ 718 01d9 08       		.uleb128 0x8
+ 719 01da 54000000 		.4byte	.LVL14
+ 720 01de 44040000 		.4byte	0x444
+ 721 01e2 08       		.uleb128 0x8
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 17
+
+
+ 722 01e3 58000000 		.4byte	.LVL15
+ 723 01e7 4F040000 		.4byte	0x44f
+ 724 01eb 08       		.uleb128 0x8
+ 725 01ec 5C000000 		.4byte	.LVL16
+ 726 01f0 5A040000 		.4byte	0x45a
+ 727 01f4 08       		.uleb128 0x8
+ 728 01f5 60000000 		.4byte	.LVL17
+ 729 01f9 65040000 		.4byte	0x465
+ 730 01fd 08       		.uleb128 0x8
+ 731 01fe 68000000 		.4byte	.LVL18
+ 732 0202 70040000 		.4byte	0x470
+ 733 0206 08       		.uleb128 0x8
+ 734 0207 6E000000 		.4byte	.LVL19
+ 735 020b 7B040000 		.4byte	0x47b
+ 736 020f 08       		.uleb128 0x8
+ 737 0210 74000000 		.4byte	.LVL20
+ 738 0214 86040000 		.4byte	0x486
+ 739 0218 08       		.uleb128 0x8
+ 740 0219 7A000000 		.4byte	.LVL21
+ 741 021d 91040000 		.4byte	0x491
+ 742 0221 06       		.uleb128 0x6
+ 743 0222 82000000 		.4byte	.LVL22
+ 744 0226 9C040000 		.4byte	0x49c
+ 745 022a 34020000 		.4byte	0x234
+ 746 022e 07       		.uleb128 0x7
+ 747 022f 01       		.uleb128 0x1
+ 748 0230 50       		.byte	0x50
+ 749 0231 01       		.uleb128 0x1
+ 750 0232 31       		.byte	0x31
+ 751 0233 00       		.byte	0
+ 752 0234 06       		.uleb128 0x6
+ 753 0235 88000000 		.4byte	.LVL23
+ 754 0239 A7040000 		.4byte	0x4a7
+ 755 023d 47020000 		.4byte	0x247
+ 756 0241 07       		.uleb128 0x7
+ 757 0242 01       		.uleb128 0x1
+ 758 0243 50       		.byte	0x50
+ 759 0244 01       		.uleb128 0x1
+ 760 0245 3A       		.byte	0x3a
+ 761 0246 00       		.byte	0
+ 762 0247 06       		.uleb128 0x6
+ 763 0248 8E000000 		.4byte	.LVL24
+ 764 024c 9C040000 		.4byte	0x49c
+ 765 0250 5A020000 		.4byte	0x25a
+ 766 0254 07       		.uleb128 0x7
+ 767 0255 01       		.uleb128 0x1
+ 768 0256 50       		.byte	0x50
+ 769 0257 01       		.uleb128 0x1
+ 770 0258 30       		.byte	0x30
+ 771 0259 00       		.byte	0
+ 772 025a 06       		.uleb128 0x6
+ 773 025b 94000000 		.4byte	.LVL25
+ 774 025f B2040000 		.4byte	0x4b2
+ 775 0263 6D020000 		.4byte	0x26d
+ 776 0267 07       		.uleb128 0x7
+ 777 0268 01       		.uleb128 0x1
+ 778 0269 50       		.byte	0x50
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 18
+
+
+ 779 026a 01       		.uleb128 0x1
+ 780 026b 31       		.byte	0x31
+ 781 026c 00       		.byte	0
+ 782 026d 08       		.uleb128 0x8
+ 783 026e 98000000 		.4byte	.LVL26
+ 784 0272 BD040000 		.4byte	0x4bd
+ 785 0276 08       		.uleb128 0x8
+ 786 0277 A0000000 		.4byte	.LVL27
+ 787 027b BD040000 		.4byte	0x4bd
+ 788 027f 08       		.uleb128 0x8
+ 789 0280 A8000000 		.4byte	.LVL28
+ 790 0284 C8040000 		.4byte	0x4c8
+ 791 0288 08       		.uleb128 0x8
+ 792 0289 C2000000 		.4byte	.LVL31
+ 793 028d D3040000 		.4byte	0x4d3
+ 794 0291 00       		.byte	0
+ 795 0292 09       		.uleb128 0x9
+ 796 0293 D6030000 		.4byte	.LASF18
+ 797 0297 01       		.byte	0x1
+ 798 0298 64       		.byte	0x64
+ 799 0299 00000000 		.4byte	.LFB66
+ 800 029d A0000000 		.4byte	.LFE66-.LFB66
+ 801 02a1 01       		.uleb128 0x1
+ 802 02a2 9C       		.byte	0x9c
+ 803 02a3 08030000 		.4byte	0x308
+ 804 02a7 0A       		.uleb128 0xa
+ 805 02a8 46010000 		.4byte	.LASF21
+ 806 02ac 01       		.byte	0x1
+ 807 02ad 64       		.byte	0x64
+ 808 02ae 96000000 		.4byte	0x96
+ 809 02b2 00000000 		.4byte	.LLST0
+ 810 02b6 08       		.uleb128 0x8
+ 811 02b7 58000000 		.4byte	.LVL34
+ 812 02bb DE040000 		.4byte	0x4de
+ 813 02bf 08       		.uleb128 0x8
+ 814 02c0 5E000000 		.4byte	.LVL35
+ 815 02c4 E9040000 		.4byte	0x4e9
+ 816 02c8 08       		.uleb128 0x8
+ 817 02c9 64000000 		.4byte	.LVL36
+ 818 02cd F4040000 		.4byte	0x4f4
+ 819 02d1 08       		.uleb128 0x8
+ 820 02d2 6A000000 		.4byte	.LVL37
+ 821 02d6 FF040000 		.4byte	0x4ff
+ 822 02da 08       		.uleb128 0x8
+ 823 02db 70000000 		.4byte	.LVL38
+ 824 02df 0A050000 		.4byte	0x50a
+ 825 02e3 08       		.uleb128 0x8
+ 826 02e4 76000000 		.4byte	.LVL39
+ 827 02e8 15050000 		.4byte	0x515
+ 828 02ec 08       		.uleb128 0x8
+ 829 02ed 88000000 		.4byte	.LVL41
+ 830 02f1 20050000 		.4byte	0x520
+ 831 02f5 08       		.uleb128 0x8
+ 832 02f6 8E000000 		.4byte	.LVL42
+ 833 02fa 2B050000 		.4byte	0x52b
+ 834 02fe 08       		.uleb128 0x8
+ 835 02ff 94000000 		.4byte	.LVL43
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 19
+
+
+ 836 0303 36050000 		.4byte	0x536
+ 837 0307 00       		.byte	0
+ 838 0308 0B       		.uleb128 0xb
+ 839 0309 3E000000 		.4byte	.LASF19
+ 840 030d 01       		.byte	0x1
+ 841 030e 56       		.byte	0x56
+ 842 030f 00000000 		.4byte	.LFB65
+ 843 0313 24000000 		.4byte	.LFE65-.LFB65
+ 844 0317 01       		.uleb128 0x1
+ 845 0318 9C       		.byte	0x9c
+ 846 0319 80030000 		.4byte	0x380
+ 847 031d 0C       		.uleb128 0xc
+ 848 031e AB020000 		.4byte	.LASF20
+ 849 0322 01       		.byte	0x1
+ 850 0323 58       		.byte	0x58
+ 851 0324 96000000 		.4byte	0x96
+ 852 0328 21000000 		.4byte	.LLST1
+ 853 032c 0D       		.uleb128 0xd
+ 854 032d 0A000000 		.4byte	.LBB2
+ 855 0331 14000000 		.4byte	.LBE2-.LBB2
+ 856 0335 76030000 		.4byte	0x376
+ 857 0339 0C       		.uleb128 0xc
+ 858 033a 46010000 		.4byte	.LASF21
+ 859 033e 01       		.byte	0x1
+ 860 033f 5B       		.byte	0x5b
+ 861 0340 96000000 		.4byte	0x96
+ 862 0344 3F000000 		.4byte	.LLST2
+ 863 0348 08       		.uleb128 0x8
+ 864 0349 0E000000 		.4byte	.LVL46
+ 865 034d 41050000 		.4byte	0x541
+ 866 0351 06       		.uleb128 0x6
+ 867 0352 14000000 		.4byte	.LVL48
+ 868 0356 4C050000 		.4byte	0x54c
+ 869 035a 65030000 		.4byte	0x365
+ 870 035e 07       		.uleb128 0x7
+ 871 035f 01       		.uleb128 0x1
+ 872 0360 50       		.byte	0x50
+ 873 0361 02       		.uleb128 0x2
+ 874 0362 75       		.byte	0x75
+ 875 0363 00       		.sleb128 0
+ 876 0364 00       		.byte	0
+ 877 0365 0E       		.uleb128 0xe
+ 878 0366 1A000000 		.4byte	.LVL49
+ 879 036a 92020000 		.4byte	0x292
+ 880 036e 07       		.uleb128 0x7
+ 881 036f 01       		.uleb128 0x1
+ 882 0370 50       		.byte	0x50
+ 883 0371 02       		.uleb128 0x2
+ 884 0372 75       		.byte	0x75
+ 885 0373 00       		.sleb128 0
+ 886 0374 00       		.byte	0
+ 887 0375 00       		.byte	0
+ 888 0376 08       		.uleb128 0x8
+ 889 0377 06000000 		.4byte	.LVL44
+ 890 037b 57050000 		.4byte	0x557
+ 891 037f 00       		.byte	0
+ 892 0380 0F       		.uleb128 0xf
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 20
+
+
+ 893 0381 28030000 		.4byte	.LASF22
+ 894 0385 04       		.byte	0x4
+ 895 0386 1207     		.2byte	0x712
+ 896 0388 8C030000 		.4byte	0x38c
+ 897 038c 10       		.uleb128 0x10
+ 898 038d A1000000 		.4byte	0xa1
+ 899 0391 11       		.uleb128 0x11
+ 900 0392 00000000 		.4byte	.LASF23
+ 901 0396 01       		.byte	0x1
+ 902 0397 17       		.byte	0x17
+ 903 0398 73000000 		.4byte	0x73
+ 904 039c 05       		.uleb128 0x5
+ 905 039d 03       		.byte	0x3
+ 906 039e 00000000 		.4byte	control_2
+ 907 03a2 11       		.uleb128 0x11
+ 908 03a3 0A000000 		.4byte	.LASF24
+ 909 03a7 01       		.byte	0x1
+ 910 03a8 18       		.byte	0x18
+ 911 03a9 73000000 		.4byte	0x73
+ 912 03ad 05       		.uleb128 0x5
+ 913 03ae 03       		.byte	0x3
+ 914 03af 00000000 		.4byte	control_3
+ 915 03b3 11       		.uleb128 0x11
+ 916 03b4 A7000000 		.4byte	.LASF25
+ 917 03b8 01       		.byte	0x1
+ 918 03b9 19       		.byte	0x19
+ 919 03ba 73000000 		.4byte	0x73
+ 920 03be 05       		.uleb128 0x5
+ 921 03bf 03       		.byte	0x3
+ 922 03c0 00000000 		.4byte	control_4
+ 923 03c4 11       		.uleb128 0x11
+ 924 03c5 B1000000 		.4byte	.LASF26
+ 925 03c9 01       		.byte	0x1
+ 926 03ca 1A       		.byte	0x1a
+ 927 03cb 73000000 		.4byte	0x73
+ 928 03cf 05       		.uleb128 0x5
+ 929 03d0 03       		.byte	0x3
+ 930 03d1 00000000 		.4byte	control_6
+ 931 03d5 11       		.uleb128 0x11
+ 932 03d6 C4010000 		.4byte	.LASF27
+ 933 03da 01       		.byte	0x1
+ 934 03db 1D       		.byte	0x1d
+ 935 03dc 73000000 		.4byte	0x73
+ 936 03e0 05       		.uleb128 0x5
+ 937 03e1 03       		.byte	0x3
+ 938 03e2 00000000 		.4byte	counter
+ 939 03e6 11       		.uleb128 0x11
+ 940 03e7 4A020000 		.4byte	.LASF28
+ 941 03eb 01       		.byte	0x1
+ 942 03ec 1E       		.byte	0x1e
+ 943 03ed AC000000 		.4byte	0xac
+ 944 03f1 05       		.uleb128 0x5
+ 945 03f2 03       		.byte	0x3
+ 946 03f3 00000000 		.4byte	distance
+ 947 03f7 12       		.uleb128 0x12
+ 948 03f8 65000000 		.4byte	.LASF29
+ 949 03fc 65000000 		.4byte	.LASF29
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 21
+
+
+ 950 0400 05       		.byte	0x5
+ 951 0401 18       		.byte	0x18
+ 952 0402 12       		.uleb128 0x12
+ 953 0403 39010000 		.4byte	.LASF30
+ 954 0407 39010000 		.4byte	.LASF30
+ 955 040b 06       		.byte	0x6
+ 956 040c 54       		.byte	0x54
+ 957 040d 12       		.uleb128 0x12
+ 958 040e 7D010000 		.4byte	.LASF31
+ 959 0412 7D010000 		.4byte	.LASF31
+ 960 0416 07       		.byte	0x7
+ 961 0417 92       		.byte	0x92
+ 962 0418 12       		.uleb128 0x12
+ 963 0419 CB030000 		.4byte	.LASF32
+ 964 041d CB030000 		.4byte	.LASF32
+ 965 0421 08       		.byte	0x8
+ 966 0422 92       		.byte	0x92
+ 967 0423 12       		.uleb128 0x12
+ 968 0424 27000000 		.4byte	.LASF33
+ 969 0428 27000000 		.4byte	.LASF33
+ 970 042c 09       		.byte	0x9
+ 971 042d 26       		.byte	0x26
+ 972 042e 12       		.uleb128 0x12
+ 973 042f 84020000 		.4byte	.LASF34
+ 974 0433 84020000 		.4byte	.LASF34
+ 975 0437 0A       		.byte	0xa
+ 976 0438 5A       		.byte	0x5a
+ 977 0439 12       		.uleb128 0x12
+ 978 043a DA020000 		.4byte	.LASF35
+ 979 043e DA020000 		.4byte	.LASF35
+ 980 0442 06       		.byte	0x6
+ 981 0443 8B       		.byte	0x8b
+ 982 0444 12       		.uleb128 0x12
+ 983 0445 32000000 		.4byte	.LASF36
+ 984 0449 32000000 		.4byte	.LASF36
+ 985 044d 0B       		.byte	0xb
+ 986 044e 92       		.byte	0x92
+ 987 044f 12       		.uleb128 0x12
+ 988 0450 79000000 		.4byte	.LASF37
+ 989 0454 79000000 		.4byte	.LASF37
+ 990 0458 0C       		.byte	0xc
+ 991 0459 92       		.byte	0x92
+ 992 045a 12       		.uleb128 0x12
+ 993 045b 66020000 		.4byte	.LASF38
+ 994 045f 66020000 		.4byte	.LASF38
+ 995 0463 0D       		.byte	0xd
+ 996 0464 92       		.byte	0x92
+ 997 0465 12       		.uleb128 0x12
+ 998 0466 CE020000 		.4byte	.LASF39
+ 999 046a CE020000 		.4byte	.LASF39
+ 1000 046e 0E       		.byte	0xe
+ 1001 046f 92       		.byte	0x92
+ 1002 0470 12       		.uleb128 0x12
+ 1003 0471 E9030000 		.4byte	.LASF40
+ 1004 0475 E9030000 		.4byte	.LASF40
+ 1005 0479 0B       		.byte	0xb
+ 1006 047a C3       		.byte	0xc3
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 22
+
+
+ 1007 047b 12       		.uleb128 0x12
+ 1008 047c 8A000000 		.4byte	.LASF41
+ 1009 0480 8A000000 		.4byte	.LASF41
+ 1010 0484 0C       		.byte	0xc
+ 1011 0485 C3       		.byte	0xc3
+ 1012 0486 12       		.uleb128 0x12
+ 1013 0487 14000000 		.4byte	.LASF42
+ 1014 048b 14000000 		.4byte	.LASF42
+ 1015 048f 0D       		.byte	0xd
+ 1016 0490 C3       		.byte	0xc3
+ 1017 0491 12       		.uleb128 0x12
+ 1018 0492 19010000 		.4byte	.LASF43
+ 1019 0496 19010000 		.4byte	.LASF43
+ 1020 049a 0E       		.byte	0xe
+ 1021 049b C3       		.byte	0xc3
+ 1022 049c 12       		.uleb128 0x12
+ 1023 049d FC010000 		.4byte	.LASF44
+ 1024 04a1 FC010000 		.4byte	.LASF44
+ 1025 04a5 0F       		.byte	0xf
+ 1026 04a6 2F       		.byte	0x2f
+ 1027 04a7 12       		.uleb128 0x12
+ 1028 04a8 AC010000 		.4byte	.LASF45
+ 1029 04ac AC010000 		.4byte	.LASF45
+ 1030 04b0 10       		.byte	0x10
+ 1031 04b1 77       		.byte	0x77
+ 1032 04b2 12       		.uleb128 0x12
+ 1033 04b3 C3030000 		.4byte	.LASF46
+ 1034 04b7 C3030000 		.4byte	.LASF46
+ 1035 04bb 10       		.byte	0x10
+ 1036 04bc 76       		.byte	0x76
+ 1037 04bd 12       		.uleb128 0x12
+ 1038 04be 88010000 		.4byte	.LASF47
+ 1039 04c2 88010000 		.4byte	.LASF47
+ 1040 04c6 11       		.byte	0x11
+ 1041 04c7 29       		.byte	0x29
+ 1042 04c8 12       		.uleb128 0x12
+ 1043 04c9 14030000 		.4byte	.LASF48
+ 1044 04cd 14030000 		.4byte	.LASF48
+ 1045 04d1 0A       		.byte	0xa
+ 1046 04d2 69       		.byte	0x69
+ 1047 04d3 12       		.uleb128 0x12
+ 1048 04d4 67010000 		.4byte	.LASF49
+ 1049 04d8 67010000 		.4byte	.LASF49
+ 1050 04dc 12       		.byte	0x12
+ 1051 04dd 10       		.byte	0x10
+ 1052 04de 12       		.uleb128 0x12
+ 1053 04df FC030000 		.4byte	.LASF50
+ 1054 04e3 FC030000 		.4byte	.LASF50
+ 1055 04e7 13       		.byte	0x13
+ 1056 04e8 10       		.byte	0x10
+ 1057 04e9 12       		.uleb128 0x12
+ 1058 04ea 10020000 		.4byte	.LASF51
+ 1059 04ee 10020000 		.4byte	.LASF51
+ 1060 04f2 13       		.byte	0x13
+ 1061 04f3 11       		.byte	0x11
+ 1062 04f4 12       		.uleb128 0x12
+ 1063 04f5 92010000 		.4byte	.LASF52
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 23
+
+
+ 1064 04f9 92010000 		.4byte	.LASF52
+ 1065 04fd 13       		.byte	0x13
+ 1066 04fe 12       		.byte	0x12
+ 1067 04ff 12       		.uleb128 0x12
+ 1068 0500 31020000 		.4byte	.LASF53
+ 1069 0504 31020000 		.4byte	.LASF53
+ 1070 0508 13       		.byte	0x13
+ 1071 0509 13       		.byte	0x13
+ 1072 050a 12       		.uleb128 0x12
+ 1073 050b 9D000000 		.4byte	.LASF54
+ 1074 050f 9D000000 		.4byte	.LASF54
+ 1075 0513 13       		.byte	0x13
+ 1076 0514 14       		.byte	0x14
+ 1077 0515 12       		.uleb128 0x12
+ 1078 0516 5B020000 		.4byte	.LASF55
+ 1079 051a 5B020000 		.4byte	.LASF55
+ 1080 051e 13       		.byte	0x13
+ 1081 051f 15       		.byte	0x15
+ 1082 0520 12       		.uleb128 0x12
+ 1083 0521 34010000 		.4byte	.LASF56
+ 1084 0525 34010000 		.4byte	.LASF56
+ 1085 0529 14       		.byte	0x14
+ 1086 052a 0F       		.byte	0xf
+ 1087 052b 12       		.uleb128 0x12
+ 1088 052c EB020000 		.4byte	.LASF57
+ 1089 0530 EB020000 		.4byte	.LASF57
+ 1090 0534 14       		.byte	0x14
+ 1091 0535 10       		.byte	0x10
+ 1092 0536 12       		.uleb128 0x12
+ 1093 0537 40020000 		.4byte	.LASF58
+ 1094 053b 40020000 		.4byte	.LASF58
+ 1095 053f 13       		.byte	0x13
+ 1096 0540 16       		.byte	0x16
+ 1097 0541 12       		.uleb128 0x12
+ 1098 0542 72020000 		.4byte	.LASF59
+ 1099 0546 72020000 		.4byte	.LASF59
+ 1100 054a 06       		.byte	0x6
+ 1101 054b 6F       		.byte	0x6f
+ 1102 054c 12       		.uleb128 0x12
+ 1103 054d F0020000 		.4byte	.LASF60
+ 1104 0551 F0020000 		.4byte	.LASF60
+ 1105 0555 06       		.byte	0x6
+ 1106 0556 88       		.byte	0x88
+ 1107 0557 12       		.uleb128 0x12
+ 1108 0558 B7020000 		.4byte	.LASF61
+ 1109 055c B7020000 		.4byte	.LASF61
+ 1110 0560 06       		.byte	0x6
+ 1111 0561 73       		.byte	0x73
+ 1112 0562 00       		.byte	0
+ 1113              		.section	.debug_abbrev,"",%progbits
+ 1114              	.Ldebug_abbrev0:
+ 1115 0000 01       		.uleb128 0x1
+ 1116 0001 11       		.uleb128 0x11
+ 1117 0002 01       		.byte	0x1
+ 1118 0003 25       		.uleb128 0x25
+ 1119 0004 0E       		.uleb128 0xe
+ 1120 0005 13       		.uleb128 0x13
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 24
+
+
+ 1121 0006 0B       		.uleb128 0xb
+ 1122 0007 03       		.uleb128 0x3
+ 1123 0008 0E       		.uleb128 0xe
+ 1124 0009 1B       		.uleb128 0x1b
+ 1125 000a 0E       		.uleb128 0xe
+ 1126 000b 55       		.uleb128 0x55
+ 1127 000c 17       		.uleb128 0x17
+ 1128 000d 11       		.uleb128 0x11
+ 1129 000e 01       		.uleb128 0x1
+ 1130 000f 10       		.uleb128 0x10
+ 1131 0010 17       		.uleb128 0x17
+ 1132 0011 00       		.byte	0
+ 1133 0012 00       		.byte	0
+ 1134 0013 02       		.uleb128 0x2
+ 1135 0014 24       		.uleb128 0x24
+ 1136 0015 00       		.byte	0
+ 1137 0016 0B       		.uleb128 0xb
+ 1138 0017 0B       		.uleb128 0xb
+ 1139 0018 3E       		.uleb128 0x3e
+ 1140 0019 0B       		.uleb128 0xb
+ 1141 001a 03       		.uleb128 0x3
+ 1142 001b 0E       		.uleb128 0xe
+ 1143 001c 00       		.byte	0
+ 1144 001d 00       		.byte	0
+ 1145 001e 03       		.uleb128 0x3
+ 1146 001f 16       		.uleb128 0x16
+ 1147 0020 00       		.byte	0
+ 1148 0021 03       		.uleb128 0x3
+ 1149 0022 0E       		.uleb128 0xe
+ 1150 0023 3A       		.uleb128 0x3a
+ 1151 0024 0B       		.uleb128 0xb
+ 1152 0025 3B       		.uleb128 0x3b
+ 1153 0026 0B       		.uleb128 0xb
+ 1154 0027 49       		.uleb128 0x49
+ 1155 0028 13       		.uleb128 0x13
+ 1156 0029 00       		.byte	0
+ 1157 002a 00       		.byte	0
+ 1158 002b 04       		.uleb128 0x4
+ 1159 002c 24       		.uleb128 0x24
+ 1160 002d 00       		.byte	0
+ 1161 002e 0B       		.uleb128 0xb
+ 1162 002f 0B       		.uleb128 0xb
+ 1163 0030 3E       		.uleb128 0x3e
+ 1164 0031 0B       		.uleb128 0xb
+ 1165 0032 03       		.uleb128 0x3
+ 1166 0033 08       		.uleb128 0x8
+ 1167 0034 00       		.byte	0
+ 1168 0035 00       		.byte	0
+ 1169 0036 05       		.uleb128 0x5
+ 1170 0037 2E       		.uleb128 0x2e
+ 1171 0038 01       		.byte	0x1
+ 1172 0039 3F       		.uleb128 0x3f
+ 1173 003a 19       		.uleb128 0x19
+ 1174 003b 03       		.uleb128 0x3
+ 1175 003c 0E       		.uleb128 0xe
+ 1176 003d 3A       		.uleb128 0x3a
+ 1177 003e 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 25
+
+
+ 1178 003f 3B       		.uleb128 0x3b
+ 1179 0040 0B       		.uleb128 0xb
+ 1180 0041 27       		.uleb128 0x27
+ 1181 0042 19       		.uleb128 0x19
+ 1182 0043 49       		.uleb128 0x49
+ 1183 0044 13       		.uleb128 0x13
+ 1184 0045 8701     		.uleb128 0x87
+ 1185 0047 19       		.uleb128 0x19
+ 1186 0048 11       		.uleb128 0x11
+ 1187 0049 01       		.uleb128 0x1
+ 1188 004a 12       		.uleb128 0x12
+ 1189 004b 06       		.uleb128 0x6
+ 1190 004c 40       		.uleb128 0x40
+ 1191 004d 18       		.uleb128 0x18
+ 1192 004e 9642     		.uleb128 0x2116
+ 1193 0050 19       		.uleb128 0x19
+ 1194 0051 01       		.uleb128 0x1
+ 1195 0052 13       		.uleb128 0x13
+ 1196 0053 00       		.byte	0
+ 1197 0054 00       		.byte	0
+ 1198 0055 06       		.uleb128 0x6
+ 1199 0056 898201   		.uleb128 0x4109
+ 1200 0059 01       		.byte	0x1
+ 1201 005a 11       		.uleb128 0x11
+ 1202 005b 01       		.uleb128 0x1
+ 1203 005c 31       		.uleb128 0x31
+ 1204 005d 13       		.uleb128 0x13
+ 1205 005e 01       		.uleb128 0x1
+ 1206 005f 13       		.uleb128 0x13
+ 1207 0060 00       		.byte	0
+ 1208 0061 00       		.byte	0
+ 1209 0062 07       		.uleb128 0x7
+ 1210 0063 8A8201   		.uleb128 0x410a
+ 1211 0066 00       		.byte	0
+ 1212 0067 02       		.uleb128 0x2
+ 1213 0068 18       		.uleb128 0x18
+ 1214 0069 9142     		.uleb128 0x2111
+ 1215 006b 18       		.uleb128 0x18
+ 1216 006c 00       		.byte	0
+ 1217 006d 00       		.byte	0
+ 1218 006e 08       		.uleb128 0x8
+ 1219 006f 898201   		.uleb128 0x4109
+ 1220 0072 00       		.byte	0
+ 1221 0073 11       		.uleb128 0x11
+ 1222 0074 01       		.uleb128 0x1
+ 1223 0075 31       		.uleb128 0x31
+ 1224 0076 13       		.uleb128 0x13
+ 1225 0077 00       		.byte	0
+ 1226 0078 00       		.byte	0
+ 1227 0079 09       		.uleb128 0x9
+ 1228 007a 2E       		.uleb128 0x2e
+ 1229 007b 01       		.byte	0x1
+ 1230 007c 3F       		.uleb128 0x3f
+ 1231 007d 19       		.uleb128 0x19
+ 1232 007e 03       		.uleb128 0x3
+ 1233 007f 0E       		.uleb128 0xe
+ 1234 0080 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 26
+
+
+ 1235 0081 0B       		.uleb128 0xb
+ 1236 0082 3B       		.uleb128 0x3b
+ 1237 0083 0B       		.uleb128 0xb
+ 1238 0084 27       		.uleb128 0x27
+ 1239 0085 19       		.uleb128 0x19
+ 1240 0086 11       		.uleb128 0x11
+ 1241 0087 01       		.uleb128 0x1
+ 1242 0088 12       		.uleb128 0x12
+ 1243 0089 06       		.uleb128 0x6
+ 1244 008a 40       		.uleb128 0x40
+ 1245 008b 18       		.uleb128 0x18
+ 1246 008c 9642     		.uleb128 0x2116
+ 1247 008e 19       		.uleb128 0x19
+ 1248 008f 01       		.uleb128 0x1
+ 1249 0090 13       		.uleb128 0x13
+ 1250 0091 00       		.byte	0
+ 1251 0092 00       		.byte	0
+ 1252 0093 0A       		.uleb128 0xa
+ 1253 0094 05       		.uleb128 0x5
+ 1254 0095 00       		.byte	0
+ 1255 0096 03       		.uleb128 0x3
+ 1256 0097 0E       		.uleb128 0xe
+ 1257 0098 3A       		.uleb128 0x3a
+ 1258 0099 0B       		.uleb128 0xb
+ 1259 009a 3B       		.uleb128 0x3b
+ 1260 009b 0B       		.uleb128 0xb
+ 1261 009c 49       		.uleb128 0x49
+ 1262 009d 13       		.uleb128 0x13
+ 1263 009e 02       		.uleb128 0x2
+ 1264 009f 17       		.uleb128 0x17
+ 1265 00a0 00       		.byte	0
+ 1266 00a1 00       		.byte	0
+ 1267 00a2 0B       		.uleb128 0xb
+ 1268 00a3 2E       		.uleb128 0x2e
+ 1269 00a4 01       		.byte	0x1
+ 1270 00a5 3F       		.uleb128 0x3f
+ 1271 00a6 19       		.uleb128 0x19
+ 1272 00a7 03       		.uleb128 0x3
+ 1273 00a8 0E       		.uleb128 0xe
+ 1274 00a9 3A       		.uleb128 0x3a
+ 1275 00aa 0B       		.uleb128 0xb
+ 1276 00ab 3B       		.uleb128 0x3b
+ 1277 00ac 0B       		.uleb128 0xb
+ 1278 00ad 27       		.uleb128 0x27
+ 1279 00ae 19       		.uleb128 0x19
+ 1280 00af 11       		.uleb128 0x11
+ 1281 00b0 01       		.uleb128 0x1
+ 1282 00b1 12       		.uleb128 0x12
+ 1283 00b2 06       		.uleb128 0x6
+ 1284 00b3 40       		.uleb128 0x40
+ 1285 00b4 18       		.uleb128 0x18
+ 1286 00b5 9742     		.uleb128 0x2117
+ 1287 00b7 19       		.uleb128 0x19
+ 1288 00b8 01       		.uleb128 0x1
+ 1289 00b9 13       		.uleb128 0x13
+ 1290 00ba 00       		.byte	0
+ 1291 00bb 00       		.byte	0
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 27
+
+
+ 1292 00bc 0C       		.uleb128 0xc
+ 1293 00bd 34       		.uleb128 0x34
+ 1294 00be 00       		.byte	0
+ 1295 00bf 03       		.uleb128 0x3
+ 1296 00c0 0E       		.uleb128 0xe
+ 1297 00c1 3A       		.uleb128 0x3a
+ 1298 00c2 0B       		.uleb128 0xb
+ 1299 00c3 3B       		.uleb128 0x3b
+ 1300 00c4 0B       		.uleb128 0xb
+ 1301 00c5 49       		.uleb128 0x49
+ 1302 00c6 13       		.uleb128 0x13
+ 1303 00c7 02       		.uleb128 0x2
+ 1304 00c8 17       		.uleb128 0x17
+ 1305 00c9 00       		.byte	0
+ 1306 00ca 00       		.byte	0
+ 1307 00cb 0D       		.uleb128 0xd
+ 1308 00cc 0B       		.uleb128 0xb
+ 1309 00cd 01       		.byte	0x1
+ 1310 00ce 11       		.uleb128 0x11
+ 1311 00cf 01       		.uleb128 0x1
+ 1312 00d0 12       		.uleb128 0x12
+ 1313 00d1 06       		.uleb128 0x6
+ 1314 00d2 01       		.uleb128 0x1
+ 1315 00d3 13       		.uleb128 0x13
+ 1316 00d4 00       		.byte	0
+ 1317 00d5 00       		.byte	0
+ 1318 00d6 0E       		.uleb128 0xe
+ 1319 00d7 898201   		.uleb128 0x4109
+ 1320 00da 01       		.byte	0x1
+ 1321 00db 11       		.uleb128 0x11
+ 1322 00dc 01       		.uleb128 0x1
+ 1323 00dd 31       		.uleb128 0x31
+ 1324 00de 13       		.uleb128 0x13
+ 1325 00df 00       		.byte	0
+ 1326 00e0 00       		.byte	0
+ 1327 00e1 0F       		.uleb128 0xf
+ 1328 00e2 34       		.uleb128 0x34
+ 1329 00e3 00       		.byte	0
+ 1330 00e4 03       		.uleb128 0x3
+ 1331 00e5 0E       		.uleb128 0xe
+ 1332 00e6 3A       		.uleb128 0x3a
+ 1333 00e7 0B       		.uleb128 0xb
+ 1334 00e8 3B       		.uleb128 0x3b
+ 1335 00e9 05       		.uleb128 0x5
+ 1336 00ea 49       		.uleb128 0x49
+ 1337 00eb 13       		.uleb128 0x13
+ 1338 00ec 3F       		.uleb128 0x3f
+ 1339 00ed 19       		.uleb128 0x19
+ 1340 00ee 3C       		.uleb128 0x3c
+ 1341 00ef 19       		.uleb128 0x19
+ 1342 00f0 00       		.byte	0
+ 1343 00f1 00       		.byte	0
+ 1344 00f2 10       		.uleb128 0x10
+ 1345 00f3 35       		.uleb128 0x35
+ 1346 00f4 00       		.byte	0
+ 1347 00f5 49       		.uleb128 0x49
+ 1348 00f6 13       		.uleb128 0x13
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 28
+
+
+ 1349 00f7 00       		.byte	0
+ 1350 00f8 00       		.byte	0
+ 1351 00f9 11       		.uleb128 0x11
+ 1352 00fa 34       		.uleb128 0x34
+ 1353 00fb 00       		.byte	0
+ 1354 00fc 03       		.uleb128 0x3
+ 1355 00fd 0E       		.uleb128 0xe
+ 1356 00fe 3A       		.uleb128 0x3a
+ 1357 00ff 0B       		.uleb128 0xb
+ 1358 0100 3B       		.uleb128 0x3b
+ 1359 0101 0B       		.uleb128 0xb
+ 1360 0102 49       		.uleb128 0x49
+ 1361 0103 13       		.uleb128 0x13
+ 1362 0104 3F       		.uleb128 0x3f
+ 1363 0105 19       		.uleb128 0x19
+ 1364 0106 02       		.uleb128 0x2
+ 1365 0107 18       		.uleb128 0x18
+ 1366 0108 00       		.byte	0
+ 1367 0109 00       		.byte	0
+ 1368 010a 12       		.uleb128 0x12
+ 1369 010b 2E       		.uleb128 0x2e
+ 1370 010c 00       		.byte	0
+ 1371 010d 3F       		.uleb128 0x3f
+ 1372 010e 19       		.uleb128 0x19
+ 1373 010f 3C       		.uleb128 0x3c
+ 1374 0110 19       		.uleb128 0x19
+ 1375 0111 6E       		.uleb128 0x6e
+ 1376 0112 0E       		.uleb128 0xe
+ 1377 0113 03       		.uleb128 0x3
+ 1378 0114 0E       		.uleb128 0xe
+ 1379 0115 3A       		.uleb128 0x3a
+ 1380 0116 0B       		.uleb128 0xb
+ 1381 0117 3B       		.uleb128 0x3b
+ 1382 0118 0B       		.uleb128 0xb
+ 1383 0119 00       		.byte	0
+ 1384 011a 00       		.byte	0
+ 1385 011b 00       		.byte	0
+ 1386              		.section	.debug_loc,"",%progbits
+ 1387              	.Ldebug_loc0:
+ 1388              	.LLST0:
+ 1389 0000 00000000 		.4byte	.LVL32
+ 1390 0004 04000000 		.4byte	.LVL33
+ 1391 0008 0100     		.2byte	0x1
+ 1392 000a 50       		.byte	0x50
+ 1393 000b 04000000 		.4byte	.LVL33
+ 1394 000f A0000000 		.4byte	.LFE66
+ 1395 0013 0400     		.2byte	0x4
+ 1396 0015 F3       		.byte	0xf3
+ 1397 0016 01       		.uleb128 0x1
+ 1398 0017 50       		.byte	0x50
+ 1399 0018 9F       		.byte	0x9f
+ 1400 0019 00000000 		.4byte	0
+ 1401 001d 00000000 		.4byte	0
+ 1402              	.LLST1:
+ 1403 0021 08000000 		.4byte	.LVL45
+ 1404 0025 1C000000 		.4byte	.LVL50
+ 1405 0029 0100     		.2byte	0x1
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 29
+
+
+ 1406 002b 54       		.byte	0x54
+ 1407 002c 1E000000 		.4byte	.LVL51
+ 1408 0030 24000000 		.4byte	.LFE65
+ 1409 0034 0100     		.2byte	0x1
+ 1410 0036 54       		.byte	0x54
+ 1411 0037 00000000 		.4byte	0
+ 1412 003b 00000000 		.4byte	0
+ 1413              	.LLST2:
+ 1414 003f 10000000 		.4byte	.LVL47
+ 1415 0043 1E000000 		.4byte	.LVL51
+ 1416 0047 0100     		.2byte	0x1
+ 1417 0049 55       		.byte	0x55
+ 1418 004a 00000000 		.4byte	0
+ 1419 004e 00000000 		.4byte	0
+ 1420              		.section	.debug_aranges,"",%progbits
+ 1421 0000 2C000000 		.4byte	0x2c
+ 1422 0004 0200     		.2byte	0x2
+ 1423 0006 00000000 		.4byte	.Ldebug_info0
+ 1424 000a 04       		.byte	0x4
+ 1425 000b 00       		.byte	0
+ 1426 000c 0000     		.2byte	0
+ 1427 000e 0000     		.2byte	0
+ 1428 0010 00000000 		.4byte	.LFB64
+ 1429 0014 F4000000 		.4byte	.LFE64-.LFB64
+ 1430 0018 00000000 		.4byte	.LFB66
+ 1431 001c A0000000 		.4byte	.LFE66-.LFB66
+ 1432 0020 00000000 		.4byte	.LFB65
+ 1433 0024 24000000 		.4byte	.LFE65-.LFB65
+ 1434 0028 00000000 		.4byte	0
+ 1435 002c 00000000 		.4byte	0
+ 1436              		.section	.debug_ranges,"",%progbits
+ 1437              	.Ldebug_ranges0:
+ 1438 0000 00000000 		.4byte	.LFB64
+ 1439 0004 F4000000 		.4byte	.LFE64
+ 1440 0008 00000000 		.4byte	.LFB66
+ 1441 000c A0000000 		.4byte	.LFE66
+ 1442 0010 00000000 		.4byte	.LFB65
+ 1443 0014 24000000 		.4byte	.LFE65
+ 1444 0018 00000000 		.4byte	0
+ 1445 001c 00000000 		.4byte	0
+ 1446              		.section	.debug_line,"",%progbits
+ 1447              	.Ldebug_line0:
+ 1448 0000 7F020000 		.section	.debug_str,"MS",%progbits,1
+ 1448      02000502 
+ 1448      00000201 
+ 1448      FB0E0D00 
+ 1448      01010101 
+ 1449              	.LASF23:
+ 1450 0000 636F6E74 		.ascii	"control_2\000"
+ 1450      726F6C5F 
+ 1450      3200
+ 1451              	.LASF24:
+ 1452 000a 636F6E74 		.ascii	"control_3\000"
+ 1452      726F6C5F 
+ 1452      3300
+ 1453              	.LASF42:
+ 1454 0014 50574D5F 		.ascii	"PWM_4_WriteCompare\000"
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 30
+
+
+ 1454      345F5772 
+ 1454      69746543 
+ 1454      6F6D7061 
+ 1454      726500
+ 1455              	.LASF33:
+ 1456 0027 73746279 		.ascii	"stby_Write\000"
+ 1456      5F577269 
+ 1456      746500
+ 1457              	.LASF36:
+ 1458 0032 50574D5F 		.ascii	"PWM_2_Start\000"
+ 1458      325F5374 
+ 1458      61727400 
+ 1459              	.LASF19:
+ 1460 003e 4953525F 		.ascii	"ISR_UART_rx_handler\000"
+ 1460      55415254 
+ 1460      5F72785F 
+ 1460      68616E64 
+ 1460      6C657200 
+ 1461              	.LASF2:
+ 1462 0052 73686F72 		.ascii	"short int\000"
+ 1462      7420696E 
+ 1462      7400
+ 1463              	.LASF12:
+ 1464 005c 73697A65 		.ascii	"sizetype\000"
+ 1464      74797065 
+ 1464      00
+ 1465              	.LASF29:
+ 1466 0065 6973725F 		.ascii	"isr_uart_rx_StartEx\000"
+ 1466      75617274 
+ 1466      5F72785F 
+ 1466      53746172 
+ 1466      74457800 
+ 1467              	.LASF37:
+ 1468 0079 50574D5F 		.ascii	"PWM_3_Start\000"
+ 1468      335F5374 
+ 1468      61727400 
+ 1469              	.LASF65:
+ 1470 0085 6D61696E 		.ascii	"main\000"
+ 1470      00
+ 1471              	.LASF41:
+ 1472 008a 50574D5F 		.ascii	"PWM_3_WriteCompare\000"
+ 1472      335F5772 
+ 1472      69746543 
+ 1472      6F6D7061 
+ 1472      726500
+ 1473              	.LASF54:
+ 1474 009d 64726976 		.ascii	"driveLeft\000"
+ 1474      654C6566 
+ 1474      7400
+ 1475              	.LASF25:
+ 1476 00a7 636F6E74 		.ascii	"control_4\000"
+ 1476      726F6C5F 
+ 1476      3400
+ 1477              	.LASF26:
+ 1478 00b1 636F6E74 		.ascii	"control_6\000"
+ 1478      726F6C5F 
+ 1478      3600
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 31
+
+
+ 1479              	.LASF64:
+ 1480 00bb 433A5C55 		.ascii	"C:\\Users\\Jesper\\OneDrive - Aarhus universitet\\E"
+ 1480      73657273 
+ 1480      5C4A6573 
+ 1480      7065725C 
+ 1480      4F6E6544 
+ 1481 00ea 6C656B74 		.ascii	"lektronik\\3-Semester\\PROJEKT3\\ProjektBIL.cydsn\000"
+ 1481      726F6E69 
+ 1481      6B5C332D 
+ 1481      53656D65 
+ 1481      73746572 
+ 1482              	.LASF43:
+ 1483 0119 50574D5F 		.ascii	"PWM_6_WriteCompare\000"
+ 1483      365F5772 
+ 1483      69746543 
+ 1483      6F6D7061 
+ 1483      726500
+ 1484              	.LASF14:
+ 1485 012c 75696E74 		.ascii	"uint8_t\000"
+ 1485      385F7400 
+ 1486              	.LASF56:
+ 1487 0134 4C4F4654 		.ascii	"LOFT\000"
+ 1487      00
+ 1488              	.LASF30:
+ 1489 0139 55415254 		.ascii	"UART_1_Start\000"
+ 1489      5F315F53 
+ 1489      74617274 
+ 1489      00
+ 1490              	.LASF21:
+ 1491 0146 62797465 		.ascii	"byteReceived\000"
+ 1491      52656365 
+ 1491      69766564 
+ 1491      00
+ 1492              	.LASF16:
+ 1493 0153 666C6F61 		.ascii	"float\000"
+ 1493      7400
+ 1494              	.LASF8:
+ 1495 0159 6C6F6E67 		.ascii	"long long int\000"
+ 1495      206C6F6E 
+ 1495      6720696E 
+ 1495      7400
+ 1496              	.LASF49:
+ 1497 0167 77726974 		.ascii	"writesToUART\000"
+ 1497      6573546F 
+ 1497      55415254 
+ 1497      00
+ 1498              	.LASF6:
+ 1499 0174 6C6F6E67 		.ascii	"long int\000"
+ 1499      20696E74 
+ 1499      00
+ 1500              	.LASF31:
+ 1501 017d 50574D41 		.ascii	"PWMA_Start\000"
+ 1501      5F537461 
+ 1501      727400
+ 1502              	.LASF47:
+ 1503 0188 4563686F 		.ascii	"Echo_Read\000"
+ 1503      5F526561 
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 32
+
+
+ 1503      6400
+ 1504              	.LASF52:
+ 1505 0192 64726976 		.ascii	"driveForwards\000"
+ 1505      65466F72 
+ 1505      77617264 
+ 1505      7300
+ 1506              	.LASF11:
+ 1507 01a0 6C6F6E67 		.ascii	"long double\000"
+ 1507      20646F75 
+ 1507      626C6500 
+ 1508              	.LASF45:
+ 1509 01ac 43794465 		.ascii	"CyDelayUs\000"
+ 1509      6C617955 
+ 1509      7300
+ 1510              	.LASF1:
+ 1511 01b6 756E7369 		.ascii	"unsigned char\000"
+ 1511      676E6564 
+ 1511      20636861 
+ 1511      7200
+ 1512              	.LASF27:
+ 1513 01c4 636F756E 		.ascii	"counter\000"
+ 1513      74657200 
+ 1514              	.LASF0:
+ 1515 01cc 7369676E 		.ascii	"signed char\000"
+ 1515      65642063 
+ 1515      68617200 
+ 1516              	.LASF9:
+ 1517 01d8 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1517      206C6F6E 
+ 1517      6720756E 
+ 1517      7369676E 
+ 1517      65642069 
+ 1518              	.LASF10:
+ 1519 01ef 756E7369 		.ascii	"unsigned int\000"
+ 1519      676E6564 
+ 1519      20696E74 
+ 1519      00
+ 1520              	.LASF44:
+ 1521 01fc 436F6E74 		.ascii	"Control_Reg_1_Write\000"
+ 1521      726F6C5F 
+ 1521      5265675F 
+ 1521      315F5772 
+ 1521      69746500 
+ 1522              	.LASF51:
+ 1523 0210 696E6372 		.ascii	"increaseSpeed\000"
+ 1523      65617365 
+ 1523      53706565 
+ 1523      6400
+ 1524              	.LASF3:
+ 1525 021e 73686F72 		.ascii	"short unsigned int\000"
+ 1525      7420756E 
+ 1525      7369676E 
+ 1525      65642069 
+ 1525      6E7400
+ 1526              	.LASF53:
+ 1527 0231 64726976 		.ascii	"driveBackwards\000"
+ 1527      65426163 
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 33
+
+
+ 1527      6B776172 
+ 1527      647300
+ 1528              	.LASF58:
+ 1529 0240 73746F70 		.ascii	"stop\000"
+ 1529      00
+ 1530              	.LASF13:
+ 1531 0245 63686172 		.ascii	"char\000"
+ 1531      00
+ 1532              	.LASF28:
+ 1533 024a 64697374 		.ascii	"distance\000"
+ 1533      616E6365 
+ 1533      00
+ 1534              	.LASF15:
+ 1535 0253 696E7433 		.ascii	"int32_t\000"
+ 1535      325F7400 
+ 1536              	.LASF55:
+ 1537 025b 64726976 		.ascii	"driveRight\000"
+ 1537      65526967 
+ 1537      687400
+ 1538              	.LASF38:
+ 1539 0266 50574D5F 		.ascii	"PWM_4_Start\000"
+ 1539      345F5374 
+ 1539      61727400 
+ 1540              	.LASF59:
+ 1541 0272 55415254 		.ascii	"UART_1_ReadRxData\000"
+ 1541      5F315F52 
+ 1541      65616452 
+ 1541      78446174 
+ 1541      6100
+ 1542              	.LASF34:
+ 1543 0284 54696D65 		.ascii	"Timer_1_Start\000"
+ 1543      725F315F 
+ 1543      53746172 
+ 1543      7400
+ 1544              	.LASF63:
+ 1545 0292 6D61696E 		.ascii	"main.c\000"
+ 1545      2E6300
+ 1546              	.LASF7:
+ 1547 0299 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1547      20756E73 
+ 1547      69676E65 
+ 1547      6420696E 
+ 1547      7400
+ 1548              	.LASF20:
+ 1549 02ab 62797465 		.ascii	"bytesToRead\000"
+ 1549      73546F52 
+ 1549      65616400 
+ 1550              	.LASF61:
+ 1551 02b7 55415254 		.ascii	"UART_1_GetRxBufferSize\000"
+ 1551      5F315F47 
+ 1551      65745278 
+ 1551      42756666 
+ 1551      65725369 
+ 1552              	.LASF39:
+ 1553 02ce 50574D5F 		.ascii	"PWM_6_Start\000"
+ 1553      365F5374 
+ 1553      61727400 
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 34
+
+
+ 1554              	.LASF35:
+ 1555 02da 55415254 		.ascii	"UART_1_PutString\000"
+ 1555      5F315F50 
+ 1555      75745374 
+ 1555      72696E67 
+ 1555      00
+ 1556              	.LASF57:
+ 1557 02eb 53414E4B 		.ascii	"SANK\000"
+ 1557      00
+ 1558              	.LASF60:
+ 1559 02f0 55415254 		.ascii	"UART_1_WriteTxData\000"
+ 1559      5F315F57 
+ 1559      72697465 
+ 1559      54784461 
+ 1559      746100
+ 1560              	.LASF5:
+ 1561 0303 5F5F696E 		.ascii	"__int32_t\000"
+ 1561      7433325F 
+ 1561      7400
+ 1562              	.LASF17:
+ 1563 030d 646F7562 		.ascii	"double\000"
+ 1563      6C6500
+ 1564              	.LASF48:
+ 1565 0314 54696D65 		.ascii	"Timer_1_ReadCounter\000"
+ 1565      725F315F 
+ 1565      52656164 
+ 1565      436F756E 
+ 1565      74657200 
+ 1566              	.LASF22:
+ 1567 0328 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1567      52784275 
+ 1567      66666572 
+ 1567      00
+ 1568              	.LASF62:
+ 1569 0335 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1569      43313120 
+ 1569      352E342E 
+ 1569      31203230 
+ 1569      31363036 
+ 1570 0368 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1570      20726576 
+ 1570      6973696F 
+ 1570      6E203233 
+ 1570      37373135 
+ 1571 039b 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1571      66756E63 
+ 1571      74696F6E 
+ 1571      2D736563 
+ 1571      74696F6E 
+ 1572              	.LASF46:
+ 1573 03c3 43794465 		.ascii	"CyDelay\000"
+ 1573      6C617900 
+ 1574              	.LASF32:
+ 1575 03cb 50574D42 		.ascii	"PWMB_Start\000"
+ 1575      5F537461 
+ 1575      727400
+ 1576              	.LASF18:
+ARM GAS  C:\Users\Jesper\AppData\Local\Temp\ccFuwpPm.s 			page 35
+
+
+ 1577 03d6 68616E64 		.ascii	"handleByteReceived\000"
+ 1577      6C654279 
+ 1577      74655265 
+ 1577      63656976 
+ 1577      656400
+ 1578              	.LASF40:
+ 1579 03e9 50574D5F 		.ascii	"PWM_2_WriteCompare\000"
+ 1579      325F5772 
+ 1579      69746543 
+ 1579      6F6D7061 
+ 1579      726500
+ 1580              	.LASF50:
+ 1581 03fc 64656372 		.ascii	"decreaseSpeed\000"
+ 1581      65617365 
+ 1581      53706565 
+ 1581      6400
+ 1582              	.LASF4:
+ 1583 040a 5F5F7569 		.ascii	"__uint8_t\000"
+ 1583      6E74385F 
+ 1583      7400
+ 1584              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,6 @@
+C:\Users\Jesper\OneDrive - Aarhus universitet\Elektronik\3-Semester\PROJEKT3\ProjektBIL.cydsn\ProjektBIL.cyprj|798f285e-eb99-4424-a083-7ad89255c41f
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|b2367cf4-6dec-448c-b0e9-d9e937e2f057
+C:\Users\Jesper\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|e9366694-5c1c-4db2-bd5b-cd07020c76bc
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|fd71f6f3-bebd-4cfb-8122-4aa5d2f13fdb
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|3e40aa16-5ef9-419a-9a46-b4de2ebfb99b
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|dba982bf-b2c7-48db-88af-fc6a9f9d6795

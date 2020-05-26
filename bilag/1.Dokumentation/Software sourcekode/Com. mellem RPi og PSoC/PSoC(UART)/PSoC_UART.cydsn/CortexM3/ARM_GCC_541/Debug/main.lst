@@ -1,0 +1,1746 @@
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.main,"ax",%progbits
+  20              		.align	2
+  21              		.global	main
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	main, %function
+  25              	main:
+  26              	.LFB63:
+  27              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright Mathias Segoufin, Year 2020
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main.c        ****  *
+   7:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main.c        ****  * WHICH IS THE PROPERTY OF your company.
+   9:main.c        ****  *
+  10:main.c        ****  * ========================================
+  11:main.c        **** */
+  12:main.c        **** #include "project.h"
+  13:main.c        **** #include <stdbool.h>
+  14:main.c        **** #include <unistd.h>
+  15:main.c        **** 
+  16:main.c        **** // Prototype for interrupt-handler.
+  17:main.c        **** CY_ISR_PROTO(ISR_UART_rx_handler);
+  18:main.c        **** 
+  19:main.c        **** bool LEDstatus = false;
+  20:main.c        **** char c;
+  21:main.c        **** int ASCIIvalue = 0;
+  22:main.c        **** 
+  23:main.c        **** //Funktioner til styring
+  24:main.c        **** void LEDon();
+  25:main.c        **** void LEDoff();
+  26:main.c        **** 
+  27:main.c        **** int main(void)
+  28:main.c        **** {
+  28              		.loc 1 28 0
+  29              		.cfi_startproc
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 2
+
+
+  30              		@ Volatile: function does not return.
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  29:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  37              		.loc 1 29 0
+  38              		.syntax unified
+  39              	@ 29 "main.c" 1
+  40 0002 62B6     		CPSIE   i
+  41              	@ 0 "" 2
+  30:main.c        ****     
+  31:main.c        ****     //Starter UART
+  32:main.c        ****     UART_1_Start();
+  42              		.loc 1 32 0
+  43              		.thumb
+  44              		.syntax unified
+  45 0004 FFF7FEFF 		bl	UART_1_Start
+  46              	.LVL0:
+  33:main.c        ****     
+  34:main.c        ****     UART_1_PutString("PSoC UART Receiver program has started. \r\n");
+  47              		.loc 1 34 0
+  48 0008 0E48     		ldr	r0, .L6
+  49 000a FFF7FEFF 		bl	UART_1_PutString
+  50              	.LVL1:
+  35:main.c        ****     UART_1_PutString("Sending a 1 from the RPi will activate the LED and sending a 0 will deactivat
+  51              		.loc 1 35 0
+  52 000e 0E48     		ldr	r0, .L6+4
+  53 0010 FFF7FEFF 		bl	UART_1_PutString
+  54              	.LVL2:
+  36:main.c        ****     
+  37:main.c        ****     //Starter Interrupt
+  38:main.c        ****     isr_1_StartEx(ISR_UART_rx_handler);
+  55              		.loc 1 38 0
+  56 0014 0D48     		ldr	r0, .L6+8
+  57 0016 FFF7FEFF 		bl	isr_1_StartEx
+  58              	.LVL3:
+  59              	.L2:
+  39:main.c        **** 
+  40:main.c        ****     for(;;)
+  41:main.c        ****     {
+  42:main.c        ****         if(LEDstatus == true)        //Toggler en LED på PSoC. Kan laves om til en funktion som ek
+  60              		.loc 1 42 0
+  61 001a 0D4B     		ldr	r3, .L6+12
+  62 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  63 001e 1BB1     		cbz	r3, .L3
+  43:main.c        ****         {
+  44:main.c        ****             Pin_LED_Write(1);
+  64              		.loc 1 44 0
+  65 0020 0120     		movs	r0, #1
+  66 0022 FFF7FEFF 		bl	Pin_LED_Write
+  67              	.LVL4:
+  68 0026 F8E7     		b	.L2
+  69              	.L3:
+  45:main.c        ****             //while(!objektsamletop) //Pseudokode til at sende besked tilbage til RPI og videre til
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 3
+
+
+  46:main.c        ****             //{                      //Pseudokode til at sende besked tilbage til RPI og videre til
+  47:main.c        ****             //  //do nothing         //Pseudokode til at sende besked tilbage til RPI og videre til
+  48:main.c        ****             //}                      //Pseudokode til at sende besked tilbage til RPI og videre til
+  49:main.c        ****             //UART_1_PutChar("l");   //Sender "l" til RPI for "løftet".
+  50:main.c        ****         }
+  51:main.c        ****         else if(LEDstatus == false) //Toggler en LED på PSoC. Kan laves om til en funktion som eks
+  70              		.loc 1 51 0
+  71 0028 002B     		cmp	r3, #0
+  72 002a F6D1     		bne	.L2
+  52:main.c        ****         {
+  53:main.c        ****             if(Pin_LED_Read() == 1)
+  73              		.loc 1 53 0
+  74 002c FFF7FEFF 		bl	Pin_LED_Read
+  75              	.LVL5:
+  76 0030 0128     		cmp	r0, #1
+  77 0032 F2D1     		bne	.L2
+  54:main.c        ****             {
+  55:main.c        ****                 Pin_LED_Write(~Pin_LED_Read());
+  78              		.loc 1 55 0
+  79 0034 FFF7FEFF 		bl	Pin_LED_Read
+  80              	.LVL6:
+  81 0038 C043     		mvns	r0, r0
+  82 003a C0B2     		uxtb	r0, r0
+  83 003c FFF7FEFF 		bl	Pin_LED_Write
+  84              	.LVL7:
+  85 0040 EBE7     		b	.L2
+  86              	.L7:
+  87 0042 00BF     		.align	2
+  88              	.L6:
+  89 0044 00000000 		.word	.LC0
+  90 0048 2C000000 		.word	.LC1
+  91 004c 00000000 		.word	ISR_UART_rx_handler
+  92 0050 00000000 		.word	.LANCHOR0
+  93              		.cfi_endproc
+  94              	.LFE63:
+  95              		.size	main, .-main
+  96              		.section	.text.LEDon,"ax",%progbits
+  97              		.align	2
+  98              		.global	LEDon
+  99              		.thumb
+ 100              		.thumb_func
+ 101              		.type	LEDon, %function
+ 102              	LEDon:
+ 103              	.LFB65:
+  56:main.c        ****                 //while(!sænket)        //Pseudokode til at sende besked tilbage til RPI og videre
+  57:main.c        ****                 //{                     //Pseudokode til at sende besked tilbage til RPI og videre 
+  58:main.c        ****                 //  //do nothing        //Pseudokode til at sende besked tilbage til RPI og videre 
+  59:main.c        ****                 //}                     //Pseudokode til at sende besked tilbage til RPI og videre 
+  60:main.c        ****                 //UART_1_PutChar("s");  //Sender "s" til RPI for "sænket".
+  61:main.c        ****             }
+  62:main.c        ****         }
+  63:main.c        ****     }
+  64:main.c        **** }
+  65:main.c        **** 
+  66:main.c        **** //UART Interrupt Handler, der styres via inputs. Efter modtagelse ekkoer den tilbage til konsol og 
+  67:main.c        **** CY_ISR(ISR_UART_rx_handler)
+  68:main.c        **** {
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 4
+
+
+  69:main.c        ****     uint8_t bytesToRead = UART_1_GetRxBufferSize();
+  70:main.c        ****     for (uint8_t i = 0; i < bytesToRead; i++)
+  71:main.c        ****     {
+  72:main.c        ****         c = UART_1_GetChar();
+  73:main.c        **** 
+  74:main.c        ****         
+  75:main.c        ****         UART_1_PutString("PSoC received: ");
+  76:main.c        ****         UART_1_PutChar(c);
+  77:main.c        ****         UART_1_PutString(" from PuTTY terminal on PC");
+  78:main.c        ****         UART_1_PutString("\r\n");
+  79:main.c        **** 
+  80:main.c        ****         
+  81:main.c        ****         //Switch-Case som gennemgår kommunikationsprotokollen:
+  82:main.c        ****         switch (c)
+  83:main.c        ****         {
+  84:main.c        ****             case '0' :     
+  85:main.c        ****             {
+  86:main.c        ****                 LEDoff();    //LED slukkes som signal på at bilen stoppes.
+  87:main.c        ****                 UART_1_PutString("Stop\r\n");
+  88:main.c        ****             }
+  89:main.c        ****             break;
+  90:main.c        ****             case '1' :      
+  91:main.c        ****             {
+  92:main.c        ****                 UART_1_PutString("Driving forward\r\n");
+  93:main.c        ****                 if(LEDstatus == false)
+  94:main.c        ****                 {
+  95:main.c        ****                     LEDon();
+  96:main.c        ****                 }else if(LEDstatus == true)
+  97:main.c        ****                 {
+  98:main.c        ****                     LEDoff();
+  99:main.c        ****                 }
+ 100:main.c        **** 
+ 101:main.c        ****             }
+ 102:main.c        ****             break;
+ 103:main.c        ****             case '2' :      
+ 104:main.c        ****             {
+ 105:main.c        ****                 UART_1_PutString("Driving backwards\r\n");
+ 106:main.c        ****                 if(LEDstatus == false)
+ 107:main.c        ****                 {
+ 108:main.c        ****                     LEDon();
+ 109:main.c        ****                 }else if(LEDstatus == true)
+ 110:main.c        ****                 {
+ 111:main.c        ****                     LEDoff();
+ 112:main.c        ****                 }
+ 113:main.c        ****             }
+ 114:main.c        ****             break;
+ 115:main.c        ****             case '3' :     
+ 116:main.c        ****             {
+ 117:main.c        ****                 UART_1_PutString("Turning left\r\n");
+ 118:main.c        ****                 if(LEDstatus == false)
+ 119:main.c        ****                 {
+ 120:main.c        ****                     LEDon();
+ 121:main.c        ****                 }else if(LEDstatus == true)
+ 122:main.c        ****                 {
+ 123:main.c        ****                     LEDoff();
+ 124:main.c        ****                 }
+ 125:main.c        ****             }
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 5
+
+
+ 126:main.c        ****             break;
+ 127:main.c        ****             case '4' :      
+ 128:main.c        ****             {
+ 129:main.c        ****                 UART_1_PutString("Turning right\r\n");
+ 130:main.c        ****                 if(LEDstatus == false)
+ 131:main.c        ****                 {
+ 132:main.c        ****                     LEDon();
+ 133:main.c        ****                 }else if(LEDstatus == true)
+ 134:main.c        ****                 {
+ 135:main.c        ****                     LEDoff();
+ 136:main.c        ****                 }
+ 137:main.c        ****             }
+ 138:main.c        ****             break;
+ 139:main.c        ****             case '8' :      
+ 140:main.c        ****             {
+ 141:main.c        ****                 UART_1_PutString("Lifting arm\r\n");
+ 142:main.c        ****                 if(LEDstatus == false)
+ 143:main.c        ****                 {
+ 144:main.c        ****                     LEDon();
+ 145:main.c        ****                 }else if(LEDstatus == true)
+ 146:main.c        ****                 {
+ 147:main.c        ****                     LEDoff();
+ 148:main.c        ****                 }                
+ 149:main.c        ****             }
+ 150:main.c        ****             break;
+ 151:main.c        ****             case '9' :      
+ 152:main.c        ****             {
+ 153:main.c        ****                 UART_1_PutString("Lowering arm\r\n");
+ 154:main.c        ****                 if(LEDstatus == false)
+ 155:main.c        ****                 {
+ 156:main.c        ****                     LEDon();
+ 157:main.c        ****                 }else if(LEDstatus == true)
+ 158:main.c        ****                 {
+ 159:main.c        ****                     LEDoff();
+ 160:main.c        ****                 }                
+ 161:main.c        ****             }
+ 162:main.c        ****             break; 
+ 163:main.c        ****             
+ 164:main.c        ****             default :
+ 165:main.c        ****             break;
+ 166:main.c        ****         }
+ 167:main.c        ****     }
+ 168:main.c        **** }
+ 169:main.c        **** 
+ 170:main.c        **** void LEDon()    //Toggler en LED på PSoC. Kan laves om til en funktion som eksempelvis løfter et 
+ 171:main.c        **** {
+ 104              		.loc 1 171 0
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 172:main.c        ****     LEDstatus = true;
+ 109              		.loc 1 172 0
+ 110 0000 0122     		movs	r2, #1
+ 111 0002 014B     		ldr	r3, .L9
+ 112 0004 1A70     		strb	r2, [r3]
+ 113 0006 7047     		bx	lr
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 6
+
+
+ 114              	.L10:
+ 115              		.align	2
+ 116              	.L9:
+ 117 0008 00000000 		.word	.LANCHOR0
+ 118              		.cfi_endproc
+ 119              	.LFE65:
+ 120              		.size	LEDon, .-LEDon
+ 121              		.section	.text.LEDoff,"ax",%progbits
+ 122              		.align	2
+ 123              		.global	LEDoff
+ 124              		.thumb
+ 125              		.thumb_func
+ 126              		.type	LEDoff, %function
+ 127              	LEDoff:
+ 128              	.LFB66:
+ 173:main.c        **** }
+ 174:main.c        **** 
+ 175:main.c        **** void LEDoff()   //Toggler en LED på PSoC. Kan laves om til en funktion som eksempelvis sænker et 
+ 176:main.c        **** {
+ 129              		.loc 1 176 0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              		@ link register save eliminated.
+ 177:main.c        ****     LEDstatus = false;
+ 134              		.loc 1 177 0
+ 135 0000 0022     		movs	r2, #0
+ 136 0002 014B     		ldr	r3, .L12
+ 137 0004 1A70     		strb	r2, [r3]
+ 138 0006 7047     		bx	lr
+ 139              	.L13:
+ 140              		.align	2
+ 141              	.L12:
+ 142 0008 00000000 		.word	.LANCHOR0
+ 143              		.cfi_endproc
+ 144              	.LFE66:
+ 145              		.size	LEDoff, .-LEDoff
+ 146              		.section	.text.ISR_UART_rx_handler,"ax",%progbits
+ 147              		.align	2
+ 148              		.global	ISR_UART_rx_handler
+ 149              		.thumb
+ 150              		.thumb_func
+ 151              		.type	ISR_UART_rx_handler, %function
+ 152              	ISR_UART_rx_handler:
+ 153              	.LFB64:
+  68:main.c        ****     uint8_t bytesToRead = UART_1_GetRxBufferSize();
+ 154              		.loc 1 68 0
+ 155              		.cfi_startproc
+ 156              		@ args = 0, pretend = 0, frame = 0
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158 0000 70B5     		push	{r4, r5, r6, lr}
+ 159              		.cfi_def_cfa_offset 16
+ 160              		.cfi_offset 4, -16
+ 161              		.cfi_offset 5, -12
+ 162              		.cfi_offset 6, -8
+ 163              		.cfi_offset 14, -4
+  69:main.c        ****     for (uint8_t i = 0; i < bytesToRead; i++)
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 7
+
+
+ 164              		.loc 1 69 0
+ 165 0002 FFF7FEFF 		bl	UART_1_GetRxBufferSize
+ 166              	.LVL8:
+ 167 0006 0646     		mov	r6, r0
+ 168              	.LVL9:
+ 169              	.LBB2:
+  70:main.c        ****     {
+ 170              		.loc 1 70 0
+ 171 0008 0024     		movs	r4, #0
+ 172 000a 71E0     		b	.L15
+ 173              	.LVL10:
+ 174              	.L31:
+  72:main.c        **** 
+ 175              		.loc 1 72 0
+ 176 000c FFF7FEFF 		bl	UART_1_GetChar
+ 177              	.LVL11:
+ 178 0010 394D     		ldr	r5, .L33
+ 179 0012 2870     		strb	r0, [r5]
+  75:main.c        ****         UART_1_PutChar(c);
+ 180              		.loc 1 75 0
+ 181 0014 3948     		ldr	r0, .L33+4
+ 182 0016 FFF7FEFF 		bl	UART_1_PutString
+ 183              	.LVL12:
+  76:main.c        ****         UART_1_PutString(" from PuTTY terminal on PC");
+ 184              		.loc 1 76 0
+ 185 001a 2878     		ldrb	r0, [r5]	@ zero_extendqisi2
+ 186 001c FFF7FEFF 		bl	UART_1_PutChar
+ 187              	.LVL13:
+  77:main.c        ****         UART_1_PutString("\r\n");
+ 188              		.loc 1 77 0
+ 189 0020 3748     		ldr	r0, .L33+8
+ 190 0022 FFF7FEFF 		bl	UART_1_PutString
+ 191              	.LVL14:
+  78:main.c        **** 
+ 192              		.loc 1 78 0
+ 193 0026 3748     		ldr	r0, .L33+12
+ 194 0028 FFF7FEFF 		bl	UART_1_PutString
+ 195              	.LVL15:
+  82:main.c        ****         {
+ 196              		.loc 1 82 0
+ 197 002c 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 198 002e 303B     		subs	r3, r3, #48
+ 199 0030 092B     		cmp	r3, #9
+ 200 0032 5BD8     		bhi	.L16
+ 201 0034 DFE803F0 		tbb	[pc, r3]
+ 202              	.L18:
+ 203 0038 05       		.byte	(.L17-.L18)/2
+ 204 0039 0B       		.byte	(.L19-.L18)/2
+ 205 003a 19       		.byte	(.L20-.L18)/2
+ 206 003b 27       		.byte	(.L21-.L18)/2
+ 207 003c 34       		.byte	(.L22-.L18)/2
+ 208 003d 5A       		.byte	(.L16-.L18)/2
+ 209 003e 5A       		.byte	(.L16-.L18)/2
+ 210 003f 5A       		.byte	(.L16-.L18)/2
+ 211 0040 41       		.byte	(.L23-.L18)/2
+ 212 0041 4E       		.byte	(.L24-.L18)/2
+ 213              		.p2align 1
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 8
+
+
+ 214              	.L17:
+  86:main.c        ****                 UART_1_PutString("Stop\r\n");
+ 215              		.loc 1 86 0
+ 216 0042 FFF7FEFF 		bl	LEDoff
+ 217              	.LVL16:
+  87:main.c        ****             }
+ 218              		.loc 1 87 0
+ 219 0046 3048     		ldr	r0, .L33+16
+ 220 0048 FFF7FEFF 		bl	UART_1_PutString
+ 221              	.LVL17:
+  89:main.c        ****             case '1' :      
+ 222              		.loc 1 89 0
+ 223 004c 4EE0     		b	.L16
+ 224              	.L19:
+  92:main.c        ****                 if(LEDstatus == false)
+ 225              		.loc 1 92 0
+ 226 004e 2F48     		ldr	r0, .L33+20
+ 227 0050 FFF7FEFF 		bl	UART_1_PutString
+ 228              	.LVL18:
+  93:main.c        ****                 {
+ 229              		.loc 1 93 0
+ 230 0054 2E4B     		ldr	r3, .L33+24
+ 231 0056 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 232 0058 13B9     		cbnz	r3, .L25
+  95:main.c        ****                 }else if(LEDstatus == true)
+ 233              		.loc 1 95 0
+ 234 005a FFF7FEFF 		bl	LEDon
+ 235              	.LVL19:
+ 236 005e 45E0     		b	.L16
+ 237              	.L25:
+  96:main.c        ****                 {
+ 238              		.loc 1 96 0
+ 239 0060 002B     		cmp	r3, #0
+ 240 0062 43D0     		beq	.L16
+  98:main.c        ****                 }
+ 241              		.loc 1 98 0
+ 242 0064 FFF7FEFF 		bl	LEDoff
+ 243              	.LVL20:
+ 244 0068 40E0     		b	.L16
+ 245              	.L20:
+ 105:main.c        ****                 if(LEDstatus == false)
+ 246              		.loc 1 105 0
+ 247 006a 2A48     		ldr	r0, .L33+28
+ 248 006c FFF7FEFF 		bl	UART_1_PutString
+ 249              	.LVL21:
+ 106:main.c        ****                 {
+ 250              		.loc 1 106 0
+ 251 0070 274B     		ldr	r3, .L33+24
+ 252 0072 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 253 0074 13B9     		cbnz	r3, .L26
+ 108:main.c        ****                 }else if(LEDstatus == true)
+ 254              		.loc 1 108 0
+ 255 0076 FFF7FEFF 		bl	LEDon
+ 256              	.LVL22:
+ 257 007a 37E0     		b	.L16
+ 258              	.L26:
+ 109:main.c        ****                 {
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 9
+
+
+ 259              		.loc 1 109 0
+ 260 007c 002B     		cmp	r3, #0
+ 261 007e 35D0     		beq	.L16
+ 111:main.c        ****                 }
+ 262              		.loc 1 111 0
+ 263 0080 FFF7FEFF 		bl	LEDoff
+ 264              	.LVL23:
+ 265 0084 32E0     		b	.L16
+ 266              	.L21:
+ 117:main.c        ****                 if(LEDstatus == false)
+ 267              		.loc 1 117 0
+ 268 0086 2448     		ldr	r0, .L33+32
+ 269 0088 FFF7FEFF 		bl	UART_1_PutString
+ 270              	.LVL24:
+ 118:main.c        ****                 {
+ 271              		.loc 1 118 0
+ 272 008c 204B     		ldr	r3, .L33+24
+ 273 008e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 274 0090 13B9     		cbnz	r3, .L27
+ 120:main.c        ****                 }else if(LEDstatus == true)
+ 275              		.loc 1 120 0
+ 276 0092 FFF7FEFF 		bl	LEDon
+ 277              	.LVL25:
+ 278 0096 29E0     		b	.L16
+ 279              	.L27:
+ 121:main.c        ****                 {
+ 280              		.loc 1 121 0
+ 281 0098 43B3     		cbz	r3, .L16
+ 123:main.c        ****                 }
+ 282              		.loc 1 123 0
+ 283 009a FFF7FEFF 		bl	LEDoff
+ 284              	.LVL26:
+ 285 009e 25E0     		b	.L16
+ 286              	.L22:
+ 129:main.c        ****                 if(LEDstatus == false)
+ 287              		.loc 1 129 0
+ 288 00a0 1E48     		ldr	r0, .L33+36
+ 289 00a2 FFF7FEFF 		bl	UART_1_PutString
+ 290              	.LVL27:
+ 130:main.c        ****                 {
+ 291              		.loc 1 130 0
+ 292 00a6 1A4B     		ldr	r3, .L33+24
+ 293 00a8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 294 00aa 13B9     		cbnz	r3, .L28
+ 132:main.c        ****                 }else if(LEDstatus == true)
+ 295              		.loc 1 132 0
+ 296 00ac FFF7FEFF 		bl	LEDon
+ 297              	.LVL28:
+ 298 00b0 1CE0     		b	.L16
+ 299              	.L28:
+ 133:main.c        ****                 {
+ 300              		.loc 1 133 0
+ 301 00b2 DBB1     		cbz	r3, .L16
+ 135:main.c        ****                 }
+ 302              		.loc 1 135 0
+ 303 00b4 FFF7FEFF 		bl	LEDoff
+ 304              	.LVL29:
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 10
+
+
+ 305 00b8 18E0     		b	.L16
+ 306              	.L23:
+ 141:main.c        ****                 if(LEDstatus == false)
+ 307              		.loc 1 141 0
+ 308 00ba 1948     		ldr	r0, .L33+40
+ 309 00bc FFF7FEFF 		bl	UART_1_PutString
+ 310              	.LVL30:
+ 142:main.c        ****                 {
+ 311              		.loc 1 142 0
+ 312 00c0 134B     		ldr	r3, .L33+24
+ 313 00c2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 314 00c4 13B9     		cbnz	r3, .L29
+ 144:main.c        ****                 }else if(LEDstatus == true)
+ 315              		.loc 1 144 0
+ 316 00c6 FFF7FEFF 		bl	LEDon
+ 317              	.LVL31:
+ 318 00ca 0FE0     		b	.L16
+ 319              	.L29:
+ 145:main.c        ****                 {
+ 320              		.loc 1 145 0
+ 321 00cc 73B1     		cbz	r3, .L16
+ 147:main.c        ****                 }                
+ 322              		.loc 1 147 0
+ 323 00ce FFF7FEFF 		bl	LEDoff
+ 324              	.LVL32:
+ 325 00d2 0BE0     		b	.L16
+ 326              	.L24:
+ 153:main.c        ****                 if(LEDstatus == false)
+ 327              		.loc 1 153 0
+ 328 00d4 1348     		ldr	r0, .L33+44
+ 329 00d6 FFF7FEFF 		bl	UART_1_PutString
+ 330              	.LVL33:
+ 154:main.c        ****                 {
+ 331              		.loc 1 154 0
+ 332 00da 0D4B     		ldr	r3, .L33+24
+ 333 00dc 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 334 00de 13B9     		cbnz	r3, .L30
+ 156:main.c        ****                 }else if(LEDstatus == true)
+ 335              		.loc 1 156 0
+ 336 00e0 FFF7FEFF 		bl	LEDon
+ 337              	.LVL34:
+ 338 00e4 02E0     		b	.L16
+ 339              	.L30:
+ 157:main.c        ****                 {
+ 340              		.loc 1 157 0
+ 341 00e6 0BB1     		cbz	r3, .L16
+ 159:main.c        ****                 }                
+ 342              		.loc 1 159 0
+ 343 00e8 FFF7FEFF 		bl	LEDoff
+ 344              	.LVL35:
+ 345              	.L16:
+  70:main.c        ****     {
+ 346              		.loc 1 70 0 discriminator 2
+ 347 00ec 0134     		adds	r4, r4, #1
+ 348              	.LVL36:
+ 349 00ee E4B2     		uxtb	r4, r4
+ 350              	.LVL37:
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 11
+
+
+ 351              	.L15:
+  70:main.c        ****     {
+ 352              		.loc 1 70 0 is_stmt 0 discriminator 1
+ 353 00f0 B442     		cmp	r4, r6
+ 354 00f2 8BD3     		bcc	.L31
+ 355              	.LBE2:
+ 168:main.c        **** 
+ 356              		.loc 1 168 0 is_stmt 1
+ 357 00f4 70BD     		pop	{r4, r5, r6, pc}
+ 358              	.LVL38:
+ 359              	.L34:
+ 360 00f6 00BF     		.align	2
+ 361              	.L33:
+ 362 00f8 00000000 		.word	c
+ 363 00fc 88000000 		.word	.LC2
+ 364 0100 98000000 		.word	.LC3
+ 365 0104 B4000000 		.word	.LC4
+ 366 0108 B8000000 		.word	.LC5
+ 367 010c C0000000 		.word	.LC6
+ 368 0110 00000000 		.word	.LANCHOR0
+ 369 0114 D4000000 		.word	.LC7
+ 370 0118 E8000000 		.word	.LC8
+ 371 011c F8000000 		.word	.LC9
+ 372 0120 08010000 		.word	.LC10
+ 373 0124 18010000 		.word	.LC11
+ 374              		.cfi_endproc
+ 375              	.LFE64:
+ 376              		.size	ISR_UART_rx_handler, .-ISR_UART_rx_handler
+ 377              		.global	ASCIIvalue
+ 378              		.comm	c,1,1
+ 379              		.global	LEDstatus
+ 380              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 381              		.align	2
+ 382              	.LC0:
+ 383 0000 50536F43 		.ascii	"PSoC UART Receiver program has started. \015\012\000"
+ 383      20554152 
+ 383      54205265 
+ 383      63656976 
+ 383      65722070 
+ 384 002b 00       		.space	1
+ 385              	.LC1:
+ 386 002c 53656E64 		.ascii	"Sending a 1 from the RPi will activate the LED and "
+ 386      696E6720 
+ 386      61203120 
+ 386      66726F6D 
+ 386      20746865 
+ 387 005f 73656E64 		.ascii	"sending a 0 will deactivate the LED. \015\012\000"
+ 387      696E6720 
+ 387      61203020 
+ 387      77696C6C 
+ 387      20646561 
+ 388 0087 00       		.space	1
+ 389              	.LC2:
+ 390 0088 50536F43 		.ascii	"PSoC received: \000"
+ 390      20726563 
+ 390      65697665 
+ 390      643A2000 
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 12
+
+
+ 391              	.LC3:
+ 392 0098 2066726F 		.ascii	" from PuTTY terminal on PC\000"
+ 392      6D205075 
+ 392      54545920 
+ 392      7465726D 
+ 392      696E616C 
+ 393 00b3 00       		.space	1
+ 394              	.LC4:
+ 395 00b4 0D0A00   		.ascii	"\015\012\000"
+ 396 00b7 00       		.space	1
+ 397              	.LC5:
+ 398 00b8 53746F70 		.ascii	"Stop\015\012\000"
+ 398      0D0A00
+ 399 00bf 00       		.space	1
+ 400              	.LC6:
+ 401 00c0 44726976 		.ascii	"Driving forward\015\012\000"
+ 401      696E6720 
+ 401      666F7277 
+ 401      6172640D 
+ 401      0A00
+ 402 00d2 0000     		.space	2
+ 403              	.LC7:
+ 404 00d4 44726976 		.ascii	"Driving backwards\015\012\000"
+ 404      696E6720 
+ 404      6261636B 
+ 404      77617264 
+ 404      730D0A00 
+ 405              	.LC8:
+ 406 00e8 5475726E 		.ascii	"Turning left\015\012\000"
+ 406      696E6720 
+ 406      6C656674 
+ 406      0D0A00
+ 407 00f7 00       		.space	1
+ 408              	.LC9:
+ 409 00f8 5475726E 		.ascii	"Turning right\015\012\000"
+ 409      696E6720 
+ 409      72696768 
+ 409      740D0A00 
+ 410              	.LC10:
+ 411 0108 4C696674 		.ascii	"Lifting arm\015\012\000"
+ 411      696E6720 
+ 411      61726D0D 
+ 411      0A00
+ 412 0116 0000     		.space	2
+ 413              	.LC11:
+ 414 0118 4C6F7765 		.ascii	"Lowering arm\015\012\000"
+ 414      72696E67 
+ 414      2061726D 
+ 414      0D0A00
+ 415              		.bss
+ 416              		.align	2
+ 417              		.set	.LANCHOR0,. + 0
+ 418              		.type	LEDstatus, %object
+ 419              		.size	LEDstatus, 1
+ 420              	LEDstatus:
+ 421 0000 00       		.space	1
+ 422 0001 000000   		.space	3
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 13
+
+
+ 423              		.type	ASCIIvalue, %object
+ 424              		.size	ASCIIvalue, 4
+ 425              	ASCIIvalue:
+ 426 0004 00000000 		.space	4
+ 427              		.text
+ 428              	.Letext0:
+ 429              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 430              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 431              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 432              		.file 5 "Generated_Source\\PSoC5/UART_1.h"
+ 433              		.file 6 "Generated_Source\\PSoC5/isr_1.h"
+ 434              		.file 7 "Generated_Source\\PSoC5/Pin_LED.h"
+ 435              		.section	.debug_info,"",%progbits
+ 436              	.Ldebug_info0:
+ 437 0000 C6030000 		.4byte	0x3c6
+ 438 0004 0400     		.2byte	0x4
+ 439 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 440 000a 04       		.byte	0x4
+ 441 000b 01       		.uleb128 0x1
+ 442 000c 4E000000 		.4byte	.LASF33
+ 443 0010 0C       		.byte	0xc
+ 444 0011 2A020000 		.4byte	.LASF34
+ 445 0015 37010000 		.4byte	.LASF35
+ 446 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 447 001d 00000000 		.4byte	0
+ 448 0021 00000000 		.4byte	.Ldebug_line0
+ 449 0025 02       		.uleb128 0x2
+ 450 0026 01       		.byte	0x1
+ 451 0027 06       		.byte	0x6
+ 452 0028 66020000 		.4byte	.LASF0
+ 453 002c 03       		.uleb128 0x3
+ 454 002d 0D000000 		.4byte	.LASF4
+ 455 0031 02       		.byte	0x2
+ 456 0032 1D       		.byte	0x1d
+ 457 0033 37000000 		.4byte	0x37
+ 458 0037 02       		.uleb128 0x2
+ 459 0038 01       		.byte	0x1
+ 460 0039 08       		.byte	0x8
+ 461 003a 22010000 		.4byte	.LASF1
+ 462 003e 02       		.uleb128 0x2
+ 463 003f 02       		.byte	0x2
+ 464 0040 05       		.byte	0x5
+ 465 0041 36020000 		.4byte	.LASF2
+ 466 0045 02       		.uleb128 0x2
+ 467 0046 02       		.byte	0x2
+ 468 0047 07       		.byte	0x7
+ 469 0048 02010000 		.4byte	.LASF3
+ 470 004c 03       		.uleb128 0x3
+ 471 004d 28000000 		.4byte	.LASF5
+ 472 0051 02       		.byte	0x2
+ 473 0052 3F       		.byte	0x3f
+ 474 0053 57000000 		.4byte	0x57
+ 475 0057 02       		.uleb128 0x2
+ 476 0058 04       		.byte	0x4
+ 477 0059 05       		.byte	0x5
+ 478 005a 4B020000 		.4byte	.LASF6
+ 479 005e 02       		.uleb128 0x2
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 14
+
+
+ 480 005f 04       		.byte	0x4
+ 481 0060 07       		.byte	0x7
+ 482 0061 F0000000 		.4byte	.LASF7
+ 483 0065 02       		.uleb128 0x2
+ 484 0066 08       		.byte	0x8
+ 485 0067 05       		.byte	0x5
+ 486 0068 1C020000 		.4byte	.LASF8
+ 487 006c 02       		.uleb128 0x2
+ 488 006d 08       		.byte	0x8
+ 489 006e 07       		.byte	0x7
+ 490 006f B9010000 		.4byte	.LASF9
+ 491 0073 04       		.uleb128 0x4
+ 492 0074 04       		.byte	0x4
+ 493 0075 05       		.byte	0x5
+ 494 0076 696E7400 		.ascii	"int\000"
+ 495 007a 02       		.uleb128 0x2
+ 496 007b 04       		.byte	0x4
+ 497 007c 07       		.byte	0x7
+ 498 007d 9E010000 		.4byte	.LASF10
+ 499 0081 03       		.uleb128 0x3
+ 500 0082 D0010000 		.4byte	.LASF11
+ 501 0086 03       		.byte	0x3
+ 502 0087 18       		.byte	0x18
+ 503 0088 2C000000 		.4byte	0x2c
+ 504 008c 03       		.uleb128 0x3
+ 505 008d 0B020000 		.4byte	.LASF12
+ 506 0091 03       		.byte	0x3
+ 507 0092 2C       		.byte	0x2c
+ 508 0093 4C000000 		.4byte	0x4c
+ 509 0097 02       		.uleb128 0x2
+ 510 0098 04       		.byte	0x4
+ 511 0099 04       		.byte	0x4
+ 512 009a 3E000000 		.4byte	.LASF13
+ 513 009e 02       		.uleb128 0x2
+ 514 009f 08       		.byte	0x8
+ 515 00a0 04       		.byte	0x4
+ 516 00a1 30010000 		.4byte	.LASF14
+ 517 00a5 02       		.uleb128 0x2
+ 518 00a6 01       		.byte	0x1
+ 519 00a7 08       		.byte	0x8
+ 520 00a8 31020000 		.4byte	.LASF15
+ 521 00ac 02       		.uleb128 0x2
+ 522 00ad 08       		.byte	0x8
+ 523 00ae 04       		.byte	0x4
+ 524 00af 54020000 		.4byte	.LASF16
+ 525 00b3 02       		.uleb128 0x2
+ 526 00b4 04       		.byte	0x4
+ 527 00b5 07       		.byte	0x7
+ 528 00b6 13020000 		.4byte	.LASF17
+ 529 00ba 05       		.uleb128 0x5
+ 530 00bb 8A010000 		.4byte	.LASF36
+ 531 00bf 01       		.byte	0x1
+ 532 00c0 1B       		.byte	0x1b
+ 533 00c1 73000000 		.4byte	0x73
+ 534 00c5 00000000 		.4byte	.LFB63
+ 535 00c9 54000000 		.4byte	.LFE63-.LFB63
+ 536 00cd 01       		.uleb128 0x1
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 15
+
+
+ 537 00ce 9C       		.byte	0x9c
+ 538 00cf 50010000 		.4byte	0x150
+ 539 00d3 06       		.uleb128 0x6
+ 540 00d4 08000000 		.4byte	.LVL0
+ 541 00d8 71030000 		.4byte	0x371
+ 542 00dc 07       		.uleb128 0x7
+ 543 00dd 0E000000 		.4byte	.LVL1
+ 544 00e1 7C030000 		.4byte	0x37c
+ 545 00e5 F3000000 		.4byte	0xf3
+ 546 00e9 08       		.uleb128 0x8
+ 547 00ea 01       		.uleb128 0x1
+ 548 00eb 50       		.byte	0x50
+ 549 00ec 05       		.uleb128 0x5
+ 550 00ed 03       		.byte	0x3
+ 551 00ee 00000000 		.4byte	.LC0
+ 552 00f2 00       		.byte	0
+ 553 00f3 07       		.uleb128 0x7
+ 554 00f4 14000000 		.4byte	.LVL2
+ 555 00f8 7C030000 		.4byte	0x37c
+ 556 00fc 0A010000 		.4byte	0x10a
+ 557 0100 08       		.uleb128 0x8
+ 558 0101 01       		.uleb128 0x1
+ 559 0102 50       		.byte	0x50
+ 560 0103 05       		.uleb128 0x5
+ 561 0104 03       		.byte	0x3
+ 562 0105 2C000000 		.4byte	.LC1
+ 563 0109 00       		.byte	0
+ 564 010a 07       		.uleb128 0x7
+ 565 010b 1A000000 		.4byte	.LVL3
+ 566 010f 87030000 		.4byte	0x387
+ 567 0113 21010000 		.4byte	0x121
+ 568 0117 08       		.uleb128 0x8
+ 569 0118 01       		.uleb128 0x1
+ 570 0119 50       		.byte	0x50
+ 571 011a 05       		.uleb128 0x5
+ 572 011b 03       		.byte	0x3
+ 573 011c 00000000 		.4byte	ISR_UART_rx_handler
+ 574 0120 00       		.byte	0
+ 575 0121 07       		.uleb128 0x7
+ 576 0122 26000000 		.4byte	.LVL4
+ 577 0126 92030000 		.4byte	0x392
+ 578 012a 34010000 		.4byte	0x134
+ 579 012e 08       		.uleb128 0x8
+ 580 012f 01       		.uleb128 0x1
+ 581 0130 50       		.byte	0x50
+ 582 0131 01       		.uleb128 0x1
+ 583 0132 31       		.byte	0x31
+ 584 0133 00       		.byte	0
+ 585 0134 06       		.uleb128 0x6
+ 586 0135 30000000 		.4byte	.LVL5
+ 587 0139 9D030000 		.4byte	0x39d
+ 588 013d 06       		.uleb128 0x6
+ 589 013e 38000000 		.4byte	.LVL6
+ 590 0142 9D030000 		.4byte	0x39d
+ 591 0146 06       		.uleb128 0x6
+ 592 0147 40000000 		.4byte	.LVL7
+ 593 014b 92030000 		.4byte	0x392
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 16
+
+
+ 594 014f 00       		.byte	0
+ 595 0150 09       		.uleb128 0x9
+ 596 0151 60020000 		.4byte	.LASF18
+ 597 0155 01       		.byte	0x1
+ 598 0156 AA       		.byte	0xaa
+ 599 0157 00000000 		.4byte	.LFB65
+ 600 015b 0C000000 		.4byte	.LFE65-.LFB65
+ 601 015f 01       		.uleb128 0x1
+ 602 0160 9C       		.byte	0x9c
+ 603 0161 09       		.uleb128 0x9
+ 604 0162 83010000 		.4byte	.LASF19
+ 605 0166 01       		.byte	0x1
+ 606 0167 AF       		.byte	0xaf
+ 607 0168 00000000 		.4byte	.LFB66
+ 608 016c 0C000000 		.4byte	.LFE66-.LFB66
+ 609 0170 01       		.uleb128 0x1
+ 610 0171 9C       		.byte	0x9c
+ 611 0172 0A       		.uleb128 0xa
+ 612 0173 DC000000 		.4byte	.LASF37
+ 613 0177 01       		.byte	0x1
+ 614 0178 43       		.byte	0x43
+ 615 0179 00000000 		.4byte	.LFB64
+ 616 017d 28010000 		.4byte	.LFE64-.LFB64
+ 617 0181 01       		.uleb128 0x1
+ 618 0182 9C       		.byte	0x9c
+ 619 0183 28030000 		.4byte	0x328
+ 620 0187 0B       		.uleb128 0xb
+ 621 0188 32000000 		.4byte	.LASF20
+ 622 018c 01       		.byte	0x1
+ 623 018d 45       		.byte	0x45
+ 624 018e 81000000 		.4byte	0x81
+ 625 0192 00000000 		.4byte	.LLST0
+ 626 0196 0C       		.uleb128 0xc
+ 627 0197 08000000 		.4byte	.LBB2
+ 628 019b EC000000 		.4byte	.LBE2-.LBB2
+ 629 019f 1E030000 		.4byte	0x31e
+ 630 01a3 0D       		.uleb128 0xd
+ 631 01a4 6900     		.ascii	"i\000"
+ 632 01a6 01       		.byte	0x1
+ 633 01a7 46       		.byte	0x46
+ 634 01a8 81000000 		.4byte	0x81
+ 635 01ac 13000000 		.4byte	.LLST1
+ 636 01b0 06       		.uleb128 0x6
+ 637 01b1 10000000 		.4byte	.LVL11
+ 638 01b5 A8030000 		.4byte	0x3a8
+ 639 01b9 07       		.uleb128 0x7
+ 640 01ba 1A000000 		.4byte	.LVL12
+ 641 01be 7C030000 		.4byte	0x37c
+ 642 01c2 D0010000 		.4byte	0x1d0
+ 643 01c6 08       		.uleb128 0x8
+ 644 01c7 01       		.uleb128 0x1
+ 645 01c8 50       		.byte	0x50
+ 646 01c9 05       		.uleb128 0x5
+ 647 01ca 03       		.byte	0x3
+ 648 01cb 88000000 		.4byte	.LC2
+ 649 01cf 00       		.byte	0
+ 650 01d0 06       		.uleb128 0x6
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 17
+
+
+ 651 01d1 20000000 		.4byte	.LVL13
+ 652 01d5 B3030000 		.4byte	0x3b3
+ 653 01d9 07       		.uleb128 0x7
+ 654 01da 26000000 		.4byte	.LVL14
+ 655 01de 7C030000 		.4byte	0x37c
+ 656 01e2 F0010000 		.4byte	0x1f0
+ 657 01e6 08       		.uleb128 0x8
+ 658 01e7 01       		.uleb128 0x1
+ 659 01e8 50       		.byte	0x50
+ 660 01e9 05       		.uleb128 0x5
+ 661 01ea 03       		.byte	0x3
+ 662 01eb 98000000 		.4byte	.LC3
+ 663 01ef 00       		.byte	0
+ 664 01f0 07       		.uleb128 0x7
+ 665 01f1 2C000000 		.4byte	.LVL15
+ 666 01f5 7C030000 		.4byte	0x37c
+ 667 01f9 07020000 		.4byte	0x207
+ 668 01fd 08       		.uleb128 0x8
+ 669 01fe 01       		.uleb128 0x1
+ 670 01ff 50       		.byte	0x50
+ 671 0200 05       		.uleb128 0x5
+ 672 0201 03       		.byte	0x3
+ 673 0202 B4000000 		.4byte	.LC4
+ 674 0206 00       		.byte	0
+ 675 0207 06       		.uleb128 0x6
+ 676 0208 46000000 		.4byte	.LVL16
+ 677 020c 61010000 		.4byte	0x161
+ 678 0210 07       		.uleb128 0x7
+ 679 0211 4C000000 		.4byte	.LVL17
+ 680 0215 7C030000 		.4byte	0x37c
+ 681 0219 27020000 		.4byte	0x227
+ 682 021d 08       		.uleb128 0x8
+ 683 021e 01       		.uleb128 0x1
+ 684 021f 50       		.byte	0x50
+ 685 0220 05       		.uleb128 0x5
+ 686 0221 03       		.byte	0x3
+ 687 0222 B8000000 		.4byte	.LC5
+ 688 0226 00       		.byte	0
+ 689 0227 07       		.uleb128 0x7
+ 690 0228 54000000 		.4byte	.LVL18
+ 691 022c 7C030000 		.4byte	0x37c
+ 692 0230 3E020000 		.4byte	0x23e
+ 693 0234 08       		.uleb128 0x8
+ 694 0235 01       		.uleb128 0x1
+ 695 0236 50       		.byte	0x50
+ 696 0237 05       		.uleb128 0x5
+ 697 0238 03       		.byte	0x3
+ 698 0239 C0000000 		.4byte	.LC6
+ 699 023d 00       		.byte	0
+ 700 023e 06       		.uleb128 0x6
+ 701 023f 5E000000 		.4byte	.LVL19
+ 702 0243 50010000 		.4byte	0x150
+ 703 0247 06       		.uleb128 0x6
+ 704 0248 68000000 		.4byte	.LVL20
+ 705 024c 61010000 		.4byte	0x161
+ 706 0250 07       		.uleb128 0x7
+ 707 0251 70000000 		.4byte	.LVL21
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 18
+
+
+ 708 0255 7C030000 		.4byte	0x37c
+ 709 0259 67020000 		.4byte	0x267
+ 710 025d 08       		.uleb128 0x8
+ 711 025e 01       		.uleb128 0x1
+ 712 025f 50       		.byte	0x50
+ 713 0260 05       		.uleb128 0x5
+ 714 0261 03       		.byte	0x3
+ 715 0262 D4000000 		.4byte	.LC7
+ 716 0266 00       		.byte	0
+ 717 0267 06       		.uleb128 0x6
+ 718 0268 7A000000 		.4byte	.LVL22
+ 719 026c 50010000 		.4byte	0x150
+ 720 0270 06       		.uleb128 0x6
+ 721 0271 84000000 		.4byte	.LVL23
+ 722 0275 61010000 		.4byte	0x161
+ 723 0279 07       		.uleb128 0x7
+ 724 027a 8C000000 		.4byte	.LVL24
+ 725 027e 7C030000 		.4byte	0x37c
+ 726 0282 90020000 		.4byte	0x290
+ 727 0286 08       		.uleb128 0x8
+ 728 0287 01       		.uleb128 0x1
+ 729 0288 50       		.byte	0x50
+ 730 0289 05       		.uleb128 0x5
+ 731 028a 03       		.byte	0x3
+ 732 028b E8000000 		.4byte	.LC8
+ 733 028f 00       		.byte	0
+ 734 0290 06       		.uleb128 0x6
+ 735 0291 96000000 		.4byte	.LVL25
+ 736 0295 50010000 		.4byte	0x150
+ 737 0299 06       		.uleb128 0x6
+ 738 029a 9E000000 		.4byte	.LVL26
+ 739 029e 61010000 		.4byte	0x161
+ 740 02a2 07       		.uleb128 0x7
+ 741 02a3 A6000000 		.4byte	.LVL27
+ 742 02a7 7C030000 		.4byte	0x37c
+ 743 02ab B9020000 		.4byte	0x2b9
+ 744 02af 08       		.uleb128 0x8
+ 745 02b0 01       		.uleb128 0x1
+ 746 02b1 50       		.byte	0x50
+ 747 02b2 05       		.uleb128 0x5
+ 748 02b3 03       		.byte	0x3
+ 749 02b4 F8000000 		.4byte	.LC9
+ 750 02b8 00       		.byte	0
+ 751 02b9 06       		.uleb128 0x6
+ 752 02ba B0000000 		.4byte	.LVL28
+ 753 02be 50010000 		.4byte	0x150
+ 754 02c2 06       		.uleb128 0x6
+ 755 02c3 B8000000 		.4byte	.LVL29
+ 756 02c7 61010000 		.4byte	0x161
+ 757 02cb 07       		.uleb128 0x7
+ 758 02cc C0000000 		.4byte	.LVL30
+ 759 02d0 7C030000 		.4byte	0x37c
+ 760 02d4 E2020000 		.4byte	0x2e2
+ 761 02d8 08       		.uleb128 0x8
+ 762 02d9 01       		.uleb128 0x1
+ 763 02da 50       		.byte	0x50
+ 764 02db 05       		.uleb128 0x5
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 19
+
+
+ 765 02dc 03       		.byte	0x3
+ 766 02dd 08010000 		.4byte	.LC10
+ 767 02e1 00       		.byte	0
+ 768 02e2 06       		.uleb128 0x6
+ 769 02e3 CA000000 		.4byte	.LVL31
+ 770 02e7 50010000 		.4byte	0x150
+ 771 02eb 06       		.uleb128 0x6
+ 772 02ec D2000000 		.4byte	.LVL32
+ 773 02f0 61010000 		.4byte	0x161
+ 774 02f4 07       		.uleb128 0x7
+ 775 02f5 DA000000 		.4byte	.LVL33
+ 776 02f9 7C030000 		.4byte	0x37c
+ 777 02fd 0B030000 		.4byte	0x30b
+ 778 0301 08       		.uleb128 0x8
+ 779 0302 01       		.uleb128 0x1
+ 780 0303 50       		.byte	0x50
+ 781 0304 05       		.uleb128 0x5
+ 782 0305 03       		.byte	0x3
+ 783 0306 18010000 		.4byte	.LC11
+ 784 030a 00       		.byte	0
+ 785 030b 06       		.uleb128 0x6
+ 786 030c E4000000 		.4byte	.LVL34
+ 787 0310 50010000 		.4byte	0x150
+ 788 0314 06       		.uleb128 0x6
+ 789 0315 EC000000 		.4byte	.LVL35
+ 790 0319 61010000 		.4byte	0x161
+ 791 031d 00       		.byte	0
+ 792 031e 06       		.uleb128 0x6
+ 793 031f 06000000 		.4byte	.LVL8
+ 794 0323 BE030000 		.4byte	0x3be
+ 795 0327 00       		.byte	0
+ 796 0328 0E       		.uleb128 0xe
+ 797 0329 15010000 		.4byte	.LASF21
+ 798 032d 04       		.byte	0x4
+ 799 032e 1207     		.2byte	0x712
+ 800 0330 34030000 		.4byte	0x334
+ 801 0334 0F       		.uleb128 0xf
+ 802 0335 8C000000 		.4byte	0x8c
+ 803 0339 10       		.uleb128 0x10
+ 804 033a 44000000 		.4byte	.LASF22
+ 805 033e 01       		.byte	0x1
+ 806 033f 13       		.byte	0x13
+ 807 0340 4A030000 		.4byte	0x34a
+ 808 0344 05       		.uleb128 0x5
+ 809 0345 03       		.byte	0x3
+ 810 0346 00000000 		.4byte	LEDstatus
+ 811 034a 02       		.uleb128 0x2
+ 812 034b 01       		.byte	0x1
+ 813 034c 02       		.byte	0x2
+ 814 034d 80020000 		.4byte	.LASF23
+ 815 0351 11       		.uleb128 0x11
+ 816 0352 6300     		.ascii	"c\000"
+ 817 0354 01       		.byte	0x1
+ 818 0355 14       		.byte	0x14
+ 819 0356 A5000000 		.4byte	0xa5
+ 820 035a 05       		.uleb128 0x5
+ 821 035b 03       		.byte	0x3
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 20
+
+
+ 822 035c 00000000 		.4byte	c
+ 823 0360 10       		.uleb128 0x10
+ 824 0361 40020000 		.4byte	.LASF24
+ 825 0365 01       		.byte	0x1
+ 826 0366 15       		.byte	0x15
+ 827 0367 73000000 		.4byte	0x73
+ 828 036b 05       		.uleb128 0x5
+ 829 036c 03       		.byte	0x3
+ 830 036d 00000000 		.4byte	ASCIIvalue
+ 831 0371 12       		.uleb128 0x12
+ 832 0372 00000000 		.4byte	.LASF25
+ 833 0376 00000000 		.4byte	.LASF25
+ 834 037a 05       		.byte	0x5
+ 835 037b 54       		.byte	0x54
+ 836 037c 12       		.uleb128 0x12
+ 837 037d 17000000 		.4byte	.LASF26
+ 838 0381 17000000 		.4byte	.LASF26
+ 839 0385 05       		.byte	0x5
+ 840 0386 8B       		.byte	0x8b
+ 841 0387 12       		.uleb128 0x12
+ 842 0388 72020000 		.4byte	.LASF27
+ 843 038c 72020000 		.4byte	.LASF27
+ 844 0390 06       		.byte	0x6
+ 845 0391 18       		.byte	0x18
+ 846 0392 12       		.uleb128 0x12
+ 847 0393 AB010000 		.4byte	.LASF28
+ 848 0397 AB010000 		.4byte	.LASF28
+ 849 039b 07       		.byte	0x7
+ 850 039c 26       		.byte	0x26
+ 851 039d 12       		.uleb128 0x12
+ 852 039e EF010000 		.4byte	.LASF29
+ 853 03a2 EF010000 		.4byte	.LASF29
+ 854 03a6 07       		.byte	0x7
+ 855 03a7 29       		.byte	0x29
+ 856 03a8 12       		.uleb128 0x12
+ 857 03a9 FC010000 		.4byte	.LASF30
+ 858 03ad FC010000 		.4byte	.LASF30
+ 859 03b1 05       		.byte	0x5
+ 860 03b2 71       		.byte	0x71
+ 861 03b3 12       		.uleb128 0x12
+ 862 03b4 8F010000 		.4byte	.LASF31
+ 863 03b8 8F010000 		.4byte	.LASF31
+ 864 03bc 05       		.byte	0x5
+ 865 03bd 8A       		.byte	0x8a
+ 866 03be 12       		.uleb128 0x12
+ 867 03bf D8010000 		.4byte	.LASF32
+ 868 03c3 D8010000 		.4byte	.LASF32
+ 869 03c7 05       		.byte	0x5
+ 870 03c8 73       		.byte	0x73
+ 871 03c9 00       		.byte	0
+ 872              		.section	.debug_abbrev,"",%progbits
+ 873              	.Ldebug_abbrev0:
+ 874 0000 01       		.uleb128 0x1
+ 875 0001 11       		.uleb128 0x11
+ 876 0002 01       		.byte	0x1
+ 877 0003 25       		.uleb128 0x25
+ 878 0004 0E       		.uleb128 0xe
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 21
+
+
+ 879 0005 13       		.uleb128 0x13
+ 880 0006 0B       		.uleb128 0xb
+ 881 0007 03       		.uleb128 0x3
+ 882 0008 0E       		.uleb128 0xe
+ 883 0009 1B       		.uleb128 0x1b
+ 884 000a 0E       		.uleb128 0xe
+ 885 000b 55       		.uleb128 0x55
+ 886 000c 17       		.uleb128 0x17
+ 887 000d 11       		.uleb128 0x11
+ 888 000e 01       		.uleb128 0x1
+ 889 000f 10       		.uleb128 0x10
+ 890 0010 17       		.uleb128 0x17
+ 891 0011 00       		.byte	0
+ 892 0012 00       		.byte	0
+ 893 0013 02       		.uleb128 0x2
+ 894 0014 24       		.uleb128 0x24
+ 895 0015 00       		.byte	0
+ 896 0016 0B       		.uleb128 0xb
+ 897 0017 0B       		.uleb128 0xb
+ 898 0018 3E       		.uleb128 0x3e
+ 899 0019 0B       		.uleb128 0xb
+ 900 001a 03       		.uleb128 0x3
+ 901 001b 0E       		.uleb128 0xe
+ 902 001c 00       		.byte	0
+ 903 001d 00       		.byte	0
+ 904 001e 03       		.uleb128 0x3
+ 905 001f 16       		.uleb128 0x16
+ 906 0020 00       		.byte	0
+ 907 0021 03       		.uleb128 0x3
+ 908 0022 0E       		.uleb128 0xe
+ 909 0023 3A       		.uleb128 0x3a
+ 910 0024 0B       		.uleb128 0xb
+ 911 0025 3B       		.uleb128 0x3b
+ 912 0026 0B       		.uleb128 0xb
+ 913 0027 49       		.uleb128 0x49
+ 914 0028 13       		.uleb128 0x13
+ 915 0029 00       		.byte	0
+ 916 002a 00       		.byte	0
+ 917 002b 04       		.uleb128 0x4
+ 918 002c 24       		.uleb128 0x24
+ 919 002d 00       		.byte	0
+ 920 002e 0B       		.uleb128 0xb
+ 921 002f 0B       		.uleb128 0xb
+ 922 0030 3E       		.uleb128 0x3e
+ 923 0031 0B       		.uleb128 0xb
+ 924 0032 03       		.uleb128 0x3
+ 925 0033 08       		.uleb128 0x8
+ 926 0034 00       		.byte	0
+ 927 0035 00       		.byte	0
+ 928 0036 05       		.uleb128 0x5
+ 929 0037 2E       		.uleb128 0x2e
+ 930 0038 01       		.byte	0x1
+ 931 0039 3F       		.uleb128 0x3f
+ 932 003a 19       		.uleb128 0x19
+ 933 003b 03       		.uleb128 0x3
+ 934 003c 0E       		.uleb128 0xe
+ 935 003d 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 22
+
+
+ 936 003e 0B       		.uleb128 0xb
+ 937 003f 3B       		.uleb128 0x3b
+ 938 0040 0B       		.uleb128 0xb
+ 939 0041 27       		.uleb128 0x27
+ 940 0042 19       		.uleb128 0x19
+ 941 0043 49       		.uleb128 0x49
+ 942 0044 13       		.uleb128 0x13
+ 943 0045 8701     		.uleb128 0x87
+ 944 0047 19       		.uleb128 0x19
+ 945 0048 11       		.uleb128 0x11
+ 946 0049 01       		.uleb128 0x1
+ 947 004a 12       		.uleb128 0x12
+ 948 004b 06       		.uleb128 0x6
+ 949 004c 40       		.uleb128 0x40
+ 950 004d 18       		.uleb128 0x18
+ 951 004e 9742     		.uleb128 0x2117
+ 952 0050 19       		.uleb128 0x19
+ 953 0051 01       		.uleb128 0x1
+ 954 0052 13       		.uleb128 0x13
+ 955 0053 00       		.byte	0
+ 956 0054 00       		.byte	0
+ 957 0055 06       		.uleb128 0x6
+ 958 0056 898201   		.uleb128 0x4109
+ 959 0059 00       		.byte	0
+ 960 005a 11       		.uleb128 0x11
+ 961 005b 01       		.uleb128 0x1
+ 962 005c 31       		.uleb128 0x31
+ 963 005d 13       		.uleb128 0x13
+ 964 005e 00       		.byte	0
+ 965 005f 00       		.byte	0
+ 966 0060 07       		.uleb128 0x7
+ 967 0061 898201   		.uleb128 0x4109
+ 968 0064 01       		.byte	0x1
+ 969 0065 11       		.uleb128 0x11
+ 970 0066 01       		.uleb128 0x1
+ 971 0067 31       		.uleb128 0x31
+ 972 0068 13       		.uleb128 0x13
+ 973 0069 01       		.uleb128 0x1
+ 974 006a 13       		.uleb128 0x13
+ 975 006b 00       		.byte	0
+ 976 006c 00       		.byte	0
+ 977 006d 08       		.uleb128 0x8
+ 978 006e 8A8201   		.uleb128 0x410a
+ 979 0071 00       		.byte	0
+ 980 0072 02       		.uleb128 0x2
+ 981 0073 18       		.uleb128 0x18
+ 982 0074 9142     		.uleb128 0x2111
+ 983 0076 18       		.uleb128 0x18
+ 984 0077 00       		.byte	0
+ 985 0078 00       		.byte	0
+ 986 0079 09       		.uleb128 0x9
+ 987 007a 2E       		.uleb128 0x2e
+ 988 007b 00       		.byte	0
+ 989 007c 3F       		.uleb128 0x3f
+ 990 007d 19       		.uleb128 0x19
+ 991 007e 03       		.uleb128 0x3
+ 992 007f 0E       		.uleb128 0xe
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 23
+
+
+ 993 0080 3A       		.uleb128 0x3a
+ 994 0081 0B       		.uleb128 0xb
+ 995 0082 3B       		.uleb128 0x3b
+ 996 0083 0B       		.uleb128 0xb
+ 997 0084 11       		.uleb128 0x11
+ 998 0085 01       		.uleb128 0x1
+ 999 0086 12       		.uleb128 0x12
+ 1000 0087 06       		.uleb128 0x6
+ 1001 0088 40       		.uleb128 0x40
+ 1002 0089 18       		.uleb128 0x18
+ 1003 008a 9742     		.uleb128 0x2117
+ 1004 008c 19       		.uleb128 0x19
+ 1005 008d 00       		.byte	0
+ 1006 008e 00       		.byte	0
+ 1007 008f 0A       		.uleb128 0xa
+ 1008 0090 2E       		.uleb128 0x2e
+ 1009 0091 01       		.byte	0x1
+ 1010 0092 3F       		.uleb128 0x3f
+ 1011 0093 19       		.uleb128 0x19
+ 1012 0094 03       		.uleb128 0x3
+ 1013 0095 0E       		.uleb128 0xe
+ 1014 0096 3A       		.uleb128 0x3a
+ 1015 0097 0B       		.uleb128 0xb
+ 1016 0098 3B       		.uleb128 0x3b
+ 1017 0099 0B       		.uleb128 0xb
+ 1018 009a 27       		.uleb128 0x27
+ 1019 009b 19       		.uleb128 0x19
+ 1020 009c 11       		.uleb128 0x11
+ 1021 009d 01       		.uleb128 0x1
+ 1022 009e 12       		.uleb128 0x12
+ 1023 009f 06       		.uleb128 0x6
+ 1024 00a0 40       		.uleb128 0x40
+ 1025 00a1 18       		.uleb128 0x18
+ 1026 00a2 9742     		.uleb128 0x2117
+ 1027 00a4 19       		.uleb128 0x19
+ 1028 00a5 01       		.uleb128 0x1
+ 1029 00a6 13       		.uleb128 0x13
+ 1030 00a7 00       		.byte	0
+ 1031 00a8 00       		.byte	0
+ 1032 00a9 0B       		.uleb128 0xb
+ 1033 00aa 34       		.uleb128 0x34
+ 1034 00ab 00       		.byte	0
+ 1035 00ac 03       		.uleb128 0x3
+ 1036 00ad 0E       		.uleb128 0xe
+ 1037 00ae 3A       		.uleb128 0x3a
+ 1038 00af 0B       		.uleb128 0xb
+ 1039 00b0 3B       		.uleb128 0x3b
+ 1040 00b1 0B       		.uleb128 0xb
+ 1041 00b2 49       		.uleb128 0x49
+ 1042 00b3 13       		.uleb128 0x13
+ 1043 00b4 02       		.uleb128 0x2
+ 1044 00b5 17       		.uleb128 0x17
+ 1045 00b6 00       		.byte	0
+ 1046 00b7 00       		.byte	0
+ 1047 00b8 0C       		.uleb128 0xc
+ 1048 00b9 0B       		.uleb128 0xb
+ 1049 00ba 01       		.byte	0x1
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 24
+
+
+ 1050 00bb 11       		.uleb128 0x11
+ 1051 00bc 01       		.uleb128 0x1
+ 1052 00bd 12       		.uleb128 0x12
+ 1053 00be 06       		.uleb128 0x6
+ 1054 00bf 01       		.uleb128 0x1
+ 1055 00c0 13       		.uleb128 0x13
+ 1056 00c1 00       		.byte	0
+ 1057 00c2 00       		.byte	0
+ 1058 00c3 0D       		.uleb128 0xd
+ 1059 00c4 34       		.uleb128 0x34
+ 1060 00c5 00       		.byte	0
+ 1061 00c6 03       		.uleb128 0x3
+ 1062 00c7 08       		.uleb128 0x8
+ 1063 00c8 3A       		.uleb128 0x3a
+ 1064 00c9 0B       		.uleb128 0xb
+ 1065 00ca 3B       		.uleb128 0x3b
+ 1066 00cb 0B       		.uleb128 0xb
+ 1067 00cc 49       		.uleb128 0x49
+ 1068 00cd 13       		.uleb128 0x13
+ 1069 00ce 02       		.uleb128 0x2
+ 1070 00cf 17       		.uleb128 0x17
+ 1071 00d0 00       		.byte	0
+ 1072 00d1 00       		.byte	0
+ 1073 00d2 0E       		.uleb128 0xe
+ 1074 00d3 34       		.uleb128 0x34
+ 1075 00d4 00       		.byte	0
+ 1076 00d5 03       		.uleb128 0x3
+ 1077 00d6 0E       		.uleb128 0xe
+ 1078 00d7 3A       		.uleb128 0x3a
+ 1079 00d8 0B       		.uleb128 0xb
+ 1080 00d9 3B       		.uleb128 0x3b
+ 1081 00da 05       		.uleb128 0x5
+ 1082 00db 49       		.uleb128 0x49
+ 1083 00dc 13       		.uleb128 0x13
+ 1084 00dd 3F       		.uleb128 0x3f
+ 1085 00de 19       		.uleb128 0x19
+ 1086 00df 3C       		.uleb128 0x3c
+ 1087 00e0 19       		.uleb128 0x19
+ 1088 00e1 00       		.byte	0
+ 1089 00e2 00       		.byte	0
+ 1090 00e3 0F       		.uleb128 0xf
+ 1091 00e4 35       		.uleb128 0x35
+ 1092 00e5 00       		.byte	0
+ 1093 00e6 49       		.uleb128 0x49
+ 1094 00e7 13       		.uleb128 0x13
+ 1095 00e8 00       		.byte	0
+ 1096 00e9 00       		.byte	0
+ 1097 00ea 10       		.uleb128 0x10
+ 1098 00eb 34       		.uleb128 0x34
+ 1099 00ec 00       		.byte	0
+ 1100 00ed 03       		.uleb128 0x3
+ 1101 00ee 0E       		.uleb128 0xe
+ 1102 00ef 3A       		.uleb128 0x3a
+ 1103 00f0 0B       		.uleb128 0xb
+ 1104 00f1 3B       		.uleb128 0x3b
+ 1105 00f2 0B       		.uleb128 0xb
+ 1106 00f3 49       		.uleb128 0x49
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 25
+
+
+ 1107 00f4 13       		.uleb128 0x13
+ 1108 00f5 3F       		.uleb128 0x3f
+ 1109 00f6 19       		.uleb128 0x19
+ 1110 00f7 02       		.uleb128 0x2
+ 1111 00f8 18       		.uleb128 0x18
+ 1112 00f9 00       		.byte	0
+ 1113 00fa 00       		.byte	0
+ 1114 00fb 11       		.uleb128 0x11
+ 1115 00fc 34       		.uleb128 0x34
+ 1116 00fd 00       		.byte	0
+ 1117 00fe 03       		.uleb128 0x3
+ 1118 00ff 08       		.uleb128 0x8
+ 1119 0100 3A       		.uleb128 0x3a
+ 1120 0101 0B       		.uleb128 0xb
+ 1121 0102 3B       		.uleb128 0x3b
+ 1122 0103 0B       		.uleb128 0xb
+ 1123 0104 49       		.uleb128 0x49
+ 1124 0105 13       		.uleb128 0x13
+ 1125 0106 3F       		.uleb128 0x3f
+ 1126 0107 19       		.uleb128 0x19
+ 1127 0108 02       		.uleb128 0x2
+ 1128 0109 18       		.uleb128 0x18
+ 1129 010a 00       		.byte	0
+ 1130 010b 00       		.byte	0
+ 1131 010c 12       		.uleb128 0x12
+ 1132 010d 2E       		.uleb128 0x2e
+ 1133 010e 00       		.byte	0
+ 1134 010f 3F       		.uleb128 0x3f
+ 1135 0110 19       		.uleb128 0x19
+ 1136 0111 3C       		.uleb128 0x3c
+ 1137 0112 19       		.uleb128 0x19
+ 1138 0113 6E       		.uleb128 0x6e
+ 1139 0114 0E       		.uleb128 0xe
+ 1140 0115 03       		.uleb128 0x3
+ 1141 0116 0E       		.uleb128 0xe
+ 1142 0117 3A       		.uleb128 0x3a
+ 1143 0118 0B       		.uleb128 0xb
+ 1144 0119 3B       		.uleb128 0x3b
+ 1145 011a 0B       		.uleb128 0xb
+ 1146 011b 00       		.byte	0
+ 1147 011c 00       		.byte	0
+ 1148 011d 00       		.byte	0
+ 1149              		.section	.debug_loc,"",%progbits
+ 1150              	.Ldebug_loc0:
+ 1151              	.LLST0:
+ 1152 0000 08000000 		.4byte	.LVL9
+ 1153 0004 F6000000 		.4byte	.LVL38
+ 1154 0008 0100     		.2byte	0x1
+ 1155 000a 56       		.byte	0x56
+ 1156 000b 00000000 		.4byte	0
+ 1157 000f 00000000 		.4byte	0
+ 1158              	.LLST1:
+ 1159 0013 08000000 		.4byte	.LVL9
+ 1160 0017 0C000000 		.4byte	.LVL10
+ 1161 001b 0200     		.2byte	0x2
+ 1162 001d 30       		.byte	0x30
+ 1163 001e 9F       		.byte	0x9f
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 26
+
+
+ 1164 001f 0C000000 		.4byte	.LVL10
+ 1165 0023 EE000000 		.4byte	.LVL36
+ 1166 0027 0100     		.2byte	0x1
+ 1167 0029 54       		.byte	0x54
+ 1168 002a F0000000 		.4byte	.LVL37
+ 1169 002e F6000000 		.4byte	.LVL38
+ 1170 0032 0100     		.2byte	0x1
+ 1171 0034 54       		.byte	0x54
+ 1172 0035 00000000 		.4byte	0
+ 1173 0039 00000000 		.4byte	0
+ 1174              		.section	.debug_aranges,"",%progbits
+ 1175 0000 34000000 		.4byte	0x34
+ 1176 0004 0200     		.2byte	0x2
+ 1177 0006 00000000 		.4byte	.Ldebug_info0
+ 1178 000a 04       		.byte	0x4
+ 1179 000b 00       		.byte	0
+ 1180 000c 0000     		.2byte	0
+ 1181 000e 0000     		.2byte	0
+ 1182 0010 00000000 		.4byte	.LFB63
+ 1183 0014 54000000 		.4byte	.LFE63-.LFB63
+ 1184 0018 00000000 		.4byte	.LFB65
+ 1185 001c 0C000000 		.4byte	.LFE65-.LFB65
+ 1186 0020 00000000 		.4byte	.LFB66
+ 1187 0024 0C000000 		.4byte	.LFE66-.LFB66
+ 1188 0028 00000000 		.4byte	.LFB64
+ 1189 002c 28010000 		.4byte	.LFE64-.LFB64
+ 1190 0030 00000000 		.4byte	0
+ 1191 0034 00000000 		.4byte	0
+ 1192              		.section	.debug_ranges,"",%progbits
+ 1193              	.Ldebug_ranges0:
+ 1194 0000 00000000 		.4byte	.LFB63
+ 1195 0004 54000000 		.4byte	.LFE63
+ 1196 0008 00000000 		.4byte	.LFB65
+ 1197 000c 0C000000 		.4byte	.LFE65
+ 1198 0010 00000000 		.4byte	.LFB66
+ 1199 0014 0C000000 		.4byte	.LFE66
+ 1200 0018 00000000 		.4byte	.LFB64
+ 1201 001c 28010000 		.4byte	.LFE64
+ 1202 0020 00000000 		.4byte	0
+ 1203 0024 00000000 		.4byte	0
+ 1204              		.section	.debug_line,"",%progbits
+ 1205              	.Ldebug_line0:
+ 1206 0000 F0010000 		.section	.debug_str,"MS",%progbits,1
+ 1206      02006301 
+ 1206      00000201 
+ 1206      FB0E0D00 
+ 1206      01010101 
+ 1207              	.LASF25:
+ 1208 0000 55415254 		.ascii	"UART_1_Start\000"
+ 1208      5F315F53 
+ 1208      74617274 
+ 1208      00
+ 1209              	.LASF4:
+ 1210 000d 5F5F7569 		.ascii	"__uint8_t\000"
+ 1210      6E74385F 
+ 1210      7400
+ 1211              	.LASF26:
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 27
+
+
+ 1212 0017 55415254 		.ascii	"UART_1_PutString\000"
+ 1212      5F315F50 
+ 1212      75745374 
+ 1212      72696E67 
+ 1212      00
+ 1213              	.LASF5:
+ 1214 0028 5F5F696E 		.ascii	"__int32_t\000"
+ 1214      7433325F 
+ 1214      7400
+ 1215              	.LASF20:
+ 1216 0032 62797465 		.ascii	"bytesToRead\000"
+ 1216      73546F52 
+ 1216      65616400 
+ 1217              	.LASF13:
+ 1218 003e 666C6F61 		.ascii	"float\000"
+ 1218      7400
+ 1219              	.LASF22:
+ 1220 0044 4C454473 		.ascii	"LEDstatus\000"
+ 1220      74617475 
+ 1220      7300
+ 1221              	.LASF33:
+ 1222 004e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1222      43313120 
+ 1222      352E342E 
+ 1222      31203230 
+ 1222      31363036 
+ 1223 0081 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1223      20726576 
+ 1223      6973696F 
+ 1223      6E203233 
+ 1223      37373135 
+ 1224 00b4 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1224      66756E63 
+ 1224      74696F6E 
+ 1224      2D736563 
+ 1224      74696F6E 
+ 1225              	.LASF37:
+ 1226 00dc 4953525F 		.ascii	"ISR_UART_rx_handler\000"
+ 1226      55415254 
+ 1226      5F72785F 
+ 1226      68616E64 
+ 1226      6C657200 
+ 1227              	.LASF7:
+ 1228 00f0 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1228      20756E73 
+ 1228      69676E65 
+ 1228      6420696E 
+ 1228      7400
+ 1229              	.LASF3:
+ 1230 0102 73686F72 		.ascii	"short unsigned int\000"
+ 1230      7420756E 
+ 1230      7369676E 
+ 1230      65642069 
+ 1230      6E7400
+ 1231              	.LASF21:
+ 1232 0115 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1232      52784275 
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 28
+
+
+ 1232      66666572 
+ 1232      00
+ 1233              	.LASF1:
+ 1234 0122 756E7369 		.ascii	"unsigned char\000"
+ 1234      676E6564 
+ 1234      20636861 
+ 1234      7200
+ 1235              	.LASF14:
+ 1236 0130 646F7562 		.ascii	"double\000"
+ 1236      6C6500
+ 1237              	.LASF35:
+ 1238 0137 433A5C55 		.ascii	"C:\\Users\\maths\\Desktop\\3. semester\\PRJ3\\PSoC-"
+ 1238      73657273 
+ 1238      5C6D6174 
+ 1238      68735C44 
+ 1238      65736B74 
+ 1239 0164 55415254 		.ascii	"UART\\PSoC_UART\\PSoC_UART.cydsn\000"
+ 1239      5C50536F 
+ 1239      435F5541 
+ 1239      52545C50 
+ 1239      536F435F 
+ 1240              	.LASF19:
+ 1241 0183 4C45446F 		.ascii	"LEDoff\000"
+ 1241      666600
+ 1242              	.LASF36:
+ 1243 018a 6D61696E 		.ascii	"main\000"
+ 1243      00
+ 1244              	.LASF31:
+ 1245 018f 55415254 		.ascii	"UART_1_PutChar\000"
+ 1245      5F315F50 
+ 1245      75744368 
+ 1245      617200
+ 1246              	.LASF10:
+ 1247 019e 756E7369 		.ascii	"unsigned int\000"
+ 1247      676E6564 
+ 1247      20696E74 
+ 1247      00
+ 1248              	.LASF28:
+ 1249 01ab 50696E5F 		.ascii	"Pin_LED_Write\000"
+ 1249      4C45445F 
+ 1249      57726974 
+ 1249      6500
+ 1250              	.LASF9:
+ 1251 01b9 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1251      206C6F6E 
+ 1251      6720756E 
+ 1251      7369676E 
+ 1251      65642069 
+ 1252              	.LASF11:
+ 1253 01d0 75696E74 		.ascii	"uint8_t\000"
+ 1253      385F7400 
+ 1254              	.LASF32:
+ 1255 01d8 55415254 		.ascii	"UART_1_GetRxBufferSize\000"
+ 1255      5F315F47 
+ 1255      65745278 
+ 1255      42756666 
+ 1255      65725369 
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 29
+
+
+ 1256              	.LASF29:
+ 1257 01ef 50696E5F 		.ascii	"Pin_LED_Read\000"
+ 1257      4C45445F 
+ 1257      52656164 
+ 1257      00
+ 1258              	.LASF30:
+ 1259 01fc 55415254 		.ascii	"UART_1_GetChar\000"
+ 1259      5F315F47 
+ 1259      65744368 
+ 1259      617200
+ 1260              	.LASF12:
+ 1261 020b 696E7433 		.ascii	"int32_t\000"
+ 1261      325F7400 
+ 1262              	.LASF17:
+ 1263 0213 73697A65 		.ascii	"sizetype\000"
+ 1263      74797065 
+ 1263      00
+ 1264              	.LASF8:
+ 1265 021c 6C6F6E67 		.ascii	"long long int\000"
+ 1265      206C6F6E 
+ 1265      6720696E 
+ 1265      7400
+ 1266              	.LASF34:
+ 1267 022a 6D61696E 		.ascii	"main.c\000"
+ 1267      2E6300
+ 1268              	.LASF15:
+ 1269 0231 63686172 		.ascii	"char\000"
+ 1269      00
+ 1270              	.LASF2:
+ 1271 0236 73686F72 		.ascii	"short int\000"
+ 1271      7420696E 
+ 1271      7400
+ 1272              	.LASF24:
+ 1273 0240 41534349 		.ascii	"ASCIIvalue\000"
+ 1273      4976616C 
+ 1273      756500
+ 1274              	.LASF6:
+ 1275 024b 6C6F6E67 		.ascii	"long int\000"
+ 1275      20696E74 
+ 1275      00
+ 1276              	.LASF16:
+ 1277 0254 6C6F6E67 		.ascii	"long double\000"
+ 1277      20646F75 
+ 1277      626C6500 
+ 1278              	.LASF18:
+ 1279 0260 4C45446F 		.ascii	"LEDon\000"
+ 1279      6E00
+ 1280              	.LASF0:
+ 1281 0266 7369676E 		.ascii	"signed char\000"
+ 1281      65642063 
+ 1281      68617200 
+ 1282              	.LASF27:
+ 1283 0272 6973725F 		.ascii	"isr_1_StartEx\000"
+ 1283      315F5374 
+ 1283      61727445 
+ 1283      7800
+ 1284              	.LASF23:
+ARM GAS  C:\Users\maths\AppData\Local\Temp\ccSLYfPG.s 			page 30
+
+
+ 1285 0280 5F426F6F 		.ascii	"_Bool\000"
+ 1285      6C00
+ 1286              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
