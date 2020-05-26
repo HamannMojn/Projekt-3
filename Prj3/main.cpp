@@ -11,7 +11,7 @@
 
 int main()
 {
-    TCPServer tester("127.0.0.1", 51717);
+    TCPServer tester("192.168.0.1", 51717 );
     tester.run();
     return 0;
 }

@@ -77,16 +77,14 @@ void TCPServer::run()
         }
             
         clisocket = call(sock);
-        if (clisocket != -1)
+        if(clisocket != -1)
         {
-            //close(sock);
-            //cout << "socket lukket igen" << endl;
-            /*do
-            {*/
+            close(sock);
                 //psoc.open_port();
-                cout << "Do igang " << endl;
+            do
+            {
                 bzero(buf, sizeof(buf));
-                read(clisocket, buf, sizeof(buf));
+                bRead = read(clisocket, buf, sizeof(buf));
                 switch(buf[0])
                 {
                     case '1':
@@ -113,19 +111,8 @@ void TCPServer::run()
                     default:
                     cout << buf[0] << endl;
                 }
-            /*} while (n > 0);*/
+            } while (bRead > 0);
             close(clisocket);
-            /*bzero(buf, sizeof(buf));
-            n = 0;
-            while ((buf[n++] = getchar()) != '\n');
-
-            write(clisocket, buf, sizeof(buf));
-
-            if (strncmp("luk", buf, 3) == 0)
-            {
-                cout << "lukker server " << endl;
-                break;
-            }*/
         }
     }
 }

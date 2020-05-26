@@ -21,6 +21,7 @@ public:
 
 private:
     int clisocket;
+    int bRead;
     char buf[1];
     string m_ipAdr;
     int m_portno;
